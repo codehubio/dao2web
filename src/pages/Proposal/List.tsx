@@ -5,51 +5,69 @@ import {
 import {
   useParams
 } from 'react-router-dom';
-import {
-  PublicKey
-} from '@solana/web3.js';
-import { Grid, Chip } from '@mui/material';
-import { listProposals } from '../../services/state/proposal';
+import { Grid, Chip, Button, Stack } from '@mui/material';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import AppContext from '../../share/context';
-import ProposalCard from '../../components/Proposal/Card';
+import ProposalCard from '../../components/Proposal/Info';
+import MyGrid from '../../components/MyGrid';
+import { BoltOutlined } from '@mui/icons-material';
+import ProposalCreateDialog from '../../components/Proposal/CreateDialog';
+import { useSelector, useDispatch } from 'react-redux';
+import { listProposalsByWallet } from '../../reducers/proposal.reducer';
+
+
+
 export default function ListProposals() {
+  const assets =  useSelector(({ proposalReducer: { createdProposals } }: any) => createdProposals);
   const { connection } = useConnection();
   const { wallet } = useWallet();
   const { setLoadingMessage, setError } = useContext(AppContext) as any;
-  const [assets, setAssets] = useState([]);
+  // const [assets, setAssets] = useState([]);
+  const [openCreate, setOpenCreate] = useState(false);
   const { address } = useParams();
-  const addressPubkey = address ? new PublicKey(address) : wallet?.adapter.publicKey;
+  const dispatch = useDispatch();
+  const addressPubkey = address || wallet?.adapter.publicKey?.toBase58();
   useEffect(() => {
-    
     async function getAssets() {
-      // await listOurNftsFromAddress(connection, new PublicKey(address))
       setLoadingMessage('loading assets ...');
       try {
-        const _assets = await listProposals(connection, addressPubkey as PublicKey)
-        console.log(_assets);
-        setAssets(_assets as any);
+        await dispatch(listProposalsByWallet({
+          endpoint: connection.rpcEndpoint, address: addressPubkey
+        } as any) as any);
       } catch (error) {
         setError(error as any)
       }
       setLoadingMessage('');
     }
     getAssets();
-  }, [wallet?.adapter.publicKey])
+  }, [addressPubkey])
+  function changeCreateDialogState() {
+    setOpenCreate(!openCreate);
+  }
   function renderProposalList() {
-    return assets.map((a, index) => (<Grid key={index} item xs={3}>
+    return assets.map((a: any, index: number) => (<Grid key={index} item xs={3}>
         <ProposalCard detail={a}/>
     </Grid>))
   }
   return (<>
-      <Grid
-        container
-        alignContent='center'
-        alignItems='center'
-        spacing={2}
-        sx={{ mt: 10 }}
-      >
+    <ProposalCreateDialog open={openCreate} handleClose={changeCreateDialogState}/>
+    <Stack direction="column"
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}>
+      
+    <Button
+        onClick={changeCreateDialogState}
+        color='primary'
+        variant="contained"
+        startIcon={<BoltOutlined />}
+      >create new proposal
+    </Button>
+    <MyGrid
+      direction="row"
+    >
         {assets && assets.length ? renderProposalList() : <Grid item xs={12}><Chip color='info' label='you have no proposal'/></Grid>}
-      </Grid>
+      </MyGrid>
+    </Stack>
   </>)
 }

@@ -1,6 +1,6 @@
 import debug from 'debug';
 import BN from 'bn.js';
-import { Connection, PublicKey, SystemProgram, TransactionInstruction, Transaction, TransactionMessage } from "@solana/web3.js";
+import { Connection, PublicKey, SystemProgram, TransactionInstruction, TransactionMessage } from "@solana/web3.js";
 import { CreateProposalIns } from '../serde/instructions/create-proposal';
 import {
   pad
@@ -13,9 +13,11 @@ export default async function createProposal(
   {
     name,
     description,
+    imageUrl,
     expireOrFinalizeAfter,
   }: {
     name: string,
+    imageUrl: string,
     description: string,
     expireOrFinalizeAfter: number,
   },
@@ -24,7 +26,8 @@ export default async function createProposal(
     REACT_APP_SC_ADDRESS = ''
   } = process.env;
   const newName = pad(name, 16);
-  const newDescription= pad(description, 256);
+  const newUrl = pad(imageUrl, 128);
+  const newDescription= pad(description, 128);
   const [statPda] = PublicKey.findProgramAddressSync([
     creator.toBuffer(),
     Buffer.from('stat'),
@@ -34,7 +37,7 @@ export default async function createProposal(
   try {
     const {
       data: statData,
-    } = await getStatByAddress(connection, creator.toBase58());
+    } = await getStatByAddress(connection, creator);
     numberOfProposals = statData.numberOfProposals;
   } catch (error) {
     
@@ -48,6 +51,7 @@ export default async function createProposal(
   const createDaoIx = new CreateProposalIns({
     name: Buffer.from(newName),
     description: Buffer.from(newDescription),
+    imageUrl: Buffer.from(newUrl),
     expireOrFinalizedAfter: new BN(expireOrFinalizeAfter).divRound(new BN(1000)),
   });
   const serializedData = createDaoIx.serialize();
@@ -84,6 +88,9 @@ export default async function createProposal(
     recentBlockhash: blockhash,
     instructions: [instruction],
   }).compileToV0Message();
-  return tx.serialize();
+  return {
+    rawTx: tx.serialize(),
+    proposalPda
+  };
   
 }

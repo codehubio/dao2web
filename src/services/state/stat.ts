@@ -3,9 +3,9 @@ import { Stat } from '../serde/states/stat';
 const {
   REACT_APP_SC_ADDRESS = ''
 } = process.env;
-export async function getStatByAddress(connection: Connection, address: string) {
+export async function getStatByAddress(connection: Connection, address: PublicKey) {
   const [pda] = PublicKey.findProgramAddressSync([
-    new PublicKey(address).toBuffer(),
+    address.toBuffer(),
     Buffer.from('stat'),
   ], new PublicKey(REACT_APP_SC_ADDRESS));
   const statAccount = await connection.getAccountInfo(pda);

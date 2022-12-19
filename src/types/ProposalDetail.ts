@@ -6,6 +6,7 @@ export type TProposalDetail = {
   numberOfSteps: BN,
   numberOfApprovals: BN,
   description: string,
+  imageUrl: string,
   createdAt: BN,
   expireOrFinalizeAfter: BN,
   creator: Uint8Array,
@@ -15,6 +16,7 @@ export type TProposalDetail = {
   settledAt: BN,
   isRejected: number,
   rejectedAt: BN,
+  pda: Uint8Array,
 }
 
 
@@ -24,6 +26,7 @@ export type TParseProposalDetail = {
   numberOfSteps: number,
   numberOfApprovals: number,
   description: string,
+  imageUrl: string,
   createdAt: number,
   expireOrFinalizeAfter: number,
   creator: string,
@@ -33,4 +36,5 @@ export type TParseProposalDetail = {
   settledAt: number,
   isRejected: number,
   rejectedAt: number,
+  pda: string,
 }

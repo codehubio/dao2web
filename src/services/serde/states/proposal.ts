@@ -9,6 +9,7 @@ export type TProposal = {
   numberOfSteps: BN,
   numberOfApprovals: BN,
   description: Uint8Array,
+  imageUrl: Uint8Array,
   createdAt: BN,
   expireOrFinalizeAfter: BN,
   creator: Uint8Array,
@@ -29,6 +30,8 @@ export class Proposal {
   numberOfSteps;
   
   numberOfApprovals;
+
+  imageUrl;
   
   createdAt;
   
@@ -59,6 +62,7 @@ export class Proposal {
     this.expireOrFinalizeAfter = fields.expireOrFinalizeAfter;
     this.creator = fields.creator;
     this.description = fields.description;
+    this.imageUrl = fields.imageUrl;
     this.createdAt = fields.createdAt;
     this.isApproved = fields.isApproved;
     this.approvedAt = fields.approvedAt;
@@ -92,6 +96,7 @@ export class Proposal {
       isRejected,
       rejectedAt,
       description,
+      imageUrl,
     } = Proposal.deserialize(raw);
     return {
       accountType,
@@ -99,16 +104,17 @@ export class Proposal {
       name: Buffer.from(name).toString(),
       numberOfSteps: numberOfSteps.toNumber(),
       numberOfApprovals: numberOfApprovals.toNumber(),
-      createdAt: new Date(createdAt.toNumber() * 1000),
-      expireOrFinalizeAfter: new Date(expireOrFinalizeAfter.toNumber() * 1000),
+      createdAt: new Date(createdAt.toNumber() * 1000).toISOString(),
+      expireOrFinalizeAfter: new Date(expireOrFinalizeAfter.toNumber() * 1000).toISOString(),
       isApproved,
-      approvedAt: new Date(approvedAt.toNumber() * 1000),
+      approvedAt: new Date(approvedAt.toNumber() * 1000).toISOString(),
       isSettled,
-      settledAt: new Date(settledAt.toNumber() * 1000),
+      settledAt: new Date(settledAt.toNumber() * 1000).toISOString(),
       isRejected,
-      rejectedAt: new Date(rejectedAt.toNumber() * 1000),
+      rejectedAt: new Date(rejectedAt.toNumber() * 1000).toISOString(),
       creator: new PublicKey(creator).toBase58(),
       description: Buffer.from(description).toString(),
+      imageUrl: Buffer.from(imageUrl).toString(),
     }
   }
 }
@@ -121,7 +127,8 @@ export const ProposalSchema = new Map([[Proposal, {
     ['name', [16]],
     ['numberOfSteps', 'u64'],
     ['numberOfApprovals', 'u64'],
-    ['description', [256]],
+    ['description', [128]],
+    ['imageUrl', [128]],
     ['createdAt', 'u64'],
     ['expireOrFinalizeAfter', 'u64'],
     ['creator', [32]],
