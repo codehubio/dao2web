@@ -29,10 +29,10 @@ export default function ProposalInfo({ proposal }: {
     <Fragment>
       <TableRow onClick= {redirect.bind(null, proposal.pda)} hover={true} sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell component="th" scope="row">
-            <Avatar
-                  alt={proposal.detail.name}
-                  src={proposal.detail.imageUrl}
-                />
+          <Avatar
+            alt={proposal.detail.name}
+            src={proposal.detail.imageUrl}
+          />
         </TableCell>
         <TableCell align="left">{proposal.detail.name}</TableCell>
         <TableCell align="left">{proposal.detail.description}</TableCell>
