@@ -1,47 +1,45 @@
-
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { TParseProposalDetail } from '../../types/ProposalDetail';
-
-export default function ProposalInfo({ detail }: { detail: (TParseProposalDetail & { pda: string })}) {
-  const {
-    imageUrl,
-    name,
-    description,
-    numberOfApprovals,
-    numberOfSteps
-  } = detail;
-  return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        height="140"
-        src={imageUrl}
-        alt={name}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          {description}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Approvals: {numberOfApprovals}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Steps: {numberOfSteps}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Edit</Button>
-        <Button size="small">Settle</Button>
-      </CardActions>
-    </Card>
-  );
+import { Avatar, TableCell, TableRow } from "@mui/material";
+import { Fragment } from "react";
+import { TParseProposalDetail } from "../../types/ProposalDetail";
+import {
+  useNavigate,
+} from 'react-router-dom';
+export default function ProposalInfo({ proposal, notify }: {
+  proposal: TParseProposalDetail | null,
+  notify: Function,
+}) {
+  const navigate = useNavigate();
+  function getStatus(): string {
+    if (!proposal?.detail) {
+      return 'Pending';
+    }
+    if (proposal.detail.isApproved) {
+      return 'Approved';
+    } else if (proposal.detail.isRejected) {
+      return 'Rejected';
+    } else if (proposal.detail.isSettled) {
+      return 'Settled';
+    }
+    return 'Pending';
+  }
+  function redirect(pda: string) {
+    navigate(`/detail-proposal/${pda}`);
+  }
+  return proposal && proposal.detail ? (
+    <Fragment>
+      <TableRow onClick= {redirect.bind(null, proposal.pda)} hover={true} sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableCell component="th" scope="row">
+            <Avatar
+                  alt={proposal.detail.name}
+                  src={proposal.detail.imageUrl}
+                />
+        </TableCell>
+        <TableCell align="left">{proposal.detail.name}</TableCell>
+        <TableCell align="left">{proposal.detail.description}</TableCell>
+        <TableCell align="left">{proposal.detail.numberOfSteps}</TableCell>
+        <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
+        <TableCell align="left">{getStatus()}</TableCell>
+      </TableRow>
+    </Fragment>
+  ) : <></>;
 }

@@ -1,12 +1,25 @@
-import * as dotenv from 'dotenv';
 import { Connection, PublicKey } from "@solana/web3.js";
 import { getProposalByPda } from './proposal';
 import { Step } from '../serde/states/step';
 import { Approval } from '../serde/states/approval';
-dotenv.config();
 const {
-  SC_ADDRESS = ''
+  REACT_APP_SC_ADDRESS = ''
 } = process.env;
+export async function getStepByPda(connection: Connection, pda: PublicKey, time = 1, interval = 1000) {
+  for (let i = 0; i < time; i += 1) {
+    try {
+      const transactionAccount = await connection.getAccountInfo(pda);
+      const data = Step.deserialize(transactionAccount?.data as Buffer);
+      return {
+        pda,
+        data,
+      }
+    } catch (error: any) {
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+  }
+  throw new Error(`Cannot get data for step ${pda}`);
+}
 export async function getSteps(connection: Connection, proposalPda: PublicKey) {
   const {
     readableData: readableProposalData
@@ -18,7 +31,7 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
       Buffer.from(i.toString()),
       proposalPda.toBuffer(),
       Buffer.from('step'),
-    ], new PublicKey(SC_ADDRESS));
+    ], new PublicKey(REACT_APP_SC_ADDRESS));
     stepPdas.push(pda);
   }
   const stepInfos = await connection.getMultipleAccountsInfo(stepPdas);
@@ -31,7 +44,7 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
         Buffer.from(j.toString()),
         stepPdas[i].toBuffer(),
         Buffer.from('approval'),
-      ], new PublicKey(SC_ADDRESS));
+      ], new PublicKey(REACT_APP_SC_ADDRESS));
       approvedPdas[i].push(approvalPda);
     }
   }

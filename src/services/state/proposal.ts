@@ -18,6 +18,7 @@ export async function getProposalByPda(connection: Connection, pda: PublicKey, t
         readableData,
       }
     } catch (error: any) {
+      console.log(error);
       await new Promise((resolve) => setTimeout(resolve, interval));
     }
   }
@@ -41,7 +42,7 @@ export async function listProposals(connection: Connection, wallet: PublicKey): 
     return data.map((d, index) => {
       const parsed = d && d.data ? Proposal.deserializeToReadable(d?.data as Buffer) : {};
       return {
-        ...parsed,
+        detail: parsed,
         pda: pdas[index].toBase58(),
       };
     })

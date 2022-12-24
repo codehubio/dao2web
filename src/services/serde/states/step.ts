@@ -28,6 +28,7 @@ export type TStep = {
   revertedAt: BN,
   revertedAmount: BN
   rejectedReason: Uint8Array;
+  status: number,
 }
 export class Step {
   accountType;
@@ -79,6 +80,8 @@ export class Step {
   revertedAmount;
 
   rejectedReason;
+
+  status;
   
   
   constructor(fields: TStep) {
@@ -107,6 +110,7 @@ export class Step {
     this.revertedAmount = fields.revertedAmount;
     this.numberOfApprovals =  fields.numberOfApprovals;
     this.rejectedReason = fields.rejectedReason;
+    this.status = fields.status;
   }
 
   serialize(): Uint8Array {
@@ -143,6 +147,7 @@ export class Step {
       revertedAt,
       revertedAmount,
       rejectedReason,
+      status,
     } = Step.deserialize(raw);
     return {
       accountType,
@@ -170,6 +175,7 @@ export class Step {
       incentiveFee: incentiveFee.toNumber(),
       isReverted,
       revertedAt: new Date(revertedAt.toNumber() * 1000),
+      status
 
     }
   }
@@ -203,6 +209,7 @@ export const StepSchema = new Map([[Step, {
     ['isReverted', 'u8'],
     ['revertedAt', 'u64'],
     ['revertedAmount', 'u64'],
+    ['status', 'u8'],
     
   ],
 }],

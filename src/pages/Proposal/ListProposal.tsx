@@ -3,17 +3,17 @@ import {
   useContext, useEffect, useState,
 } from 'react';
 import {
-  useParams
+  useParams,
 } from 'react-router-dom';
-import { Grid, Chip, Button, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import AppContext from '../../share/context';
-import ProposalCard from '../../components/Proposal/Info';
 import MyGrid from '../../components/MyGrid';
 import { BoltOutlined } from '@mui/icons-material';
-import ProposalCreateDialog from '../../components/Proposal/CreateDialog';
+import ProposalCreateDialog from '../../components/Proposal/CreateProposalDialog';
 import { useSelector, useDispatch } from 'react-redux';
 import { listProposalsByWallet } from '../../reducers/proposal.reducer';
+import ListProposalInfo from '../../components/Proposal/ListInfo';
 
 
 
@@ -44,11 +44,7 @@ export default function ListProposals() {
   function changeCreateDialogState() {
     setOpenCreate(!openCreate);
   }
-  function renderProposalList() {
-    return assets.map((a: any, index: number) => (<Grid key={index} item xs={3}>
-        <ProposalCard detail={a}/>
-    </Grid>))
-  }
+ 
   return (<>
     <ProposalCreateDialog open={openCreate} handleClose={changeCreateDialogState}/>
     <Stack direction="column"
@@ -66,7 +62,7 @@ export default function ListProposals() {
     <MyGrid
       direction="row"
     >
-        {assets && assets.length ? renderProposalList() : <Grid item xs={12}><Chip color='info' label='you have no proposal'/></Grid>}
+      <ListProposalInfo  proposals={assets}/>
       </MyGrid>
     </Stack>
   </>)

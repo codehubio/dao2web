@@ -16,7 +16,7 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import ListProposals from './pages/Proposal/List';
+import ListProposals from './pages/Proposal/ListProposal';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import theme from './share/theme';
@@ -26,6 +26,7 @@ import { Container } from '@mui/material';
 import AppContext from './share/context';
 import { store } from './store';
 import { supportedWallets } from './services/wallet.service';
+import DetailProposal from './pages/Proposal/DetailProposal';
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -63,6 +64,7 @@ export default function App() {
                         <Container maxWidth="md">
                           <Routes>
                             <Route element={<ListProposals />} path="/list-proposals" />
+                            <Route element={<DetailProposal />} path="/detail-proposal/:proposalPda" />
                           </Routes>
                           <Success success={success}></Success>
                           <Error error={error}></Error>

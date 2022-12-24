@@ -21,20 +21,22 @@ export type TProposalDetail = {
 
 
 export type TParseProposalDetail = {
-  accountType: number,
-  name: string,
-  numberOfSteps: number,
-  numberOfApprovals: number,
-  description: string,
-  imageUrl: string,
-  createdAt: number,
-  expireOrFinalizeAfter: number,
-  creator: string,
-  isApproved: number,
-  approvedAt: number,
-  isSettled: number,
-  settledAt: number,
-  isRejected: number,
-  rejectedAt: number,
+  detail: {
+    accountType: number,
+    name: string,
+    numberOfSteps: number,
+    numberOfApprovals: number,
+    description: string,
+    imageUrl: string,
+    createdAt: number,
+    expireOrFinalizeAfter: number,
+    creator: string,
+    isApproved: number,
+    approvedAt: number,
+    isSettled: number,
+    settledAt: number,
+    isRejected: number,
+    rejectedAt: number,
+  }
   pda: string,
 }

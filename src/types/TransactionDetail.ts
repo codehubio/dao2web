@@ -4,7 +4,6 @@ export type TTransactionDetail = {
   accountType: number,
   index: BN,
   proposalPda: string,
-  proposalId: string,
   name: string,
   description: string,
   amount: BN,
@@ -33,7 +32,6 @@ export type TParsedTransactionDetail = {
   accountType: number,
   index: number,
   proposalPda: string,
-  proposalId: string,
   name: string,
   description: string,
   amount: number,
@@ -54,5 +52,5 @@ export type TParsedTransactionDetail = {
   executedAt: number,
   isReverted: number,
   revertedAt: number,
-  revertedAmount: BN,
+  revertedAmount: number,
 }

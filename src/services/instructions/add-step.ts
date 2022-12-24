@@ -33,19 +33,18 @@ export default async function addStep(
   },
 ) {
   const {
-    SC_ADDRESS = ''
+    REACT_APP_SC_ADDRESS = ''
   } = process.env;
   const newName = pad(name, 16);
   const newDescription= pad(description, 128);
   const {
     data: proposalData,
   } = await getProposalByPda(connection, proposalPda);
-  
   const [stepPda] = PublicKey.findProgramAddressSync([
     Buffer.from(proposalData.numberOfSteps.toString()),
     proposalPda.toBytes(),
     Buffer.from('step'),
-  ], new PublicKey(SC_ADDRESS));
+  ], new PublicKey(REACT_APP_SC_ADDRESS));
   log(`Adding step ${stepPda} to dao id: ${Buffer.from(proposalData.name).toString()}, pda: ${proposalPda.toBase58()}`);
   const addStepIx = new AddStepIns({
     name: Buffer.from(newName),
@@ -78,7 +77,7 @@ export default async function addStep(
       isWritable: false,
       pubkey: SystemProgram.programId,
     }],
-    programId: new PublicKey(SC_ADDRESS),
+    programId: new PublicKey(REACT_APP_SC_ADDRESS),
     data: dataBuffer,
   });
   const {
@@ -91,6 +90,9 @@ export default async function addStep(
     recentBlockhash: blockhash,
     instructions: [instruction],
   }).compileToV0Message();
-  return tx.serialize();
+  return {
+    rawTx: tx.serialize(),
+    transactionPda: stepPda
+  };
   
 }
