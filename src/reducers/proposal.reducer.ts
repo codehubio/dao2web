@@ -89,7 +89,7 @@ export const addTxToProposal = createAsyncThunk('addTxToProposal', async ({
   const txid = await sendTransaction(connection, provider, rawTx);
   const {
     data
-  } = await getStepByPda(connection, transactionPda, 2);
+  } = await getStepByPda(connection, transactionPda, 10);
   console.log(data);
   return { txid, proposalPda: proposalPda.toBase58(), data };
 });

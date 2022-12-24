@@ -24,6 +24,7 @@ export default function DetailProposal() {
   const [steps, setSteps] = useState([] as any);
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openCreate, setOpenCreate] = useState(false);
+  const [reload, setShouldReloase] = useState(false);
   const { proposalPda = '' } = useParams();
   useEffect(() => {
     async function getDetail() {
@@ -38,14 +39,13 @@ export default function DetailProposal() {
           pda: proposalPda,
           detail: proposalData
         });
-        console.log(proposal);
       } catch (error) {
         setError(error as any)
       }
       setLoadingMessage('');
     }
     getDetail();
-  }, [proposalPda])
+  }, [proposalPda, reload])
   function renderStep() {
     if (!steps.length) {
       return <></>
@@ -58,8 +58,12 @@ export default function DetailProposal() {
             <TableCell align="left">#</TableCell>
             <TableCell align="left">Name</TableCell>
             <TableCell align="left">Description</TableCell>
-            <TableCell align="left"># of approvals</TableCell>
-            <TableCell align="left">Status</TableCell>
+            <TableCell align="left">Amount</TableCell>
+            <TableCell align="left">Token</TableCell>
+            <TableCell align="left">Sender</TableCell>
+            <TableCell align="left">Receiver</TableCell>
+            <TableCell align="left">Incentive rate</TableCell>
+            <TableCell align="left">Execute after (in seconds)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -78,6 +82,22 @@ export default function DetailProposal() {
                 <TableCell  align="left">
                   {s.amount}
                 </TableCell>
+                <TableCell  align="left">
+                  {s.token.substr(0, 4)}...
+                </TableCell>
+                <TableCell  align="left">
+                  {s.sender.substr(0, 4)}...
+                </TableCell>
+                <TableCell  align="left">
+                  {s.receiver.substr(0, 4)}...
+                </TableCell>
+                <TableCell  align="left">
+                  {s.incentiveRate}
+                </TableCell>
+                <TableCell  align="left">
+                  {s.executeAfter.toString()}
+                </TableCell>
+                
               </TableRow>)
           })
           }
@@ -91,7 +111,7 @@ export default function DetailProposal() {
   }
   return (<>
 
-  {proposal && proposal.detail ? <TransactionAddDialog proposal={proposal} open={openCreate} handleClose={changeCreateDialogState}/> : <></> }
+  {proposal && proposal.detail ? <TransactionAddDialog reloadFn={setShouldReloase} proposal={proposal} open={openCreate} handleClose={changeCreateDialogState}/> : <></> }
     <Stack direction="column"
       justifyContent="center"
       alignItems="center"
@@ -102,7 +122,7 @@ export default function DetailProposal() {
         color='primary'
         variant="contained"
         startIcon={<BoltOutlined />}
-      >add transaction
+      >Add transaction
     </Button>
     <MyGrid
       direction="row"

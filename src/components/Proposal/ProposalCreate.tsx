@@ -1,10 +1,13 @@
 import { Grid, TextField } from '@mui/material';
 import { TParseProposalDetail } from '../../types/ProposalDetail';
-export default function ProposalCreate({ setDetail, detail } : { setDetail: Function, detail: TParseProposalDetail}) {
+export default function ProposalCreate({ setDetail, proposal } : { setDetail: Function, proposal: TParseProposalDetail}) {
   function setField(fieldName: string, e: any) {
     setDetail({
-      ...detail,
-      [fieldName]: e.target.value,
+      ...proposal,
+      detail: {
+        ...proposal.detail,
+        [fieldName]: e.target.value,
+      },
     });
   }
   return (<>

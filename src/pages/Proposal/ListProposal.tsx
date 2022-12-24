@@ -25,6 +25,7 @@ export default function ListProposals() {
   // const [assets, setAssets] = useState([]);
   const [openCreate, setOpenCreate] = useState(false);
   const { address } = useParams();
+  const [reload, setShouldReloase] = useState(false);
   const dispatch = useDispatch();
   const addressPubkey = address || wallet?.adapter.publicKey?.toBase58();
   useEffect(() => {
@@ -40,13 +41,13 @@ export default function ListProposals() {
       setLoadingMessage('');
     }
     getAssets();
-  }, [addressPubkey])
+  }, [addressPubkey, reload])
   function changeCreateDialogState() {
     setOpenCreate(!openCreate);
   }
  
   return (<>
-    <ProposalCreateDialog open={openCreate} handleClose={changeCreateDialogState}/>
+    <ProposalCreateDialog open={openCreate} reloadFn={setShouldReloase} handleClose={changeCreateDialogState}/>
     <Stack direction="column"
       justifyContent="center"
       alignItems="center"

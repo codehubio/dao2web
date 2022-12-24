@@ -164,7 +164,7 @@ export class Step {
       sender: new PublicKey(sender).toBase58(),
       receiver: new PublicKey(receiver).toBase58(),
       token: new PublicKey(token).toBase58(),
-      executeAfter: new Date(executeAfter.toNumber() * 1000),
+      executeAfter: executeAfter.toNumber(),
       approvedAt: new Date(approvedAt.toNumber() * 1000),
       isApproved,
       executedAt: new Date(executedAt.toNumber() * 1000),

@@ -13,12 +13,10 @@ export default function ListProposalInfo1({ proposals }: {
   proposals: (TParseProposalDetail) [],
 }) {
   const [openListSteps, setOpenListSteps] = useState(false);
-  const [currentProposal, setCurrentProposal] = useState({} as (TParseProposalDetail & { pda: string }));
   function changeListStepState() {
     setOpenListSteps(!openListSteps);
   }
   function notify(detail: TParseProposalDetail & { pda: string }) {
-    setCurrentProposal(detail);
     changeListStepState();
   }
   return (
@@ -33,6 +31,8 @@ export default function ListProposalInfo1({ proposals }: {
               <TableCell align="left"># of steps</TableCell>
               <TableCell align="left"># of approvals</TableCell>
               <TableCell align="left">Status</TableCell>
+              <TableCell />
+
             </TableRow>
           </TableHead>
           <TableBody>

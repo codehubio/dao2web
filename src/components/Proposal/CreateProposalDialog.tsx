@@ -11,7 +11,11 @@ import AppContext from '../../share/context';
 import { useDispatch } from 'react-redux';
 import { createProposal } from '../../reducers/proposal.reducer';
 
-export default function ProposalCreateDialog({ open, handleClose } : { open: boolean, handleClose: any}) {
+export default function ProposalCreateDialog({ reloadFn, open, handleClose } : {
+  open: boolean,
+  handleClose: any,
+  reloadFn: Function
+}) {
   const dispatch = useDispatch();
   const { setLoadingMessage, setError, setSuccess } = useContext(AppContext) as any;
   const [proposalDetail, setProposalDetail] : [TParseProposalDetail, Function] = useState({
@@ -49,7 +53,7 @@ export default function ProposalCreateDialog({ open, handleClose } : { open: boo
     setLoadingMessage('creating proposal');
     let txid;
     try {
-      const { payload } = await dispatch(createProposal({
+      await dispatch(createProposal({
         endpoint: connection.rpcEndpoint,
         address: wallet?.adapter.publicKey as any, 
         providerName: wallet?.adapter.name, 
@@ -59,8 +63,10 @@ export default function ProposalCreateDialog({ open, handleClose } : { open: boo
           expireOrFinalizeAfter,
           imageUrl,
         }
-    } as any ) as any);
-    console.log(payload);
+     } as any ) as any);
+    if (reloadFn) {
+      reloadFn(true);
+    }
     } catch (error: any) {
       setError(error);
     }
@@ -82,7 +88,7 @@ export default function ProposalCreateDialog({ open, handleClose } : { open: boo
           create a new proposal
         </DialogTitle>
         <DialogContent>
-          <ProposalCreate setDetail={setProposalDetail} detail={proposalDetail}/>
+          <ProposalCreate setDetail={setProposalDetail} proposal={proposalDetail}/>
         </DialogContent>
         <DialogActions>
           <Button

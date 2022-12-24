@@ -12,10 +12,11 @@ import TransactionAdd from './TransactionAdd';
 import { TParseProposalDetail } from '../../types/ProposalDetail';
 import { TParsedTransactionDetail } from '../../types/TransactionDetail';
 
-export default function TransactionAddDialog({ open, handleClose, proposal } : {
+export default function TransactionAddDialog({ reloadFn, open, handleClose, proposal } : {
   open: boolean,
   handleClose: any,
-  proposal: TParseProposalDetail
+  proposal: TParseProposalDetail,
+  reloadFn: Function
 }) {
   const dispatch = useDispatch();
   const { setLoadingMessage, setError, setSuccess } = useContext(AppContext) as any;
@@ -78,7 +79,10 @@ export default function TransactionAddDialog({ open, handleClose, proposal } : {
           executeAfter,
           incentiveRate,
         }
-    } as any ) as any);
+      } as any ) as any);
+      if (reloadFn) {
+        reloadFn(true);
+      }
     } catch (error: any) {
       setError(error);
     }
