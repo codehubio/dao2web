@@ -54,7 +54,7 @@ export default function App() {
               <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
                   <Header />
-                  <Container maxWidth="lg">
+                  <Container sx={{ mt: 5 }} maxWidth="lg">
                     <Routes>
                       <Route
                         element={<ListMyProposals />}
