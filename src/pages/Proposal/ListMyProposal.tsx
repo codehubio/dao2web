@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { listProposalsByWalletThunk } from "../../reducers/proposal";
 import ListProposalInfo from "../../components/Proposal/ListInfo";
 
-export default function ListProposals() {
+export default function ListMyProposals() {
   const assets = useSelector(
     ({ proposalReducer: { createdProposals } }: any) => createdProposals
   );

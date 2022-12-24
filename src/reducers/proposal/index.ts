@@ -1,20 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import createProposalThunk from "./create-proposal";
-import listProposalsByWalletThunk from "./list-proposal-by-creator";
+import listProposalsByWalletThunk from "./list-proposals-by-creator";
 import addTxToProposalThunk from "./add-tx-to-proposal";
 import settleProposalThunk from "./settle-proposal";
 import getStatByWalletThunk from "./add-tx-to-proposal";
+import listProposalsByInvolveThunk from "./list-proposals-by-involve";
 
 export { createProposalThunk };
 export { listProposalsByWalletThunk };
 export { addTxToProposalThunk };
 export { settleProposalThunk };
 export { getStatByWalletThunk };
+export { listProposalsByInvolveThunk };
 
 export const proposalsSlice = createSlice({
   name: "proposals",
   initialState: {
     createdProposals: [],
+    involveProposals: [],
     numberOfProposals: 0,
   },
   reducers: {},
@@ -31,6 +34,12 @@ export const proposalsSlice = createSlice({
       listProposalsByWalletThunk.fulfilled,
       (state: any, { payload }: any) => {
         state.createdProposals = payload || [];
+      }
+    );
+    builder.addCase(
+      listProposalsByInvolveThunk.fulfilled,
+      (state: any, { payload }: any) => {
+        state.involveProposals = payload || [];
       }
     );
     builder.addCase(

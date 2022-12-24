@@ -10,7 +10,8 @@ import Error from "./components/Feedback/Error";
 import Success from "./components/Feedback/Success";
 import Loading from "./components/Loading";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListProposals from "./pages/Proposal/ListProposal";
+import ListMyProposals from "./pages/Proposal/ListMyProposal";
+import ListInvolveProposals from "./pages/Proposal/ListInvolveProposal";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import theme from "./share/theme";
@@ -56,12 +57,16 @@ export default function App() {
                   <Container maxWidth="lg">
                     <Routes>
                       <Route
-                        element={<ListProposals />}
+                        element={<ListMyProposals />}
                         path="/list-my-proposals"
                       />
                       <Route
                         element={<DetailProposal />}
                         path="/detail-proposal/:proposalPda"
+                      />
+                      <Route
+                        element={<ListInvolveProposals />}
+                        path="/list-involve-proposals"
                       />
                     </Routes>
                     <Success success={success}></Success>
