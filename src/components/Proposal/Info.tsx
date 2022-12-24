@@ -1,13 +1,11 @@
-import { Avatar, Button, TableCell, TableRow } from "@mui/material";
+import { Avatar, TableCell, TableRow } from "@mui/material";
 import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import {
   useNavigate,
 } from 'react-router-dom';
-import { BoltOutlined } from "@mui/icons-material";
-export default function ProposalInfo({ proposal, notify }: {
+export default function ProposalInfo({ proposal }: {
   proposal: TParseProposalDetail | null,
-  notify: Function,
 }) {
   const navigate = useNavigate();
   function getStatus(): string {
@@ -23,9 +21,10 @@ export default function ProposalInfo({ proposal, notify }: {
     }
     return 'Pending';
   }
-  function redirect(pda: string) {
-    navigate(`/detail-proposal/${pda}`);
+  function redirect() {
+    navigate(`/detail-proposal/${proposal?.pda}`);
   }
+ 
   return proposal && proposal.detail ? (
     <Fragment>
       <TableRow onClick= {redirect.bind(null, proposal.pda)} hover={true} sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -40,14 +39,6 @@ export default function ProposalInfo({ proposal, notify }: {
         <TableCell align="left">{proposal.detail.numberOfSteps}</TableCell>
         <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
         <TableCell align="left">{getStatus()}</TableCell>
-        <TableCell  align="left">
-          <Button
-            color='primary'
-            variant="contained"
-            startIcon={<BoltOutlined />}
-          >Settle
-          </Button>
-        </TableCell>
       </TableRow>
     </Fragment>
   ) : <></>;

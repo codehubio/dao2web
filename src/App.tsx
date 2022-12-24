@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { Buffer } from 'buffer';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
@@ -40,6 +40,9 @@ export default function App() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState('');
+  useEffect(() => {
+    document.title = 'Token Flow';
+  }, []);
     const wallets = useMemo(
         () => [
           supportedWallets.phantom

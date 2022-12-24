@@ -8,17 +8,9 @@ import Paper from '@mui/material/Paper';
 import { TParseProposalDetail } from '../../types/ProposalDetail';
 import { TableRow } from '@mui/material';
 import ProposalInfo from './Info';
-import { useState } from 'react';
 export default function ListProposalInfo1({ proposals }: {
   proposals: (TParseProposalDetail) [],
 }) {
-  const [openListSteps, setOpenListSteps] = useState(false);
-  function changeListStepState() {
-    setOpenListSteps(!openListSteps);
-  }
-  function notify(detail: TParseProposalDetail & { pda: string }) {
-    changeListStepState();
-  }
   return (
     <>
       <TableContainer component={Paper}>
@@ -37,7 +29,7 @@ export default function ListProposalInfo1({ proposals }: {
           </TableHead>
           <TableBody>
             {proposals.map((proposal: any, index: number) => {
-              return <ProposalInfo key={index} proposal={proposal} notify={notify} />
+              return <ProposalInfo key={index} proposal={proposal} />
             })}
           </TableBody>
         </Table>

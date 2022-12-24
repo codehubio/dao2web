@@ -5,8 +5,9 @@ import {
 import {
   useParams,
 } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Button, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { useConnection } from '@solana/wallet-adapter-react';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import AppContext from '../../share/context';
 import MyGrid from '../../components/MyGrid';
 import { getSteps } from '../../services/state/step';
@@ -14,6 +15,7 @@ import { PublicKey } from '@solana/web3.js';
 import { BoltOutlined } from '@mui/icons-material';
 import TransactionAddDialog from '../../components/Proposal/AddTransactionDialog';
 import { TParseProposalDetail } from '../../types/ProposalDetail';
+import { settleProposal } from '../../reducers/proposal.reducer';
 
 
 
@@ -25,6 +27,8 @@ export default function DetailProposal() {
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openCreate, setOpenCreate] = useState(false);
   const [reload, setShouldReloase] = useState(false);
+  const dispatch = useDispatch();
+  const { wallet } = useWallet();
   const { proposalPda = '' } = useParams();
   useEffect(() => {
     async function getDetail() {
@@ -45,7 +49,19 @@ export default function DetailProposal() {
       setLoadingMessage('');
     }
     getDetail();
-  }, [proposalPda, reload])
+  }, [proposalPda, reload]);
+  async function settle() {
+    setLoadingMessage('settling the proposal ...');
+    await dispatch(settleProposal({
+      endpoint: connection.rpcEndpoint,
+      address: wallet?.adapter.publicKey as any, 
+      providerName: wallet?.adapter.name, 
+      data: {
+        pda: proposal?.pda,
+      }
+   } as any ) as any);
+   setLoadingMessage('');
+  }
   function renderStep() {
     if (!steps.length) {
       return <></>
@@ -117,13 +133,26 @@ export default function DetailProposal() {
       alignItems="center"
       spacing={2}>
       {steps.length === 0 ? <Typography variant='h6'>There is no transaction in this proposal</Typography> : <></>}
-    <Button
-        onClick={changeCreateDialogState}
-        color='primary'
-        variant="contained"
-        startIcon={<BoltOutlined />}
-      >Add transaction
-    </Button>
+    <Stack direction="row"
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}>
+
+      <Button
+          onClick={changeCreateDialogState}
+          color='primary'
+          variant="contained"
+          startIcon={<BoltOutlined />}
+        >Add transaction
+      </Button>
+        <Button
+          onClick={settle}
+          color='primary'
+          variant="contained"
+          startIcon={<BoltOutlined />}
+        >Settle
+        </Button>
+      </Stack>
     <MyGrid
       direction="row"
     >

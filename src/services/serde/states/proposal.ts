@@ -8,6 +8,7 @@ export type TProposal = {
   name: Uint8Array,
   numberOfSteps: BN,
   numberOfApprovals: BN,
+  numberOfExecutions: BN,
   description: Uint8Array,
   imageUrl: Uint8Array,
   createdAt: BN,
@@ -19,6 +20,8 @@ export type TProposal = {
   settledAt: BN,
   isRejected: number,
   rejectedAt: BN,
+  isExecuted: number,
+  executedAt: BN,
 }
 export class Proposal {
   accountType;
@@ -30,6 +33,8 @@ export class Proposal {
   numberOfSteps;
   
   numberOfApprovals;
+
+  numberOfExecutions;
 
   imageUrl;
   
@@ -52,8 +57,13 @@ export class Proposal {
   isRejected;
 
   rejectedAt;
+
+  isExecuted;
+
+  executedAt;
   
   constructor(fields: TProposal) {
+    this.numberOfExecutions = fields.numberOfExecutions;
     this.accountType = fields.accountType;
     this.index = fields.index;
     this.name = fields.name;
@@ -70,6 +80,8 @@ export class Proposal {
     this.settledAt = fields.settledAt;
     this.isRejected = fields.isRejected;
     this.rejectedAt = fields.rejectedAt;
+    this.executedAt = fields.executedAt;
+    this.isExecuted = fields.isExecuted
   }
 
   serialize(): Uint8Array {
@@ -95,8 +107,11 @@ export class Proposal {
       settledAt,
       isRejected,
       rejectedAt,
+      isExecuted,
+      executedAt,
       description,
       imageUrl,
+      numberOfExecutions,
     } = Proposal.deserialize(raw);
     return {
       accountType,
@@ -104,6 +119,7 @@ export class Proposal {
       name: Buffer.from(name).toString(),
       numberOfSteps: numberOfSteps.toNumber(),
       numberOfApprovals: numberOfApprovals.toNumber(),
+      numberOfExecutions: numberOfExecutions.toNumber(),
       createdAt: new Date(createdAt.toNumber() * 1000).toISOString(),
       expireOrFinalizeAfter: new Date(expireOrFinalizeAfter.toNumber() * 1000).toISOString(),
       isApproved,
@@ -112,6 +128,8 @@ export class Proposal {
       settledAt: new Date(settledAt.toNumber() * 1000).toISOString(),
       isRejected,
       rejectedAt: new Date(rejectedAt.toNumber() * 1000).toISOString(),
+      isExecuted,
+      executedAt: new Date(executedAt.toNumber() * 1000).toISOString(),
       creator: new PublicKey(creator).toBase58(),
       description: Buffer.from(description).toString(),
       imageUrl: Buffer.from(imageUrl).toString(),
@@ -127,6 +145,7 @@ export const ProposalSchema = new Map([[Proposal, {
     ['name', [16]],
     ['numberOfSteps', 'u64'],
     ['numberOfApprovals', 'u64'],
+    ['numberOfExecutions', 'u64'],
     ['description', [128]],
     ['imageUrl', [128]],
     ['createdAt', 'u64'],
@@ -138,6 +157,8 @@ export const ProposalSchema = new Map([[Proposal, {
     ['settledAt', 'u64'],
     ['isRejected', 'u8'],
     ['rejectedAt', 'u64'],
+    ['isExecuted', 'u8'],
+    ['executedAt', 'u64'],
   ],
 }],
 ]);
