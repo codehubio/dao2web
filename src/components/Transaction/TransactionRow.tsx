@@ -1,15 +1,16 @@
 import { Button, TableCell, TableRow } from "@mui/material";
-import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 export default function TransactionDetail({
   proposal,
   transaction,
   wallet,
+  onClick,
 }: {
   proposal: TParseProposalDetail;
   transaction: TParsedTransactionDetail;
   wallet: string;
+  onClick: Function;
 }) {
   const { detail: txDetail } = transaction;
   const { detail: pDetail } = proposal;
@@ -23,11 +24,12 @@ export default function TransactionDetail({
       txDetail.sender === wallet
     );
   }
+
   function isAbleToExecute() {
     return pDetail.isApproved && !txDetail.isExecuted;
   }
-  return proposal && proposal.detail ? (
-    <Fragment>
+  return (
+    <>
       <TableRow>
         <TableCell align="left">{txDetail.index}</TableCell>
         <TableCell align="left">{txDetail.name}</TableCell>
@@ -65,8 +67,6 @@ export default function TransactionDetail({
           </Button>
         </TableCell>
       </TableRow>
-    </Fragment>
-  ) : (
-    <></>
+    </>
   );
 }

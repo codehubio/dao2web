@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TableRow } from "@mui/material";
-import MyProposal from "./ProposalRow";
+import ProposalRow from "./ProposalRow";
 export default function ListProposalInfo1({
   proposals,
 }: {
@@ -30,7 +30,7 @@ export default function ListProposalInfo1({
           </TableHead>
           <TableBody>
             {proposals.map((proposal: any, index: number) => {
-              return <MyProposal key={index} proposal={proposal} />;
+              return <ProposalRow key={index} proposal={proposal} />;
             })}
           </TableBody>
         </Table>

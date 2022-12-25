@@ -7,12 +7,9 @@ export default function TransactionAdd({
   setDetail: Function;
   transaction: TParsedTransactionDetail;
 }) {
-  const { detail } = transaction;
   function setField(fieldName: string, e: any) {
-    setDetail({
-      ...detail,
-      [fieldName]: e.target.value,
-    });
+    (transaction.detail as any)[fieldName] = e.target.value;
+    setDetail(transaction);
   }
   return (
     <>
@@ -56,7 +53,7 @@ export default function TransactionAdd({
         </Grid>
         <Grid item xs={12}>
           <TextField
-            value={detail.token}
+            // value="988Hp2QxjbcZu3vgy78CRsNhxnS46YG4nubbYeePgoxa"
             onChange={setField.bind(null, "token")}
             style={{ width: "100%" }}
             label="Token"
@@ -68,7 +65,7 @@ export default function TransactionAdd({
           <TextField
             onChange={setField.bind(null, "sender")}
             style={{ width: "100%" }}
-            value={detail.sender}
+            // value="6EbhsCu7nDMRYGNXkBNBtcx1gubjrUfR8aQ2ZfPzg2Ur"
             label="Sender"
             variant="outlined"
             color="primary"
@@ -78,7 +75,7 @@ export default function TransactionAdd({
           <TextField
             onChange={setField.bind(null, "receiver")}
             style={{ width: "100%" }}
-            value={detail.receiver}
+            // value="H2knp7o4asKD79eo1PSPAFcahqAXgk6eQUkCcmAExXFU"
             label="Receiver"
             variant="outlined"
             color="primary"

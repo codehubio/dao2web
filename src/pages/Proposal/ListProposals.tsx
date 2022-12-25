@@ -9,7 +9,7 @@ import { BoltOutlined } from "@mui/icons-material";
 import ProposalCreateDialog from "../../components/Dialog/CreateProposalDialog";
 import { useDispatch } from "react-redux";
 import { listProposalsThunk } from "../../reducers/proposal";
-import ListMyProposal from "../../components/Proposal/ListProposal";
+import ListMyProposal from "../../components/Proposal/ProposalList";
 import { TListProposalFilter } from "../../services/state/proposal";
 import ProposalListFilters from "../../components/ProposalFilters";
 

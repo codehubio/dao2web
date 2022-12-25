@@ -2,36 +2,23 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {
-  Button,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
-import MyGrid from "../../components/MyGrid";
-import { getSteps } from "../../services/state/step";
 import { PublicKey } from "@solana/web3.js";
 import { BoltOutlined } from "@mui/icons-material";
 import TransactionAddDialog from "../../components/Dialog/AddTransactionDialog";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { settleProposalThunk } from "../../reducers/proposal";
 import TransactionList from "../Transaction/TransactionList";
+import { getProposalByPda } from "../../services/state/proposal";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
   const { setLoadingMessage, setError } = useContext(AppContext) as any;
   // const [assets, setAssets] = useState([]);
-  const [transactions, setTransactions] = useState([] as any);
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
-  const [openCreate, setOpenCreate] = useState(false);
+  const [openAddTx, setOpenAddTx] = useState(false);
   const [reload, setShouldReloase] = useState(false);
   const dispatch = useDispatch();
   const { wallet } = useWallet();
@@ -40,14 +27,13 @@ export default function ProposalDetail() {
     async function getDetail() {
       setLoadingMessage("loading steps ...");
       try {
-        const { proposalSteps, proposalData } = await getSteps(
+        const { pda, readableData } = await getProposalByPda(
           connection,
           new PublicKey(proposalPda)
         );
-        setTransactions(proposalSteps);
         setProposal({
-          pda: proposalPda,
-          detail: proposalData,
+          pda: pda.toBase58(),
+          detail: readableData,
         });
       } catch (error) {
         setError(error as any);
@@ -79,34 +65,24 @@ export default function ProposalDetail() {
       !proposal.detail.isRejected
     );
   }
-  function changeCreateDialogState() {
-    setOpenCreate(!openCreate);
+  function changeAddTxDialogState() {
+    setOpenAddTx(!openAddTx);
   }
-  return (
+  return proposal && proposal.detail ? (
     <>
-      {proposal && proposal.detail ? (
-        <TransactionAddDialog
-          reloadFn={setShouldReloase}
-          proposal={proposal}
-          open={openCreate}
-          handleClose={changeCreateDialogState}
-        />
-      ) : (
-        <></>
-      )}
+      <TransactionAddDialog
+        reloadFn={setShouldReloase}
+        proposal={proposal}
+        open={openAddTx}
+        handleClose={changeAddTxDialogState}
+      />
+
       <Stack
         direction="column"
         justifyContent="center"
         alignItems="center"
         spacing={2}
       >
-        {transactions.length === 0 ? (
-          <Typography variant="h6">
-            There is no transaction in this proposal
-          </Typography>
-        ) : (
-          <></>
-        )}
         <Stack
           direction="row"
           justifyContent="center"
@@ -116,7 +92,7 @@ export default function ProposalDetail() {
           {!isSettled() ? (
             <>
               <Button
-                onClick={changeCreateDialogState}
+                onClick={changeAddTxDialogState}
                 color="primary"
                 variant="contained"
                 startIcon={<BoltOutlined />}
@@ -136,15 +112,13 @@ export default function ProposalDetail() {
             <></>
           )}
         </Stack>
-        <MyGrid direction="row">
-          <TransactionList
-            transactions={transactions}
-            proposal={proposal}
-            wallet={wallet?.adapter.publicKey?.toBase58() as any}
-          />
-          {/* {assets && assets.length ? renderProposalList() : <Grid item xs={12}><Chip color='info' label='you have no proposal'/></Grid>} */}
-        </MyGrid>
+        <TransactionList
+          proposal={proposal}
+          wallet={wallet?.adapter.publicKey?.toBase58() as any}
+        />
       </Stack>
     </>
+  ) : (
+    <></>
   );
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Paper,
   Table,
@@ -6,22 +7,67 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
-import { Fragment } from "react";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
+import { useContext, useEffect, useState } from "react";
+import { getSteps } from "../../services/state/step";
+import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
-import { TParsedTransactionDetail } from "../../types/TransactionDetail";
+import ApprovalTxDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRow from "./TransactionRow";
 export default function TransactionList({
   proposal,
-  transactions,
   wallet,
 }: {
   proposal: TParseProposalDetail;
-  transactions: TParsedTransactionDetail[];
   wallet: string;
 }) {
-  return proposal && proposal.detail ? (
-    <Fragment>
+  const { setLoadingMessage, setError } = useContext(AppContext) as any;
+  const { connection } = useConnection();
+  const [openApprove, setOpenApprove] = useState(false);
+  const [transactions, setTransactions] = useState([] as any);
+  const [currentTransaction, setCurrentTransaction] = useState({} as any);
+  const [reload, setShouldReloase] = useState(false);
+  function changeApproveDialogState() {
+    setOpenApprove(!openApprove);
+  }
+  useEffect(() => {
+    async function getDetail() {
+      setLoadingMessage("loading steps ...");
+      try {
+        const { proposalSteps } = await getSteps(
+          connection,
+          new PublicKey(proposal.pda)
+        );
+        setTransactions(proposalSteps);
+      } catch (error) {
+        setError(error as any);
+      }
+      setLoadingMessage("");
+    }
+    getDetail();
+  }, [proposal.pda, reload]);
+  return (
+    <>
+      {currentTransaction ? (
+        <ApprovalTxDialog
+          reloadFn={setShouldReloase}
+          transaction={currentTransaction}
+          open={openApprove}
+          handleClose={changeApproveDialogState}
+        />
+      ) : (
+        <></>
+      )}
+      {transactions.length === 0 ? (
+        <Typography variant="h6">
+          There is no transaction in this proposal
+        </Typography>
+      ) : (
+        <></>
+      )}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -43,6 +89,11 @@ export default function TransactionList({
             {transactions.map((s: any, index: number) => {
               return (
                 <TransactionRow
+                  onClick={
+                    setCurrentTransaction
+                      ? setCurrentTransaction.bind(null, s)
+                      : () => {}
+                  }
                   key={index}
                   transaction={s}
                   proposal={proposal}
@@ -53,8 +104,6 @@ export default function TransactionList({
           </TableBody>
         </Table>
       </TableContainer>
-    </Fragment>
-  ) : (
-    <></>
+    </>
   );
 }

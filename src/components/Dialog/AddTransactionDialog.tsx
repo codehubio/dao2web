@@ -8,7 +8,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { addTxToProposalThunk } from "../../reducers/proposal";
-import TransactionAdd from "../Proposal/TransactionAdd";
+import TransactionAdd from "../Transaction/TransactionAdd";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 
@@ -40,9 +40,9 @@ export default function TransactionAddDialog({
       amount: 0,
       receivedAmount: 0,
       numberOfApprovals: 0,
-      sender: "6EbhsCu7nDMRYGNXkBNBtcx1gubjrUfR8aQ2ZfPzg2Ur",
-      receiver: "H2knp7o4asKD79eo1PSPAFcahqAXgk6eQUkCcmAExXFU",
-      token: "988Hp2QxjbcZu3vgy78CRsNhxnS46YG4nubbYeePgoxa",
+      sender: "",
+      receiver: "",
+      token: "",
       executeAfter: 0,
       incentiveRate: 0,
       incentiveFee: 0,
