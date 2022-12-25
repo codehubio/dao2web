@@ -32,8 +32,8 @@ const approveTxThunk = createAsyncThunk(
         }
       );
       const txid = await sendTransaction(connection, provider, rawTx);
-      const { data } = await getStepByPda(connection, stepPda, 10);
-      return { txid, proposalPda: proposalPda.toBase58(), data };
+      const { detail } = await getStepByPda(connection, stepPda, 10);
+      return { txid, proposalPda: proposalPda.toBase58(), detail };
     } catch (error) {
       throw error;
     }

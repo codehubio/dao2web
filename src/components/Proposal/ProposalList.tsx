@@ -35,7 +35,6 @@ export default function ListProposalInfo() {
   useEffect(() => {
     async function getAssets() {
       setLoadingMessage("loading assets ...");
-      console.log(proposalFilters);
       try {
         proposalFilters.creator = proposalFilters.isMyProposal
           ? addressPubkey

@@ -21,6 +21,7 @@ import { store } from "./store";
 import { supportedWallets } from "./services/wallet.service";
 import ProposalDetail from "./pages/Proposal/ProposalDetail";
 import ListProposals from "./pages/Proposal/ListProposals";
+import TransactionDetail from "./components/Transaction/TransactionDetail";
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -61,7 +62,11 @@ export default function App() {
                       />
                       <Route
                         element={<ProposalDetail />}
-                        path="/detail-proposal/:proposalPda"
+                        path="/proposal/:proposalPda"
+                      />
+                      <Route
+                        element={<TransactionDetail />}
+                        path="/transaction/:transactionPda"
                       />
                     </Routes>
                     <Success success={success}></Success>

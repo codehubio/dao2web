@@ -1,4 +1,4 @@
-import { Avatar, TableCell, TableRow } from "@mui/material";
+import { Avatar, Button, TableCell, TableRow } from "@mui/material";
 import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { useNavigate } from "react-router-dom";
@@ -24,13 +24,13 @@ export default function ProposalInfo({
     return "Pending";
   }
   function redirect() {
-    navigate(`/detail-proposal/${proposal?.pda}`);
+    navigate(`/proposal/${proposal?.pda}`);
   }
 
   return proposal && proposal.detail ? (
     <Fragment>
       <TableRow
-        onClick={redirect.bind(null, proposal.pda)}
+        // onClick={redirect.bind(null, proposal.pda)}
         hover={true}
         sx={{ "& > *": { borderBottom: "unset" } }}
       >
@@ -42,6 +42,11 @@ export default function ProposalInfo({
         <TableCell align="left">{proposal.detail.numberOfSteps}</TableCell>
         <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
         <TableCell align="left">{getStatus()}</TableCell>
+        <TableCell align="left">
+          <Button onClick={redirect} color="primary" variant="outlined">
+            View
+          </Button>
+        </TableCell>
       </TableRow>
     </Fragment>
   ) : (

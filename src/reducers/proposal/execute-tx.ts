@@ -30,9 +30,9 @@ const executeTxThunk = createAsyncThunk(
       }
     );
     const txid = await sendTransaction(connection, provider, rawTx);
-    const { data } = await getStepByPda(connection, stepPda, 10);
+    const { detail } = await getStepByPda(connection, stepPda, 10);
     console.log(txid);
-    return { txid, proposalPda: proposalPda.toBase58(), data };
+    return { txid, proposalPda: proposalPda.toBase58(), detail };
   }
 );
 

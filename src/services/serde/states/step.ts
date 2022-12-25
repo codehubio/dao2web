@@ -1,78 +1,78 @@
-import { PublicKey } from '@solana/web3.js';
-import BN from 'bn.js';
-import * as borsh from 'borsh';
+import { PublicKey } from "@solana/web3.js";
+import BN from "bn.js";
+import * as borsh from "borsh";
 
 export type TStep = {
-  accountType: number,
-  index: BN,
-  proposalPda: Uint8Array,
-  name: Uint8Array,
-  description: Uint8Array,
-  amount: BN,
-  receivedAmount: BN,
-  numberOfApprovals: BN,
-  sender: Uint8Array,
-  receiver: Uint8Array,
-  token: Uint8Array,
-  executeAfter: BN,
-  addedAt: BN,
-  isApproved: number,
-  approvedAt: BN,
-  isExecuted: number,
-  executedAt: BN,
-  isRejected: number,
-  rejectedAt: BN,
-  incentiveRate: BN,
-  incentiveFee: BN,
-  isReverted: number,
-  revertedAt: BN,
-  revertedAmount: BN
+  accountType: number;
+  index: BN;
+  proposalPda: Uint8Array;
+  name: Uint8Array;
+  description: Uint8Array;
+  amount: BN;
+  receivedAmount: BN;
+  numberOfApprovals: BN;
+  sender: Uint8Array;
+  receiver: Uint8Array;
+  token: Uint8Array;
+  executeAfter: BN;
+  addedAt: BN;
+  isApproved: number;
+  approvedAt: BN;
+  isExecuted: number;
+  executedAt: BN;
+  isRejected: number;
+  rejectedAt: BN;
+  incentiveRate: BN;
+  incentiveFee: BN;
+  isReverted: number;
+  revertedAt: BN;
+  revertedAmount: BN;
   rejectedReason: Uint8Array;
-  status: number,
-}
+  status: number;
+};
 export class Step {
   accountType;
-  
+
   index;
-  
+
   proposalPda;
-  
+
   name;
-  
+
   description;
-  
+
   amount;
 
   receivedAmount;
 
   numberOfApprovals;
-  
+
   sender;
-  
+
   receiver;
-  
+
   token;
-  
+
   executeAfter;
-  
+
   addedAt;
-  
+
   isApproved;
-  
+
   approvedAt;
 
   isExecuted;
-  
+
   executedAt;
 
   isRejected;
-  
+
   rejectedAt;
 
   incentiveRate;
-  
+
   incentiveFee;
-  
+
   isReverted;
 
   revertedAt;
@@ -82,8 +82,7 @@ export class Step {
   rejectedReason;
 
   status;
-  
-  
+
   constructor(fields: TStep) {
     this.accountType = fields.accountType;
     this.index = fields.index;
@@ -108,7 +107,7 @@ export class Step {
     this.isReverted = fields.isReverted;
     this.revertedAt = fields.revertedAt;
     this.revertedAmount = fields.revertedAmount;
-    this.numberOfApprovals =  fields.numberOfApprovals;
+    this.numberOfApprovals = fields.numberOfApprovals;
     this.rejectedReason = fields.rejectedReason;
     this.status = fields.status;
   }
@@ -160,57 +159,59 @@ export class Step {
       name: Buffer.from(name).toString(),
       description: Buffer.from(description).toString(),
       proposalPda: new PublicKey(proposalPda).toBase58(),
-      addedAt: new Date(addedAt.toNumber() * 1000),
+      addedAt: new Date(addedAt.toNumber() * 1000).toISOString(),
       sender: new PublicKey(sender).toBase58(),
       receiver: new PublicKey(receiver).toBase58(),
       token: new PublicKey(token).toBase58(),
       executeAfter: executeAfter.toNumber(),
-      approvedAt: new Date(approvedAt.toNumber() * 1000),
+      approvedAt: new Date(approvedAt.toNumber() * 1000).toISOString(),
       isApproved,
-      executedAt: new Date(executedAt.toNumber() * 1000),
+      executedAt: new Date(executedAt.toNumber() * 1000).toISOString(),
       isExecuted,
-      rejectedAt: new Date(rejectedAt.toNumber() * 1000),
+      rejectedAt: new Date(rejectedAt.toNumber() * 1000).toISOString(),
       isRejected,
       incentiveRate: incentiveRate.toNumber(),
       incentiveFee: incentiveFee.toNumber(),
       isReverted,
-      revertedAt: new Date(revertedAt.toNumber() * 1000),
-      status
-
-    }
+      revertedAt: new Date(revertedAt.toNumber() * 1000).toISOString(),
+      status,
+    };
   }
 }
- 
-export const StepSchema = new Map([[Step, {
-  kind: 'struct',
-  fields: [
-    ['accountType', 'u8'],
-    ['index', 'u64'],
-    ['proposalPda', [32]],
-    ['name', [16]],
-    ['description', [128]],
-    ['amount', 'u64'],
-    ['receivedAmount', 'u64'],
-    ['numberOfApprovals', 'u64'],
-    ['sender', [32]],
-    ['receiver', [32]],
-    ['token', [32]],
-    ['executeAfter', 'u64'],
-    ['incentiveRate', 'u64'],
-    ['incentiveFee', 'u64'],
-    ['addedAt', 'u64'],
-    ['isApproved', 'u8'],
-    ['approvedAt', 'u64'],
-    ['isRejected', 'u8'],
-    ['rejectedAt', 'u64'],
-    ['rejectedReason', [128]],
-    ['isExecuted', 'u8'],
-    ['executedAt', 'u64'],
-    ['isReverted', 'u8'],
-    ['revertedAt', 'u64'],
-    ['revertedAmount', 'u64'],
-    ['status', 'u8'],
-    
+
+export const StepSchema = new Map([
+  [
+    Step,
+    {
+      kind: "struct",
+      fields: [
+        ["accountType", "u8"],
+        ["index", "u64"],
+        ["proposalPda", [32]],
+        ["name", [16]],
+        ["description", [128]],
+        ["amount", "u64"],
+        ["receivedAmount", "u64"],
+        ["numberOfApprovals", "u64"],
+        ["sender", [32]],
+        ["receiver", [32]],
+        ["token", [32]],
+        ["executeAfter", "u64"],
+        ["incentiveRate", "u64"],
+        ["incentiveFee", "u64"],
+        ["addedAt", "u64"],
+        ["isApproved", "u8"],
+        ["approvedAt", "u64"],
+        ["isRejected", "u8"],
+        ["rejectedAt", "u64"],
+        ["rejectedReason", [128]],
+        ["isExecuted", "u8"],
+        ["executedAt", "u64"],
+        ["isReverted", "u8"],
+        ["revertedAt", "u64"],
+        ["revertedAmount", "u64"],
+        ["status", "u8"],
+      ],
+    },
   ],
-}],
 ]);

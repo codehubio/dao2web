@@ -56,6 +56,7 @@ export default function TransactionAddDialog({
       isReverted: 0,
       revertedAt: 0,
       revertedAmount: 0,
+      approvals: [],
     },
     pda: "",
   });

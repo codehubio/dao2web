@@ -18,7 +18,6 @@ import { TParseProposalDetail } from "../../types/ProposalDetail";
 import TransactionRow from "./TransactionRow";
 export default function TransactionList({
   proposal,
-  wallet,
 }: {
   proposal: TParseProposalDetail;
   wallet: string;

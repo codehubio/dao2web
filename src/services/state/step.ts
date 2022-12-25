@@ -12,10 +12,34 @@ export async function getStepByPda(
   for (let i = 0; i < time; i += 1) {
     try {
       const transactionAccount = await connection.getAccountInfo(pda);
-      const data = Step.deserialize(transactionAccount?.data as Buffer);
+      const data = Step.deserializeToReadble(
+        transactionAccount?.data as Buffer
+      );
+      const approvalPdas: any = [];
+      const numberOfApprovals = data.numberOfApprovals;
+      for (let i = 0; i < numberOfApprovals; i += 1) {
+        const [approvalPda] = PublicKey.findProgramAddressSync(
+          [Buffer.from(i.toString()), pda.toBuffer(), Buffer.from("approval")],
+          new PublicKey(REACT_APP_SC_ADDRESS)
+        );
+        approvalPdas.push(approvalPda);
+      }
+      const approvalData = await connection.getMultipleAccountsInfo(
+        approvalPdas
+      );
+      const parsedApprovals = approvalData.map((s, index) => {
+        const approvalData = Approval.deserializeToReadble(s?.data as Buffer);
+        return {
+          pda: approvalPdas[index].toBase58(),
+          detail: approvalData,
+        };
+      });
       return {
-        pda,
-        data,
+        pda: pda.toBase58(),
+        detail: {
+          ...data,
+          approvals: parsedApprovals,
+        },
       };
     } catch (error: any) {
       await new Promise((resolve) => setTimeout(resolve, interval));

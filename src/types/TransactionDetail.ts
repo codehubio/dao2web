@@ -53,6 +53,7 @@ export type TParsedTransactionDetail = {
     isReverted: number;
     revertedAt: number;
     revertedAmount: number;
+    approvals: [];
   };
   pda: string;
 };

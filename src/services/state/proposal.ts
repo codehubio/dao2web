@@ -25,7 +25,6 @@ export async function getProposalByPda(
         readableData,
       };
     } catch (error: any) {
-      console.log(error);
       await new Promise((resolve) => setTimeout(resolve, interval));
     }
   }

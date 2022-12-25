@@ -8,7 +8,8 @@ import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
 import { useDispatch } from "react-redux";
 import AppContext from "../../share/context";
-export default function TransactionDetail({
+import { useNavigate } from "react-router-dom";
+export default function TransactionInfo({
   proposal,
   transaction,
   reloadFn,
@@ -83,6 +84,10 @@ export default function TransactionDetail({
     setLoadingMessage("");
     setSuccess({ message: `Transaaction ${name} executed!` });
     return txid;
+  }
+  const navigate = useNavigate();
+  function redirect() {
+    navigate(`/transaction/${transaction?.pda}`);
   }
   async function revertTx() {
     const {
@@ -172,6 +177,9 @@ export default function TransactionDetail({
             disabled={!isAbleToRevert()}
           >
             Revert
+          </Button>
+          <Button onClick={redirect} color="primary" variant="outlined">
+            View
           </Button>
         </TableCell>
       </TableRow>
