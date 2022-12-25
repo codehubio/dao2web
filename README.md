@@ -1,46 +1,102 @@
-# Getting Started with Create React App
+# TokenFlow - a simple yet flexible contract for token flow
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## I. Problems
 
-## Available Scripts
+**(P1)** User A creates an proposal among multiple parties where
 
-In the project directory, you can run:
+- user B sends 10 tokens X to user C
+- user C sends 2 Sols to user B
+- user D sends 100 token Y to user A
 
-### `npm start`
+All transactions must be agreed upon by its sender in order for the agreement to be approved and executed. If one transaction is rejected by its sender, the agreement will fail
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+**(P2)** User A seeks fundings for his project by creating a proposal
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 1000 tokens X in Q1
+- 200 Sols in Q2
+- 300 tokens Y in Q3
 
-### `npm test`
+Funds may come from different parties. All funding inquiries must be satisfied before 2023/01/01. Otherwise, the proposal will fail.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## II. How TokenFlow solves them
 
-### `npm run build`
+**(S1)** TokenFlow defines a multi-on-demand-transaction proposal and involves all the senders into the signing process.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Funds from approved transactions are safely moved to a vault and locked. Only after the agreement is approved (**all** of its transactions are approved by its senders), the locked funds will be released to the receivers accordingly.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**(S2)** TokenFlow defines a multi-on-demand-anonymous-transaction funding proposal. Anyone can involve into the funding process. Similar to **(S1)**, funds from approved transactions are safely moved to a vault and locked. Only after the agreement is approved (**all** of its transactions are approved), the locked funds will be released to the receivers accordingly.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## III. Proposal and transaction
 
-### `npm run eject`
+Proposal is an agreement defines 1 or many transactions moving funds among parties
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## IV. Transaction type
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+There are 2 transaction types
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **(T1)** Transactions of which sender is 1111111111111111111111111111111.
+- **(T2)** Transactions of which sender is **not** 1111111111111111111111111111111.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## V. Transaction approval
 
-## Learn More
+- Condition
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  - Transaction was not approved or rejected before
+  - Proposal is settled and not yet finalized
+  - A **(T1)** transaction can be approved by anyone
+  - Only sender of which address matches can approve a **(T2)** transaction.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Approval to a transaction means senders fulfilling the fund desired in that transaction.
+
+- A transaction can be funded many times by senders **until** its fund is fulfilled
+
+- Transaction is approved right after its fund is fulfilled.
+
+## VI. Transaction execution
+
+- Condition
+
+  - The proposal which it belongs to is approved.
+
+## VII. Transaction rejection
+
+- Condition
+
+  - Transaction was not approved or rejected before
+  - Proposal is settled and not yet finalized
+  - A **(T1)** transaction cannot be rejected
+  - Only sender of which address matches can reject a **(T2)** transaction.
+
+## VIII. Transaction revert
+
+Revert of a transaction means reverting all of its approvals.
+
+- Condition:
+
+  - The proposal that transacion belongs to is rejected
+
+## IX. Phase of a proposal
+
+- _pending_: Proposal is pending right after its creation which allows creator to add the transaction (step) into it
+
+- _settled_: After done adding the transactions, creator can settle the proposal. After that, the proposal would be locked from adding more transactions into it.
+
+- _approved_: Proposal is approved if all of its transactions are approved
+
+- _rejected_: Proposal is rejected if at least 1 of its transactions is rejected
+
+- _expire_: Proposal reaches its end of life after the timestamp defined at _expire_or_finalize_after_ field without being _approved_ or _rejected_
+
+## X. Incentive rate and incentive fee
+
+- Incentive fee is transaction-based and is calculated as follow
+
+  `incentive_fee  = incentive_rate * amount / 10000`
+
+- The fee applies in 2 cases
+
+  - Execution of an approved transaction
+
+  - Revert of an approved transaction
+
+- Since the above actions can be run by _anyone_, a small fee will be credited to the caller. The fee is paid by the parties who approve the transaction.
