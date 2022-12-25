@@ -28,7 +28,7 @@ export default function TransactionList({
   const [reload, setShouldReload] = useState(false);
   useEffect(() => {
     async function getDetail() {
-      setLoadingMessage("loading steps ...");
+      setLoadingMessage("Loading transactions ...");
       try {
         const { proposalSteps } = await getSteps(
           connection,

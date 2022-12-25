@@ -59,7 +59,9 @@ export default function TransactionApproveDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaaction ${name} approved!` });
+    setSuccess({
+      message: `Transaction ${name} approved! You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   return (

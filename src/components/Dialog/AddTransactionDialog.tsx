@@ -77,7 +77,7 @@ export default function TransactionAddDialog({
       },
     } = transactionDetail;
     handleClose();
-    setLoadingMessage("adding transaction");
+    setLoadingMessage("Adding transaction");
     let txid;
     try {
       await dispatch(
@@ -105,7 +105,9 @@ export default function TransactionAddDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaction ${name} created!` });
+    setSuccess({
+      message: `Transaction ${name} created! You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   return (

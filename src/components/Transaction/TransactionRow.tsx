@@ -18,7 +18,6 @@ export default function TransactionInfo({
   transaction: TParsedTransactionDetail;
   reloadFn: Function;
 }) {
-  console.log(transaction);
   const { wallet } = useWallet();
   const { connection } = useConnection();
   const dispatch = useDispatch();
@@ -82,7 +81,9 @@ export default function TransactionInfo({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaaction ${name} executed!` });
+    setSuccess({
+      message: `Transaaction ${name} executed! You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   const navigate = useNavigate();
@@ -115,7 +116,9 @@ export default function TransactionInfo({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaaction ${name} reverted!` });
+    setSuccess({
+      message: `Transaaction ${name} reverted! You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   return (
@@ -146,38 +149,43 @@ export default function TransactionInfo({
         <TableCell align="left">{txDetail.incentiveRate}</TableCell>
         <TableCell align="left">{txDetail.executeAfter.toString()}</TableCell>
         <TableCell align="left">
-          <Button
-            disabled={!isAbleToApproveOrReject()}
-            color="primary"
-            variant="outlined"
-            onClick={changeApproveTxDialogState}
-          >
-            Approve
-          </Button>
-          <Button
-            color="primary"
-            variant="outlined"
-            disabled={!isAbleToApproveOrReject()}
-            onClick={changeRejectTxDialogState}
-          >
-            Reject
-          </Button>
-          <Button
-            onClick={executeTx}
-            color="primary"
-            variant="outlined"
-            disabled={!isAbleToExecute()}
-          >
-            Execute
-          </Button>
-          <Button
-            onClick={revertTx}
-            color="primary"
-            variant="outlined"
-            disabled={!isAbleToRevert()}
-          >
-            Revert
-          </Button>
+          {isAbleToApproveOrReject() ? (
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={changeApproveTxDialogState}
+            >
+              Approve
+            </Button>
+          ) : (
+            <></>
+          )}
+          {isAbleToApproveOrReject() ? (
+            <Button
+              color="primary"
+              variant="outlined"
+              disabled={!isAbleToApproveOrReject()}
+              onClick={changeRejectTxDialogState}
+            >
+              Reject
+            </Button>
+          ) : (
+            <></>
+          )}
+          {isAbleToExecute() ? (
+            <Button onClick={executeTx} color="primary" variant="outlined">
+              Execute
+            </Button>
+          ) : (
+            <></>
+          )}
+          {isAbleToRevert() ? (
+            <Button onClick={revertTx} color="primary" variant="outlined">
+              Revert
+            </Button>
+          ) : (
+            <></>
+          )}
           <Button onClick={redirect} color="primary" variant="outlined">
             View
           </Button>

@@ -15,7 +15,9 @@ import { getProposalByPda } from "../../services/state/proposal";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
-  const { setLoadingMessage, setError } = useContext(AppContext) as any;
+  const { setLoadingMessage, setError, setSuccess } = useContext(
+    AppContext
+  ) as any;
   // const [assets, setAssets] = useState([]);
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openAddTx, setOpenAddTx] = useState(false);
@@ -25,7 +27,7 @@ export default function ProposalDetail() {
   const { proposalPda = "" } = useParams();
   useEffect(() => {
     async function getDetail() {
-      setLoadingMessage("loading steps ...");
+      setLoadingMessage("Loading steps ...");
       try {
         const { pda, readableData } = await getProposalByPda(
           connection,
@@ -43,7 +45,7 @@ export default function ProposalDetail() {
     getDetail();
   }, [proposalPda, reload]);
   async function settle() {
-    setLoadingMessage("settling the proposal ...");
+    setLoadingMessage("Settling the proposal ...");
     await dispatch(
       settleProposalThunk({
         endpoint: connection.rpcEndpoint,
@@ -55,9 +57,17 @@ export default function ProposalDetail() {
       } as any) as any
     );
     setLoadingMessage("");
+    setSuccess({
+      message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
+    });
   }
   function isAbleToModify(): boolean {
-    return proposal && proposal.detail && !proposal.detail.isSettled;
+    return (
+      proposal &&
+      proposal.detail &&
+      !proposal.detail.isSettled &&
+      proposal.detail.creator === wallet?.adapter.publicKey?.toBase58()
+    );
   }
   function changeAddTxDialogState() {
     setOpenAddTx(!openAddTx);

@@ -59,7 +59,9 @@ export default function TransactionRejectDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaaction ${name} rejected!` });
+    setSuccess({
+      message: `Transaaction ${name} rejected!  You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   return (

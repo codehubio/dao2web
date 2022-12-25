@@ -77,7 +77,9 @@ export default function ProposalCreateDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `proposal ${name} created!` });
+    setSuccess({
+      message: `Proposal ${name} created!  You may need to refresh the page to see the change!`,
+    });
     return txid;
   }
   return (

@@ -23,7 +23,7 @@ export default function TransactionDetail() {
   const dispatch = useDispatch();
   useEffect(() => {
     async function getDetail() {
-      setLoadingMessage("loading steps ...");
+      setLoadingMessage("Loading approvals ...");
       try {
         const { payload: transaction } = await dispatch(
           getTransactionByPda({
