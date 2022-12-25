@@ -1,24 +1,32 @@
 import { Button, TableCell, TableRow } from "@mui/material";
-import { useState } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useContext, useState } from "react";
+import { executeTxThunk } from "../../reducers/proposal";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
+import { useDispatch } from "react-redux";
+import AppContext from "../../share/context";
 export default function TransactionDetail({
   proposal,
   transaction,
-  wallet,
   reloadFn,
 }: {
   proposal: TParseProposalDetail;
   transaction: TParsedTransactionDetail;
-  wallet: string;
   reloadFn: Function;
 }) {
+  const { wallet } = useWallet();
+  const { connection } = useConnection();
+  const dispatch = useDispatch();
   const { detail: txDetail } = transaction;
   const { detail: pDetail } = proposal;
   const [openApproveTx, setOpenApproveTx] = useState(false);
   const [openRejectTx, setOpenRejectTx] = useState(false);
+  const { setLoadingMessage, setError, setSuccess } = useContext(
+    AppContext
+  ) as any;
 
   function isAbleToApproveOrReject() {
     return (
@@ -27,7 +35,7 @@ export default function TransactionDetail({
       !pDetail.isApproved &&
       !txDetail.isRejected &&
       !txDetail.isApproved &&
-      txDetail.sender === wallet
+      txDetail.sender === wallet?.adapter.publicKey?.toBase58()
     );
   }
 
@@ -39,6 +47,34 @@ export default function TransactionDetail({
   }
   function changeRejectTxDialogState() {
     setOpenRejectTx(!openRejectTx);
+  }
+  async function executeTx() {
+    const {
+      detail: { index, proposalPda, name },
+    } = transaction;
+    setLoadingMessage("approving transaciton");
+    let txid;
+    try {
+      await dispatch(
+        executeTxThunk({
+          endpoint: connection.rpcEndpoint,
+          address: wallet?.adapter.publicKey as any,
+          providerName: wallet?.adapter.name,
+          data: {
+            stepIndex: index,
+            proposalPda,
+          },
+        } as any) as any
+      );
+      if (reloadFn) {
+        reloadFn(true);
+      }
+    } catch (error: any) {
+      setError(error);
+    }
+    setLoadingMessage("");
+    setSuccess({ message: `Transaaction ${name} executed!` });
+    return txid;
   }
   return (
     <>
@@ -85,6 +121,7 @@ export default function TransactionDetail({
             Reject
           </Button>
           <Button
+            onClick={executeTx}
             color="primary"
             variant="outlined"
             disabled={!isAbleToExecute()}

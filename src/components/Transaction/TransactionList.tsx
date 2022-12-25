@@ -77,7 +77,6 @@ export default function TransactionList({
                   key={index}
                   transaction={s}
                   proposal={proposal}
-                  wallet={wallet}
                 />
               );
             })}

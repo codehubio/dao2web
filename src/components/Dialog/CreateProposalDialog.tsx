@@ -42,6 +42,8 @@ export default function ProposalCreateDialog({
         settledAt: 0,
         isRejected: 0,
         rejectedAt: 0,
+        isExecuted: 0,
+        executedAt: 0,
       },
       pda: "",
     });

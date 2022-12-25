@@ -12,7 +12,9 @@ export default function ProposalInfo({
     if (!proposal?.detail) {
       return "Pending";
     }
-    if (proposal.detail.isApproved) {
+    if (proposal.detail.isExecuted) {
+      return "Executed";
+    } else if (proposal.detail.isApproved) {
       return "Approved";
     } else if (proposal.detail.isRejected) {
       return "Rejected";

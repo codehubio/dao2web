@@ -7,6 +7,7 @@ import getStatByWalletThunk from "./add-tx-to-proposal";
 import listProposalsByInvolveThunk from "./list-proposals-by-involve";
 import approveTxThunk from "./approve-tx";
 import rejectTxThunk from "./reject-tx";
+import executeTxThunk from "./execute-tx";
 import listProposalsThunk from "./list-proposals";
 
 export { createProposalThunk };
@@ -17,6 +18,7 @@ export { getStatByWalletThunk };
 export { listProposalsByInvolveThunk };
 export { approveTxThunk };
 export { rejectTxThunk };
+export { executeTxThunk };
 export { listProposalsThunk };
 
 export const proposalsSlice = createSlice({
