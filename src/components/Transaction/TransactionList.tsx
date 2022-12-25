@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Paper,
   Table,
   TableBody,
@@ -11,7 +10,7 @@ import {
 import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
-import TransactionDetail from "./TransactionRow";
+import TransactionRow from "./TransactionRow";
 export default function TransactionList({
   proposal,
   transactions,
@@ -31,17 +30,19 @@ export default function TransactionList({
               <TableCell align="left">Name</TableCell>
               <TableCell align="left">Description</TableCell>
               <TableCell align="left">Amount</TableCell>
+              <TableCell align="left">Approved Amount</TableCell>
               <TableCell align="left">Token</TableCell>
               <TableCell align="left">Sender</TableCell>
               <TableCell align="left">Receiver</TableCell>
               <TableCell align="left">Incentive rate</TableCell>
               <TableCell align="left">Execution delay</TableCell>
+              <TableCell align="left" />
             </TableRow>
           </TableHead>
           <TableBody>
             {transactions.map((s: any, index: number) => {
               return (
-                <TransactionDetail
+                <TransactionRow
                   key={index}
                   transaction={s}
                   proposal={proposal}

@@ -70,7 +70,7 @@ export default function ListProposals() {
         variant="contained"
         startIcon={<BoltOutlined />}
       >
-        create new proposal
+        Create new proposal
       </Button>
       <Stack
         direction="column"
