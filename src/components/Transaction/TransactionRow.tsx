@@ -1,19 +1,25 @@
 import { Button, TableCell, TableRow } from "@mui/material";
+import { useState } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
+import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
+import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
 export default function TransactionDetail({
   proposal,
   transaction,
   wallet,
-  onClick,
+  reloadFn,
 }: {
   proposal: TParseProposalDetail;
   transaction: TParsedTransactionDetail;
   wallet: string;
-  onClick: Function;
+  reloadFn: Function;
 }) {
   const { detail: txDetail } = transaction;
   const { detail: pDetail } = proposal;
+  const [openApproveTx, setOpenApproveTx] = useState(false);
+  const [openRejectTx, setOpenRejectTx] = useState(false);
+
   function isAbleToApproveOrReject() {
     return (
       pDetail.isSettled &&
@@ -28,8 +34,26 @@ export default function TransactionDetail({
   function isAbleToExecute() {
     return pDetail.isApproved && !txDetail.isExecuted;
   }
+  function changeApproveTxDialogState() {
+    setOpenApproveTx(!openApproveTx);
+  }
+  function changeRejectTxDialogState() {
+    setOpenRejectTx(!openRejectTx);
+  }
   return (
     <>
+      <TransactionApproveDialog
+        reloadFn={reloadFn}
+        transaction={transaction}
+        open={openApproveTx}
+        handleClose={changeApproveTxDialogState}
+      />
+      <TransactionRejectDialog
+        reloadFn={reloadFn}
+        transaction={transaction}
+        open={openRejectTx}
+        handleClose={changeRejectTxDialogState}
+      />
       <TableRow>
         <TableCell align="left">{txDetail.index}</TableCell>
         <TableCell align="left">{txDetail.name}</TableCell>
@@ -48,6 +72,7 @@ export default function TransactionDetail({
             disabled={!isAbleToApproveOrReject()}
             color="primary"
             variant="outlined"
+            onClick={changeApproveTxDialogState}
           >
             Approve
           </Button>
@@ -55,6 +80,7 @@ export default function TransactionDetail({
             color="primary"
             variant="outlined"
             disabled={!isAbleToApproveOrReject()}
+            onClick={changeRejectTxDialogState}
           >
             Reject
           </Button>

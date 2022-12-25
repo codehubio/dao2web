@@ -15,7 +15,6 @@ import { useContext, useEffect, useState } from "react";
 import { getSteps } from "../../services/state/step";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
-import ApprovalTxDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRow from "./TransactionRow";
 export default function TransactionList({
   proposal,
@@ -26,13 +25,8 @@ export default function TransactionList({
 }) {
   const { setLoadingMessage, setError } = useContext(AppContext) as any;
   const { connection } = useConnection();
-  const [openApprove, setOpenApprove] = useState(false);
   const [transactions, setTransactions] = useState([] as any);
-  const [currentTransaction, setCurrentTransaction] = useState({} as any);
-  const [reload, setShouldReloase] = useState(false);
-  function changeApproveDialogState() {
-    setOpenApprove(!openApprove);
-  }
+  const [reload, setShouldReload] = useState(false);
   useEffect(() => {
     async function getDetail() {
       setLoadingMessage("loading steps ...");
@@ -51,16 +45,6 @@ export default function TransactionList({
   }, [proposal.pda, reload]);
   return (
     <>
-      {currentTransaction ? (
-        <ApprovalTxDialog
-          reloadFn={setShouldReloase}
-          transaction={currentTransaction}
-          open={openApprove}
-          handleClose={changeApproveDialogState}
-        />
-      ) : (
-        <></>
-      )}
       {transactions.length === 0 ? (
         <Typography variant="h6">
           There is no transaction in this proposal
@@ -89,11 +73,7 @@ export default function TransactionList({
             {transactions.map((s: any, index: number) => {
               return (
                 <TransactionRow
-                  onClick={
-                    setCurrentTransaction
-                      ? setCurrentTransaction.bind(null, s)
-                      : () => {}
-                  }
+                  reloadFn={setShouldReload}
                   key={index}
                   transaction={s}
                   proposal={proposal}

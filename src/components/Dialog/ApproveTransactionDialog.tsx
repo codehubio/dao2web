@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 import { approveTxThunk } from "../../reducers/proposal";
 import { Grid, TextField } from "@mui/material";
 
-export default function ApprovalTxDialog({
+export default function TransactionApproveDialog({
   reloadFn,
   open,
   handleClose,
@@ -101,7 +101,7 @@ export default function ApprovalTxDialog({
             Approve
           </Button>
           <Button variant="contained" onClick={handleClose} color="error">
-            close
+            Close
           </Button>
         </DialogActions>
       </Dialog>

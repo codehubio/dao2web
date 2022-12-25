@@ -19,7 +19,7 @@ export default function ProposalDetail() {
   // const [assets, setAssets] = useState([]);
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openAddTx, setOpenAddTx] = useState(false);
-  const [reload, setShouldReloase] = useState(false);
+  const [reload, setShouldReload] = useState(false);
   const dispatch = useDispatch();
   const { wallet } = useWallet();
   const { proposalPda = "" } = useParams();
@@ -68,10 +68,11 @@ export default function ProposalDetail() {
   function changeAddTxDialogState() {
     setOpenAddTx(!openAddTx);
   }
+
   return proposal && proposal.detail ? (
     <>
       <TransactionAddDialog
-        reloadFn={setShouldReloase}
+        reloadFn={setShouldReload}
         proposal={proposal}
         open={openAddTx}
         handleClose={changeAddTxDialogState}

@@ -8,10 +8,10 @@ import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
-import { approveTxThunk } from "../../reducers/proposal";
+import { rejectTxThunk } from "../../reducers/proposal";
 import { Grid, TextField } from "@mui/material";
 
-export default function ApprovalTxDialog({
+export default function TransactionRejectDialog({
   reloadFn,
   open,
   handleClose,
@@ -27,9 +27,9 @@ export default function ApprovalTxDialog({
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
-  const [approvedAmount, setApprovedAmount] = useState(0);
-  function setAmount(e: any) {
-    setApprovedAmount(e.target.value);
+  const [reason, setRejectedReason] = useState(0);
+  function setReason(e: any) {
+    setRejectedReason(e.target.value);
   }
   const { wallet } = useWallet();
   const { connection } = useConnection();
@@ -38,18 +38,18 @@ export default function ApprovalTxDialog({
       detail: { index, proposalPda, name },
     } = transaction;
     handleClose();
-    setLoadingMessage("approving transaciton");
+    setLoadingMessage("rejecting transaciton");
     let txid;
     try {
       await dispatch(
-        approveTxThunk({
+        rejectTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
             stepIndex: index,
             proposalPda,
-            approvedAmount,
+            reason,
           },
         } as any) as any
       );
@@ -60,7 +60,7 @@ export default function ApprovalTxDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `Transaaction ${name} approved!` });
+    setSuccess({ message: `Transaaction ${name} rejected!` });
     return txid;
   }
   return (
@@ -88,7 +88,7 @@ export default function ApprovalTxDialog({
           >
             <Grid item xs={12}>
               <TextField
-                onChange={setAmount}
+                onChange={setReason}
                 style={{ width: "100%" }}
                 label="Reason (128-char max)"
                 variant="outlined"

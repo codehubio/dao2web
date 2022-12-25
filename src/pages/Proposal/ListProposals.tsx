@@ -14,79 +14,9 @@ import { TListProposalFilter } from "../../services/state/proposal";
 import ProposalListFilters from "../../components/ProposalFilters";
 
 export default function ListProposals() {
-  const { connection } = useConnection();
-  const { wallet } = useWallet();
-  const { setLoadingMessage, setError } = useContext(AppContext) as any;
-  // const [assets, setAssets] = useState([]);
-  const [openCreate, setOpenCreate] = useState(false);
-  const { address } = useParams();
-  const [proposals, setProposalList] = useState([]);
-  const [reload, setShouldReloase] = useState(false);
-  const [proposalFilters, setProposalFilters]: [
-    TListProposalFilter & { isMyProposal?: boolean; isInvolved?: boolean },
-    Function
-  ] = useState({});
-  const dispatch = useDispatch();
-  const addressPubkey = address || wallet?.adapter.publicKey?.toBase58();
-  useEffect(() => {
-    async function getAssets() {
-      setLoadingMessage("loading assets ...");
-      console.log(proposalFilters);
-      try {
-        proposalFilters.creator = proposalFilters.isMyProposal
-          ? addressPubkey
-          : "";
-        proposalFilters.involve = proposalFilters.isInvolved
-          ? addressPubkey
-          : "";
-        const { payload } = await dispatch(
-          listProposalsThunk({
-            endpoint: connection.rpcEndpoint,
-            options: proposalFilters,
-          } as any) as any
-        );
-        setProposalList(payload);
-      } catch (error) {
-        setError(error as any);
-      }
-      setLoadingMessage("");
-    }
-    getAssets();
-  }, [addressPubkey, reload, proposalFilters]);
-  function changeCreateDialogState() {
-    setOpenCreate(!openCreate);
-  }
-
   return (
     <>
-      <ProposalCreateDialog
-        open={openCreate}
-        reloadFn={setShouldReloase}
-        handleClose={changeCreateDialogState}
-      />
-      <Button
-        onClick={changeCreateDialogState}
-        color="primary"
-        variant="contained"
-        startIcon={<BoltOutlined />}
-      >
-        Create new proposal
-      </Button>
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <ProposalListFilters
-          filters={proposalFilters}
-          setFilters={setProposalFilters}
-        />
-
-        <MyGrid direction="row">
-          <ListMyProposal proposals={proposals} />
-        </MyGrid>
-      </Stack>
+      <ListMyProposal />
     </>
   );
 }
