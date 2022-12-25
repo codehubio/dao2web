@@ -22,7 +22,7 @@ export default function ProposalInfo({
     return "Pending";
   }
   function redirect() {
-    navigate(`/detail-involve-proposal/${proposal?.pda}`);
+    navigate(`/detail-proposal/${proposal?.pda}`);
   }
 
   return proposal && proposal.detail ? (

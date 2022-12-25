@@ -1,4 +1,5 @@
 import { Connection, PublicKey } from "@solana/web3.js";
+import base58 from "bs58";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { Proposal } from "../serde/states/proposal";
 import { Step } from "../serde/states/step";
@@ -59,11 +60,21 @@ export async function listProposalsByCreator(
     return [];
   }
 }
+export type TListProposalFilter = {
+  creator?: string;
+  involve?: string;
+  isApproved?: boolean;
+  isRejected?: boolean;
+  isSettled?: boolean;
+  isExecuted?: boolean;
+};
 export async function listProposalsByInvolve(
   connection: Connection,
-  wallet: PublicKey
+  wallet: PublicKey,
+  options: TListProposalFilter = {}
 ): Promise<any> {
   try {
+    console.log(wallet);
     const programId = new PublicKey(REACT_APP_SC_ADDRESS);
     const rawData = await connection.getProgramAccounts(programId, {
       filters: [
@@ -80,15 +91,121 @@ export async function listProposalsByInvolve(
       return new PublicKey(step.proposalPda);
     });
     const data = await connection.getMultipleAccountsInfo(proposalPdas);
-    return data.map((d, index) => {
+    return data
+      .map((d, index) => {
+        const parsed =
+          d && d.data ? Proposal.deserializeToReadable(d?.data as Buffer) : {};
+        return {
+          detail: parsed,
+          pda: proposalPdas[index].toBase58(),
+        };
+      })
+      .filter((d) => {
+        return (
+          (!options.isApproved || d.detail.isApproved) &&
+          (!options.isRejected || d.detail.isRejected) &&
+          (!options.isSettled || d.detail.isSettled) &&
+          (!options.isExecuted || d.detail.isExecuted)
+        );
+      });
+  } catch (error) {
+    return [];
+  }
+}
+export async function listProposals(
+  connection: Connection,
+  options: TListProposalFilter
+): Promise<any> {
+  const filters = [
+    {
+      memcmp: {
+        offset: 0,
+        bytes: base58.encode(Buffer.from([100])),
+      },
+    },
+  ];
+  if (options.involve) {
+    return listProposalsByInvolve(
+      connection,
+      new PublicKey(options.involve),
+      options
+    );
+  }
+  if (options.creator) {
+    filters.push({
+      memcmp: {
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8,
+        bytes: options.creator,
+      },
+    });
+  }
+  if (options.isApproved) {
+    filters.push({
+      memcmp: {
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32,
+        bytes: base58.encode(Buffer.from([1])),
+      },
+    });
+  }
+  if (options.isSettled) {
+    filters.push({
+      memcmp: {
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8,
+        bytes: base58.encode(Buffer.from([1])),
+      },
+    });
+  }
+  if (options.isRejected) {
+    filters.push({
+      memcmp: {
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8 + 1 + 8,
+        bytes: base58.encode(Buffer.from([1])),
+      },
+    });
+  }
+
+  if (options.isExecuted) {
+    filters.push({
+      memcmp: {
+        offset:
+          1 +
+          8 +
+          16 +
+          8 +
+          8 +
+          8 +
+          128 +
+          128 +
+          8 +
+          8 +
+          32 +
+          1 +
+          8 +
+          1 +
+          8 +
+          1 +
+          8,
+        bytes: base58.encode(Buffer.from([1])),
+      },
+    });
+  }
+  try {
+    const programId = new PublicKey(REACT_APP_SC_ADDRESS);
+    const rawData = await connection.getProgramAccounts(programId, {
+      filters,
+    });
+    return rawData.map((d, index) => {
       const parsed =
-        d && d.data ? Proposal.deserializeToReadable(d?.data as Buffer) : {};
+        d && d.account.data
+          ? Proposal.deserializeToReadable(d?.account.data as Buffer)
+          : {};
       return {
         detail: parsed,
-        pda: proposalPdas[index].toBase58(),
+        pda: d.pubkey.toBase58(),
       };
     });
   } catch (error) {
+    console.log(error);
     return [];
   }
 }

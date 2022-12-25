@@ -1,51 +1,51 @@
-import { PublicKey } from '@solana/web3.js';
-import BN from 'bn.js';
-import * as borsh from 'borsh';
+import { PublicKey } from "@solana/web3.js";
+import BN from "bn.js";
+import * as borsh from "borsh";
 
 export type TProposal = {
-  accountType: number,
-  index: BN,
-  name: Uint8Array,
-  numberOfSteps: BN,
-  numberOfApprovals: BN,
-  numberOfExecutions: BN,
-  description: Uint8Array,
-  imageUrl: Uint8Array,
-  createdAt: BN,
-  expireOrFinalizeAfter: BN,
-  creator: Uint8Array,
-  isApproved: number,
-  approvedAt: BN,
-  isSettled: number,
-  settledAt: BN,
-  isRejected: number,
-  rejectedAt: BN,
-  isExecuted: number,
-  executedAt: BN,
-}
+  accountType: number;
+  index: BN;
+  name: Uint8Array;
+  numberOfSteps: BN;
+  numberOfApprovals: BN;
+  numberOfExecutions: BN;
+  description: Uint8Array;
+  imageUrl: Uint8Array;
+  createdAt: BN;
+  expireOrFinalizeAfter: BN;
+  creator: Uint8Array;
+  isApproved: number;
+  approvedAt: BN;
+  isSettled: number;
+  settledAt: BN;
+  isRejected: number;
+  rejectedAt: BN;
+  isExecuted: number;
+  executedAt: BN;
+};
 export class Proposal {
   accountType;
-  
+
   index;
 
   name;
 
   numberOfSteps;
-  
+
   numberOfApprovals;
 
   numberOfExecutions;
 
   imageUrl;
-  
+
   createdAt;
-  
+
   expireOrFinalizeAfter;
-  
+
   isApproved;
 
   approvedAt;
-  
+
   creator;
 
   description;
@@ -61,7 +61,7 @@ export class Proposal {
   isExecuted;
 
   executedAt;
-  
+
   constructor(fields: TProposal) {
     this.numberOfExecutions = fields.numberOfExecutions;
     this.accountType = fields.accountType;
@@ -81,7 +81,7 @@ export class Proposal {
     this.isRejected = fields.isRejected;
     this.rejectedAt = fields.rejectedAt;
     this.executedAt = fields.executedAt;
-    this.isExecuted = fields.isExecuted
+    this.isExecuted = fields.isExecuted;
   }
 
   serialize(): Uint8Array {
@@ -121,7 +121,9 @@ export class Proposal {
       numberOfApprovals: numberOfApprovals.toNumber(),
       numberOfExecutions: numberOfExecutions.toNumber(),
       createdAt: new Date(createdAt.toNumber() * 1000).toISOString(),
-      expireOrFinalizeAfter: new Date(expireOrFinalizeAfter.toNumber() * 1000).toISOString(),
+      expireOrFinalizeAfter: new Date(
+        expireOrFinalizeAfter.toNumber() * 1000
+      ).toISOString(),
       isApproved,
       approvedAt: new Date(approvedAt.toNumber() * 1000).toISOString(),
       isSettled,
@@ -133,32 +135,36 @@ export class Proposal {
       creator: new PublicKey(creator).toBase58(),
       description: Buffer.from(description).toString(),
       imageUrl: Buffer.from(imageUrl).toString(),
-    }
+    };
   }
 }
 
-export const ProposalSchema = new Map([[Proposal, {
-  kind: 'struct',
-  fields: [
-    ['accountType', 'u8'],
-    ['index', 'u64'],
-    ['name', [16]],
-    ['numberOfSteps', 'u64'],
-    ['numberOfApprovals', 'u64'],
-    ['numberOfExecutions', 'u64'],
-    ['description', [128]],
-    ['imageUrl', [128]],
-    ['createdAt', 'u64'],
-    ['expireOrFinalizeAfter', 'u64'],
-    ['creator', [32]],
-    ['isApproved', 'u8'],
-    ['approvedAt', 'u64'],
-    ['isSettled', 'u8'],
-    ['settledAt', 'u64'],
-    ['isRejected', 'u8'],
-    ['rejectedAt', 'u64'],
-    ['isExecuted', 'u8'],
-    ['executedAt', 'u64'],
+export const ProposalSchema = new Map([
+  [
+    Proposal,
+    {
+      kind: "struct",
+      fields: [
+        ["accountType", "u8"],
+        ["index", "u64"],
+        ["name", [16]],
+        ["numberOfSteps", "u64"],
+        ["numberOfApprovals", "u64"],
+        ["numberOfExecutions", "u64"],
+        ["description", [128]],
+        ["imageUrl", [128]],
+        ["createdAt", "u64"],
+        ["expireOrFinalizeAfter", "u64"],
+        ["creator", [32]],
+        ["isApproved", "u8"],
+        ["approvedAt", "u64"],
+        ["isSettled", "u8"],
+        ["settledAt", "u64"],
+        ["isRejected", "u8"],
+        ["rejectedAt", "u64"],
+        ["isExecuted", "u8"],
+        ["executedAt", "u64"],
+      ],
+    },
   ],
-}],
 ]);

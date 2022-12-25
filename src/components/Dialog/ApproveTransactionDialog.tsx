@@ -34,7 +34,9 @@ export default function ApprovalTxDialog({
   const { wallet } = useWallet();
   const { connection } = useConnection();
   async function approve() {
-    const { index, proposalPda, name } = transaction;
+    const {
+      detail: { index, proposalPda, name },
+    } = transaction;
     handleClose();
     setLoadingMessage("approving transaciton");
     let txid;

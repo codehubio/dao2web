@@ -10,8 +10,6 @@ import Error from "./components/Feedback/Error";
 import Success from "./components/Feedback/Success";
 import Loading from "./components/Loading";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListMyProposals from "./pages/Proposal/ListMyProposal";
-import ListInvolveProposals from "./pages/Proposal/ListInvolveProposal";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import theme from "./share/theme";
@@ -21,8 +19,8 @@ import { Container } from "@mui/material";
 import AppContext from "./share/context";
 import { store } from "./store";
 import { supportedWallets } from "./services/wallet.service";
-import DetailInvolveProposal from "./pages/Proposal/DetailInvolveProposal";
-import DetailMyProposal from "./pages/Proposal/DetailMyProposal";
+import ProposalDetail from "./pages/Proposal/ProposalDetail";
+import ListProposals from "./pages/Proposal/ListProposals";
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -58,20 +56,12 @@ export default function App() {
                   <Container sx={{ mt: 5 }} maxWidth="lg">
                     <Routes>
                       <Route
-                        element={<ListMyProposals />}
-                        path="/list-my-proposals"
+                        element={<ListProposals />}
+                        path="/list-proposals"
                       />
                       <Route
-                        element={<DetailMyProposal />}
-                        path="/detail-my-proposal/:proposalPda"
-                      />
-                      <Route
-                        element={<DetailInvolveProposal />}
-                        path="/detail-involve-proposal/:proposalPda"
-                      />
-                      <Route
-                        element={<ListInvolveProposals />}
-                        path="/list-involve-proposals"
+                        element={<ProposalDetail />}
+                        path="/detail-proposal/:proposalPda"
                       />
                     </Routes>
                     <Success success={success}></Success>

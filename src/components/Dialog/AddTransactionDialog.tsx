@@ -31,44 +31,49 @@ export default function TransactionAddDialog({
     TParsedTransactionDetail,
     Function
   ] = useState({
-    accountType: 101,
-    index: proposal.detail.numberOfSteps,
-    proposalPda: proposal.pda,
-    name: "",
-    description: "",
-    amount: 0,
-    receivedAmount: 0,
-    numberOfApprovals: 0,
-    sender: "6EbhsCu7nDMRYGNXkBNBtcx1gubjrUfR8aQ2ZfPzg2Ur",
-    receiver: "H2knp7o4asKD79eo1PSPAFcahqAXgk6eQUkCcmAExXFU",
-    token: "988Hp2QxjbcZu3vgy78CRsNhxnS46YG4nubbYeePgoxa",
-    executeAfter: 0,
-    incentiveRate: 0,
-    incentiveFee: 0,
-    addedAt: 0,
-    isApproved: 0,
-    approvedAt: 0,
-    isRejected: 0,
-    rejectedAt: 0,
-    isExecuted: 0,
-    executedAt: 0,
-    isReverted: 0,
-    revertedAt: 0,
-    revertedAmount: 0,
+    detail: {
+      accountType: 101,
+      index: proposal.detail.numberOfSteps,
+      proposalPda: proposal.pda,
+      name: "",
+      description: "",
+      amount: 0,
+      receivedAmount: 0,
+      numberOfApprovals: 0,
+      sender: "6EbhsCu7nDMRYGNXkBNBtcx1gubjrUfR8aQ2ZfPzg2Ur",
+      receiver: "H2knp7o4asKD79eo1PSPAFcahqAXgk6eQUkCcmAExXFU",
+      token: "988Hp2QxjbcZu3vgy78CRsNhxnS46YG4nubbYeePgoxa",
+      executeAfter: 0,
+      incentiveRate: 0,
+      incentiveFee: 0,
+      addedAt: 0,
+      isApproved: 0,
+      approvedAt: 0,
+      isRejected: 0,
+      rejectedAt: 0,
+      isExecuted: 0,
+      executedAt: 0,
+      isReverted: 0,
+      revertedAt: 0,
+      revertedAmount: 0,
+    },
+    pda: "",
   });
   const { wallet } = useWallet();
   const { connection } = useConnection();
   async function addTx() {
     const {
-      proposalPda,
-      name,
-      description,
-      amount,
-      token,
-      sender,
-      receiver,
-      executeAfter,
-      incentiveRate,
+      detail: {
+        proposalPda,
+        name,
+        description,
+        amount,
+        token,
+        sender,
+        receiver,
+        executeAfter,
+        incentiveRate,
+      },
     } = transactionDetail;
     handleClose();
     setLoadingMessage("adding transaction");
@@ -117,7 +122,7 @@ export default function TransactionAddDialog({
         <DialogContent>
           <TransactionAdd
             setDetail={setTransactionDetail}
-            detail={transactionDetail}
+            transaction={transactionDetail}
           />
         </DialogContent>
         <DialogActions>
