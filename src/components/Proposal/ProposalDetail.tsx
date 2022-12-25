@@ -56,14 +56,8 @@ export default function ProposalDetail() {
     );
     setLoadingMessage("");
   }
-  function isSettled(): boolean {
-    return (
-      proposal &&
-      proposal.detail &&
-      !!proposal.detail.isSettled &&
-      !proposal.detail.isApproved &&
-      !proposal.detail.isRejected
-    );
+  function isAbleToModify(): boolean {
+    return proposal && proposal.detail && !proposal.detail.isSettled;
   }
   function changeAddTxDialogState() {
     setOpenAddTx(!openAddTx);
@@ -90,7 +84,7 @@ export default function ProposalDetail() {
           alignItems="center"
           spacing={2}
         >
-          {!isSettled() ? (
+          {isAbleToModify() ? (
             <>
               <Button
                 onClick={changeAddTxDialogState}

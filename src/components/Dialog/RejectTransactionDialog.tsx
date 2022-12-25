@@ -22,7 +22,6 @@ export default function TransactionRejectDialog({
   reloadFn: Function;
   transaction: TParsedTransactionDetail;
 }) {
-  console.log(transaction);
   const dispatch = useDispatch();
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext

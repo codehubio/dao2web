@@ -6,7 +6,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
-import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { Button, Stack, TableRow } from "@mui/material";
 import ProposalRow from "./ProposalRow";
 import ProposalCreateDialog from "../Dialog/CreateProposalDialog";

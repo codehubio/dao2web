@@ -8,6 +8,7 @@ import listProposalsByInvolveThunk from "./list-proposals-by-involve";
 import approveTxThunk from "./approve-tx";
 import rejectTxThunk from "./reject-tx";
 import executeTxThunk from "./execute-tx";
+import revertTxThunk from "./revert-tx";
 import listProposalsThunk from "./list-proposals";
 
 export { createProposalThunk };
@@ -19,6 +20,7 @@ export { listProposalsByInvolveThunk };
 export { approveTxThunk };
 export { rejectTxThunk };
 export { executeTxThunk };
+export { revertTxThunk };
 export { listProposalsThunk };
 
 export const proposalsSlice = createSlice({

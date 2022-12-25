@@ -2,16 +2,16 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import executeStepInstruction from "../../services/instructions/execute-step";
-import { getStepByPda } from "../../services/state/step";
+import revertStepInstruction from "../../services/instructions/revert-step";
+import BN from "bn.js";
 
-const executeTxThunk = createAsyncThunk(
-  "executeTx",
+const revertTxThunk = createAsyncThunk(
+  "revertTx",
   async ({
     endpoint,
     address,
     providerName,
-    data: { proposalPda, stepIndex },
+    data: { proposalPda, stepIndex, numberOfApprovals },
   }: {
     endpoint: string;
     address: string;
@@ -21,19 +21,18 @@ const executeTxThunk = createAsyncThunk(
     const provider = getProvider(providerName.toLowerCase());
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
-    const { rawTx, stepPda } = await executeStepInstruction(
-      connection,
-      wallet,
-      {
+    const txids = [];
+    for (let i = 0; i < numberOfApprovals; i += 1) {
+      const { rawTx } = await revertStepInstruction(connection, wallet, {
         proposalPda: new PublicKey(proposalPda),
         stepIndex,
-      }
-    );
-    const txid = await sendTransaction(connection, provider, rawTx);
-    const { data } = await getStepByPda(connection, stepPda, 10);
-    console.log(txid);
-    return { txid, proposalPda: proposalPda.toBase58(), data };
+        approvalIndex: new BN(i),
+      });
+      const txid = await sendTransaction(connection, provider, rawTx);
+      txids.push(txid);
+    }
+    return { txids, proposalPda: proposalPda.toBase58() };
   }
 );
 
-export default executeTxThunk;
+export default revertTxThunk;

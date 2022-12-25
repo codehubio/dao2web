@@ -1,7 +1,7 @@
 import { Button, TableCell, TableRow } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext, useState } from "react";
-import { executeTxThunk } from "../../reducers/proposal";
+import { executeTxThunk, revertTxThunk } from "../../reducers/proposal";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
@@ -17,6 +17,7 @@ export default function TransactionDetail({
   transaction: TParsedTransactionDetail;
   reloadFn: Function;
 }) {
+  console.log(transaction);
   const { wallet } = useWallet();
   const { connection } = useConnection();
   const dispatch = useDispatch();
@@ -41,6 +42,13 @@ export default function TransactionDetail({
 
   function isAbleToExecute() {
     return pDetail.isApproved && !txDetail.isExecuted;
+  }
+  function isAbleToRevert() {
+    return (
+      pDetail.isRejected &&
+      !txDetail.isReverted &&
+      txDetail.numberOfApprovals > 0
+    );
   }
   function changeApproveTxDialogState() {
     setOpenApproveTx(!openApproveTx);
@@ -74,6 +82,35 @@ export default function TransactionDetail({
     }
     setLoadingMessage("");
     setSuccess({ message: `Transaaction ${name} executed!` });
+    return txid;
+  }
+  async function revertTx() {
+    const {
+      detail: { index, proposalPda, name, numberOfApprovals },
+    } = transaction;
+    setLoadingMessage("reverting transaciton");
+    let txid;
+    try {
+      await dispatch(
+        revertTxThunk({
+          endpoint: connection.rpcEndpoint,
+          address: wallet?.adapter.publicKey as any,
+          providerName: wallet?.adapter.name,
+          data: {
+            stepIndex: index,
+            proposalPda,
+            numberOfApprovals,
+          },
+        } as any) as any
+      );
+      if (reloadFn) {
+        reloadFn(true);
+      }
+    } catch (error: any) {
+      setError(error);
+    }
+    setLoadingMessage("");
+    setSuccess({ message: `Transaaction ${name} reverted!` });
     return txid;
   }
   return (
@@ -127,6 +164,14 @@ export default function TransactionDetail({
             disabled={!isAbleToExecute()}
           >
             Execute
+          </Button>
+          <Button
+            onClick={revertTx}
+            color="primary"
+            variant="outlined"
+            disabled={!isAbleToRevert()}
+          >
+            Revert
           </Button>
         </TableCell>
       </TableRow>
