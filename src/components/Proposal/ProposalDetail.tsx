@@ -23,7 +23,7 @@ import { BoltOutlined } from "@mui/icons-material";
 import TransactionAddDialog from "../../components/Dialog/AddTransactionDialog";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { settleProposalThunk } from "../../reducers/proposal";
-import TransactionDetail from "../TransactionRow";
+import TransactionList from "../Transaction/TransactionList";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -69,42 +69,6 @@ export default function ProposalDetail() {
       } as any) as any
     );
     setLoadingMessage("");
-  }
-  function renderStep() {
-    if (!transactions.length) {
-      return <></>;
-    }
-    return (
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">#</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Description</TableCell>
-              <TableCell align="left">Amount</TableCell>
-              <TableCell align="left">Token</TableCell>
-              <TableCell align="left">Sender</TableCell>
-              <TableCell align="left">Receiver</TableCell>
-              <TableCell align="left">Incentive rate</TableCell>
-              <TableCell align="left">Execution delay</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions.map((s: any, index: number) => {
-              return (
-                <TransactionDetail
-                  key={index}
-                  transaction={s}
-                  proposal={proposal}
-                  wallet={wallet?.adapter.publicKey?.toBase58() as any}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
   }
   function isSettled(): boolean {
     return (
@@ -173,7 +137,11 @@ export default function ProposalDetail() {
           )}
         </Stack>
         <MyGrid direction="row">
-          {renderStep()}
+          <TransactionList
+            transactions={transactions}
+            proposal={proposal}
+            wallet={wallet?.adapter.publicKey?.toBase58() as any}
+          />
           {/* {assets && assets.length ? renderProposalList() : <Grid item xs={12}><Chip color='info' label='you have no proposal'/></Grid>} */}
         </MyGrid>
       </Stack>

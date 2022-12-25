@@ -13,7 +13,6 @@ export default function TransactionDetail({
 }) {
   const { detail: txDetail } = transaction;
   const { detail: pDetail } = proposal;
-  console.log(transaction);
   function isAbleToApproveOrReject() {
     return (
       pDetail.isSettled &&
