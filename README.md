@@ -56,7 +56,10 @@ There are 2 transaction types
 
 - Condition
 
-  - The proposal which it belongs to is approved.
+  - The proposal which it belongs to is approved which means all transactions of the proposal are approved
+
+- Executing a tx means sending the previously locked fund during transaction approva to the receiver
+- Everyone can execute a transaction and be rewarded
 
 ## VII. Transaction rejection
 
@@ -73,7 +76,11 @@ Revert of a transaction means reverting all of its approvals.
 
 - Condition:
 
-  - The proposal that transacion belongs to is rejected
+  - The proposal that transacion belongs to is rejected.
+  - The transaction is approved or partly approved before
+
+- Reverting a tx means sending the previously locked fund during transaction approval back to the sender
+- Everyone can revert a transaction and be rewarded
 
 ## IX. Phase of a proposal
 
