@@ -1,38 +1,39 @@
 import { Avatar, TableCell, TableRow } from "@mui/material";
 import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
-import {
-  useNavigate,
-} from 'react-router-dom';
-export default function ProposalInfo({ proposal }: {
-  proposal: TParseProposalDetail | null,
+import { useNavigate } from "react-router-dom";
+export default function ProposalInfo({
+  proposal,
+}: {
+  proposal: TParseProposalDetail | null;
 }) {
   const navigate = useNavigate();
   function getStatus(): string {
     if (!proposal?.detail) {
-      return 'Pending';
+      return "Pending";
     }
     if (proposal.detail.isApproved) {
-      return 'Approved';
+      return "Approved";
     } else if (proposal.detail.isRejected) {
-      return 'Rejected';
+      return "Rejected";
     } else if (proposal.detail.isSettled) {
-      return 'Settled';
+      return "Settled";
     }
-    return 'Pending';
+    return "Pending";
   }
   function redirect() {
-    navigate(`/detail-proposal/${proposal?.pda}`);
+    navigate(`/detail-involve-proposal/${proposal?.pda}`);
   }
- 
+
   return proposal && proposal.detail ? (
     <Fragment>
-      <TableRow onClick= {redirect.bind(null, proposal.pda)} hover={true} sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow
+        onClick={redirect.bind(null, proposal.pda)}
+        hover={true}
+        sx={{ "& > *": { borderBottom: "unset" } }}
+      >
         <TableCell component="th" scope="row">
-          <Avatar
-            alt={proposal.detail.name}
-            src={proposal.detail.imageUrl}
-          />
+          <Avatar alt={proposal.detail.name} src={proposal.detail.imageUrl} />
         </TableCell>
         <TableCell align="left">{proposal.detail.name}</TableCell>
         <TableCell align="left">{proposal.detail.description}</TableCell>
@@ -41,5 +42,7 @@ export default function ProposalInfo({ proposal }: {
         <TableCell align="left">{getStatus()}</TableCell>
       </TableRow>
     </Fragment>
-  ) : <></>;
+  ) : (
+    <></>
+  );
 }

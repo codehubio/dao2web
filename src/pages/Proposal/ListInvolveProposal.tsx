@@ -7,7 +7,7 @@ import AppContext from "../../share/context";
 import MyGrid from "../../components/MyGrid";
 import { useSelector, useDispatch } from "react-redux";
 import { listProposalsByInvolveThunk } from "../../reducers/proposal";
-import ListProposalInfo from "../../components/Proposal/ListInfo";
+import ListInvolveProposal from "../../components/Proposal/ListInvolveProposal";
 
 export default function ListInvolveProposals() {
   const assets = useSelector(
@@ -47,7 +47,7 @@ export default function ListInvolveProposals() {
         spacing={2}
       >
         <MyGrid direction="row">
-          <ListProposalInfo proposals={assets} />
+          <ListInvolveProposal proposals={assets} />
         </MyGrid>
       </Stack>
     </>

@@ -1,15 +1,17 @@
-import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import Paper from '@mui/material/Paper';
-import { TParseProposalDetail } from '../../types/ProposalDetail';
-import { TableRow } from '@mui/material';
-import ProposalInfo from './Info';
-export default function ListProposalInfo1({ proposals }: {
-  proposals: (TParseProposalDetail) [],
+import * as React from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import Paper from "@mui/material/Paper";
+import { TParseProposalDetail } from "../../types/ProposalDetail";
+import { TableRow } from "@mui/material";
+import InvolveProposal from "./InvolveProposal";
+export default function ListProposalInfo1({
+  proposals,
+}: {
+  proposals: TParseProposalDetail[];
 }) {
   return (
     <>
@@ -24,12 +26,11 @@ export default function ListProposalInfo1({ proposals }: {
               <TableCell align="left"># of approvals</TableCell>
               <TableCell align="left">Status</TableCell>
               <TableCell />
-
             </TableRow>
           </TableHead>
           <TableBody>
             {proposals.map((proposal: any, index: number) => {
-              return <ProposalInfo key={index} proposal={proposal} />
+              return <InvolveProposal key={index} proposal={proposal} />;
             })}
           </TableBody>
         </Table>

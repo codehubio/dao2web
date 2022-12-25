@@ -6,10 +6,10 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import MyGrid from "../../components/MyGrid";
 import { BoltOutlined } from "@mui/icons-material";
-import ProposalCreateDialog from "../../components/Proposal/CreateProposalDialog";
+import ProposalCreateDialog from "../../components/Dialog/CreateProposalDialog";
 import { useSelector, useDispatch } from "react-redux";
 import { listProposalsByWalletThunk } from "../../reducers/proposal";
-import ListProposalInfo from "../../components/Proposal/ListInfo";
+import ListMyProposal from "../../components/Proposal/ListMyProposal";
 
 export default function ListMyProposals() {
   const assets = useSelector(
@@ -67,7 +67,7 @@ export default function ListMyProposals() {
           create new proposal
         </Button>
         <MyGrid direction="row">
-          <ListProposalInfo proposals={assets} />
+          <ListMyProposal proposals={assets} />
         </MyGrid>
       </Stack>
     </>

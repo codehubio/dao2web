@@ -5,6 +5,7 @@ import addTxToProposalThunk from "./add-tx-to-proposal";
 import settleProposalThunk from "./settle-proposal";
 import getStatByWalletThunk from "./add-tx-to-proposal";
 import listProposalsByInvolveThunk from "./list-proposals-by-involve";
+import approveTxThunk from "./approve-tx";
 
 export { createProposalThunk };
 export { listProposalsByWalletThunk };
@@ -12,6 +13,7 @@ export { addTxToProposalThunk };
 export { settleProposalThunk };
 export { getStatByWalletThunk };
 export { listProposalsByInvolveThunk };
+export { approveTxThunk };
 
 export const proposalsSlice = createSlice({
   name: "proposals",

@@ -21,7 +21,8 @@ import { Container } from "@mui/material";
 import AppContext from "./share/context";
 import { store } from "./store";
 import { supportedWallets } from "./services/wallet.service";
-import DetailProposal from "./pages/Proposal/DetailProposal";
+import DetailInvolveProposal from "./pages/Proposal/DetailInvolveProposal";
+import DetailMyProposal from "./pages/Proposal/DetailMyProposal";
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -61,8 +62,12 @@ export default function App() {
                         path="/list-my-proposals"
                       />
                       <Route
-                        element={<DetailProposal />}
-                        path="/detail-proposal/:proposalPda"
+                        element={<DetailMyProposal />}
+                        path="/detail-my-proposal/:proposalPda"
+                      />
+                      <Route
+                        element={<DetailInvolveProposal />}
+                        path="/detail-involve-proposal/:proposalPda"
                       />
                       <Route
                         element={<ListInvolveProposals />}

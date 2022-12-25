@@ -4,67 +4,50 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import ProposalCreate from "./ProposalCreate";
-import { TParseProposalDetail } from "../../types/ProposalDetail";
+import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
-import { createProposalThunk } from "../../reducers/proposal";
+import { approveTxThunk } from "../../reducers/proposal";
+import { Grid, TextField } from "@mui/material";
 
-export default function ProposalCreateDialog({
+export default function ApprovalTxDialog({
   reloadFn,
   open,
   handleClose,
+  transaction,
 }: {
   open: boolean;
   handleClose: any;
   reloadFn: Function;
+  transaction: TParsedTransactionDetail;
 }) {
+  console.log(transaction);
   const dispatch = useDispatch();
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
-  const [proposalDetail, setProposalDetail]: [TParseProposalDetail, Function] =
-    useState({
-      detail: {
-        accountType: 100,
-        name: "",
-        numberOfSteps: 0,
-        numberOfApprovals: 0,
-        description: "",
-        imageUrl: "",
-        createdAt: 0,
-        expireOrFinalizeAfter: 0,
-        creator: "",
-        isApproved: 0,
-        approvedAt: 0,
-        isSettled: 0,
-        settledAt: 0,
-        isRejected: 0,
-        rejectedAt: 0,
-      },
-      pda: "",
-    });
+  const [approvedAmount, setApprovedAmount] = useState(0);
+  function setAmount(e: any) {
+    setApprovedAmount(e.target.value);
+  }
   const { wallet } = useWallet();
   const { connection } = useConnection();
-  async function create() {
-    const {
-      detail: { name, description, expireOrFinalizeAfter, imageUrl },
-    } = proposalDetail;
+  async function approve() {
+    const { index, proposalPda, name } = transaction;
     handleClose();
-    setLoadingMessage("creating proposal");
+    setLoadingMessage("approving transaciton");
     let txid;
     try {
       await dispatch(
-        createProposalThunk({
+        approveTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            name,
-            description,
-            expireOrFinalizeAfter,
-            imageUrl,
+            stepIndex: index,
+            proposalPda,
+            approvedAmount,
           },
         } as any) as any
       );
@@ -75,7 +58,7 @@ export default function ProposalCreateDialog({
       setError(error);
     }
     setLoadingMessage("");
-    setSuccess({ message: `proposal ${name} created!` });
+    setSuccess({ message: `Transaaction ${name} approved!` });
     return txid;
   }
   return (
@@ -88,17 +71,33 @@ export default function ProposalCreateDialog({
         color="primary"
       >
         <DialogTitle textAlign="center" sx={{ mb: 1 }} id="alert-dialog-title">
-          create a new proposal
+          Approve transaction
         </DialogTitle>
         <DialogContent>
-          <ProposalCreate
-            setDetail={setProposalDetail}
-            proposal={proposalDetail}
-          />
+          <Grid
+            container
+            style={{ width: "100%" }}
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            // alignContent="center"
+            mb={1}
+          >
+            <Grid item xs={12}>
+              <TextField
+                onChange={setAmount}
+                style={{ width: "100%" }}
+                label="Amount (16-char max)"
+                variant="outlined"
+                color="primary"
+              />
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={create} color="primary" variant="contained">
-            create
+          <Button onClick={approve} color="primary" variant="contained">
+            Approve
           </Button>
           <Button variant="contained" onClick={handleClose} color="error">
             close

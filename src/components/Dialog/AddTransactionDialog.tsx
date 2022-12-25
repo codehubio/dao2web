@@ -8,7 +8,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { addTxToProposalThunk } from "../../reducers/proposal";
-import TransactionAdd from "./TransactionAdd";
+import TransactionAdd from "../Proposal/TransactionAdd";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 
