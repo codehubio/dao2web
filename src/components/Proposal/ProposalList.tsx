@@ -72,14 +72,20 @@ export default function ListProposalInfo() {
           reloadFn={setShouldReload}
           handleClose={changeCreateDialogState}
         />
-        <Button
-          onClick={changeCreateDialogState}
-          color="primary"
-          variant="contained"
-          startIcon={<BoltOutlined />}
-        >
-          Create new proposal
-        </Button>
+        {wallet?.adapter.connected ? (
+          <Button
+            onClick={changeCreateDialogState}
+            color="primary"
+            variant="contained"
+            startIcon={<BoltOutlined />}
+          >
+            Create new proposal
+          </Button>
+        ) : (
+          <Typography variant="body1">
+            Please connect to your wallet!
+          </Typography>
+        )}
         <Typography variant="h4">Proposals list</Typography>
 
         <ProposalListFilters
