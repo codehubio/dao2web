@@ -1,5 +1,8 @@
 # TokenFlow - a simple yet flexible contract for token flow
 
+Demo: https://multisig.codehub.io/
+RPC: https://api.devnet.solana.com
+
 ## I. Problems
 
 **(P1)** User A creates an proposal among multiple parties where
