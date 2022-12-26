@@ -2,7 +2,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import base58 from "bs58";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { Proposal } from "../serde/states/proposal";
-import { Step } from "../serde/states/step";
+import { Transaction } from "../serde/states/transaction";
 import { getStatByAddress } from "./stat";
 const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
@@ -86,8 +86,8 @@ export async function listProposalsByInvolve(
       ],
     });
     const proposalPdas = rawData.map((r) => {
-      const step = Step.deserializeToReadble(r?.account.data);
-      return new PublicKey(step.proposalPda);
+      const transation = Transaction.deserializeToReadble(r?.account.data);
+      return new PublicKey(transation.proposalPda);
     });
     const data = await connection.getMultipleAccountsInfo(proposalPdas);
     return data

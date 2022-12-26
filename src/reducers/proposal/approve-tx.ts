@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import approveStepInstruction from "../../services/instructions/approve-step";
-import { getStepByPda } from "../../services/state/step";
+import approveStepInstruction from "../../services/instructions/approve-transaction";
+import { getStepByPda } from "../../services/state/transaction";
 
 const approveTxThunk = createAsyncThunk(
   "approveTx",
@@ -11,28 +11,32 @@ const approveTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, stepIndex, approvedAmount },
+    data: { proposalPda, transactionIndex, approvedAmount },
   }: {
     endpoint: string;
     address: string;
     providerName: string;
     data: any;
   }) => {
-    const provider = getProvider(providerName.toLowerCase());
-    const connection = new Connection(endpoint);
-    const wallet = new PublicKey(address);
-    const { rawTx, stepPda } = await approveStepInstruction(
-      connection,
-      wallet,
-      {
-        proposalPda: new PublicKey(proposalPda),
-        stepIndex,
-        approvedAmount,
-      }
-    );
-    const txid = await sendTransaction(connection, provider, rawTx);
-    const { detail } = await getStepByPda(connection, stepPda, 10);
-    return { txid, proposalPda: proposalPda.toBase58(), detail };
+    try {
+      const provider = getProvider(providerName.toLowerCase());
+      const connection = new Connection(endpoint);
+      const wallet = new PublicKey(address);
+      const { rawTx, transactionPda } = await approveStepInstruction(
+        connection,
+        wallet,
+        {
+          proposalPda: new PublicKey(proposalPda),
+          transactionIndex,
+          approvedAmount,
+        }
+      );
+      const txid = await sendTransaction(connection, provider, rawTx);
+      const { detail } = await getStepByPda(connection, transactionPda, 10);
+      return { txid, proposalPda: proposalPda, detail };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

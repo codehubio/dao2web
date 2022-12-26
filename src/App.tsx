@@ -34,7 +34,7 @@ export default function App() {
   const [success, setSuccess] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState("");
   useEffect(() => {
-    document.title = "Token Flow";
+    document.title = "Token Flow - Home";
   }, []);
   const wallets = useMemo(() => [supportedWallets.phantom], []);
 
@@ -56,6 +56,7 @@ export default function App() {
                   <Header />
                   <Container sx={{ mt: 5 }} maxWidth="lg">
                     <Routes>
+                      <Route element={<ListProposals />} path="/" />
                       <Route
                         element={<ListProposals />}
                         path="/list-proposals"

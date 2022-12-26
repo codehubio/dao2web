@@ -37,16 +37,16 @@ export default function TransactionApproveDialog({
       detail: { index, proposalPda, name },
     } = transaction;
     handleClose();
-    setLoadingMessage("approving transaciton");
+    setLoadingMessage("Approving transaciton");
     let txid;
     try {
-      await dispatch(
+      const { payload } = await dispatch(
         approveTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            stepIndex: index,
+            transactionIndex: index,
             proposalPda,
             approvedAmount,
           },
@@ -55,13 +55,15 @@ export default function TransactionApproveDialog({
       if (reloadFn) {
         reloadFn(true);
       }
+      setLoadingMessage("");
+      console.log(payload);
+      setSuccess({
+        message: `Transaction ${name} approved! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
     } catch (error: any) {
       setError(error);
     }
-    setLoadingMessage("");
-    setSuccess({
-      message: `Transaction ${name} approved! You may need to refresh the page to see the change!`,
-    });
     return txid;
   }
   return (

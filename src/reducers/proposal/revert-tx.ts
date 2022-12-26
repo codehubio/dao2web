@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import revertStepInstruction from "../../services/instructions/revert-step";
+import revertStepInstruction from "../../services/instructions/revert-transaction";
 import BN from "bn.js";
 
 const revertTxThunk = createAsyncThunk(
@@ -11,7 +11,7 @@ const revertTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, stepIndex, numberOfApprovals },
+    data: { proposalPda, transactionIndex, numberOfApprovals },
   }: {
     endpoint: string;
     address: string;
@@ -25,13 +25,13 @@ const revertTxThunk = createAsyncThunk(
     for (let i = 0; i < numberOfApprovals; i += 1) {
       const { rawTx } = await revertStepInstruction(connection, wallet, {
         proposalPda: new PublicKey(proposalPda),
-        stepIndex,
+        transactionIndex,
         approvalIndex: new BN(i),
       });
       const txid = await sendTransaction(connection, provider, rawTx);
       txids.push(txid);
     }
-    return { txids, proposalPda: proposalPda.toBase58() };
+    return { txids, proposalPda: proposalPda };
   }
 );
 

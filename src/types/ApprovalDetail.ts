@@ -5,8 +5,8 @@ export type TApprovalDetail = {
   index: BN;
   proposalPda: Uint8Array;
   proposalId: string;
-  stepPda: Uint8Array;
-  stepIndex: BN;
+  transactionPda: Uint8Array;
+  transactionIndex: BN;
   approvedAmount: BN;
   sender: Uint8Array;
   incentiveRate: BN;
@@ -23,8 +23,8 @@ export type TParsedApprovalDetail = {
     index: number;
     proposalPda: string;
     proposalId: string;
-    stepPda: string;
-    stepIndex: number;
+    transactionPda: string;
+    transactionIndex: number;
     approvedAmount: number;
     sender: string;
     incentiveRate: number;

@@ -43,7 +43,7 @@ export default function ApprovalInfo({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            stepIndex: index,
+            transactionIndex: index,
             proposalPda,
             numberOfApprovals,
           },

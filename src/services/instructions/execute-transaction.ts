@@ -10,33 +10,33 @@ import {
   getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { Step } from "../serde/states/step";
+import { Transaction } from "../serde/states/transaction";
 import { ExecuteStepIns } from "../serde/instructions/execute-step";
 export default async function executeStep(
   connection: Connection,
   creator: PublicKey,
   {
     proposalPda,
-    stepIndex,
+    transactionIndex,
   }: {
     proposalPda: PublicKey;
-    stepIndex: number;
+    transactionIndex: number;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
-  const [stepPda] = PublicKey.findProgramAddressSync(
+  const [transactionPda] = PublicKey.findProgramAddressSync(
     [
-      Buffer.from(stepIndex.toString()),
+      Buffer.from(transactionIndex.toString()),
       proposalPda.toBuffer(),
       Buffer.from("step"),
     ],
     new PublicKey(REACT_APP_SC_ADDRESS)
   );
   console.log(proposalPda.toBase58());
-  console.log(`Getting step data from ${stepPda}`);
-  const stepAccountInfo = await connection.getAccountInfo(stepPda);
-  const stepData = Step.deserialize(stepAccountInfo?.data as Buffer);
+  console.log(`Getting step data from ${transactionPda}`);
+  const stepAccountInfo = await connection.getAccountInfo(transactionPda);
+  const stepData = Transaction.deserialize(stepAccountInfo?.data as Buffer);
   const { receiver, amount, token } = stepData;
   const receiverPubKey = new PublicKey(receiver);
   const tokenPubKey = new PublicKey(token);
@@ -65,7 +65,7 @@ export default async function executeStep(
     ASSOCIATED_TOKEN_PROGRAM_ID
   );
   console.log(`Proposal PDA: ${proposalPda}`);
-  console.log(`Step PDA: ${stepPda}`);
+  console.log(`Step PDA: ${transactionPda}`);
   const executeStepIx = new ExecuteStepIns();
   const serializedData = executeStepIx.serialize();
   const dataBuffer = Buffer.from(serializedData);
@@ -90,7 +90,7 @@ export default async function executeStep(
       {
         isSigner: false,
         isWritable: true,
-        pubkey: stepPda,
+        pubkey: transactionPda,
       },
       {
         isSigner: false,
@@ -141,6 +141,6 @@ export default async function executeStep(
   }).compileToV0Message();
   return {
     rawTx: tx.serialize(),
-    stepPda,
+    transactionPda,
   };
 }

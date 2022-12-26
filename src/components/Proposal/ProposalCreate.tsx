@@ -32,7 +32,7 @@ export default function ProposalCreate({
           <TextField
             onChange={setField.bind(null, "name")}
             style={{ width: "100%" }}
-            label="name (16-char max)"
+            label="Name (16-char max)"
             variant="outlined"
             color="primary"
           />
@@ -41,7 +41,7 @@ export default function ProposalCreate({
           <TextField
             onChange={setField.bind(null, "description")}
             style={{ width: "100%" }}
-            label="description (128-char max)"
+            label="Description (128-char max)"
             variant="outlined"
             color="primary"
           />
@@ -51,8 +51,7 @@ export default function ProposalCreate({
           <TextField
             onChange={setField.bind(null, "imageUrl")}
             style={{ width: "100%" }}
-            value="https://picsum.photos/200"
-            label="image url (128-char max)"
+            label="Image url (128-char max)"
             variant="outlined"
             color="primary"
           />
@@ -61,7 +60,8 @@ export default function ProposalCreate({
           <TextField
             onChange={setField.bind(null, "expireOrFinalizeAfter")}
             style={{ width: "100%" }}
-            label="expiration in seconds"
+            label="Expiration after"
+            placeholder="Expiration time of the proposal if it is unfinalized. Leave blank to ignore"
             variant="outlined"
             color="primary"
           />

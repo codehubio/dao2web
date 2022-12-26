@@ -39,7 +39,9 @@ export default function ProposalInfo({
         </TableCell>
         <TableCell align="left">{proposal.detail.name}</TableCell>
         <TableCell align="left">{proposal.detail.description}</TableCell>
-        <TableCell align="left">{proposal.detail.numberOfSteps}</TableCell>
+        <TableCell align="left">
+          {proposal.detail.numberOfTransactions}
+        </TableCell>
         <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
         <TableCell align="left">{getStatus()}</TableCell>
         <TableCell align="left">

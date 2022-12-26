@@ -3,7 +3,7 @@ import BN from "bn.js";
 export type TProposalDetail = {
   accountType: number;
   name: string;
-  numberOfSteps: BN;
+  numberOfTransactions: BN;
   numberOfApprovals: BN;
   description: string;
   imageUrl: string;
@@ -25,7 +25,7 @@ export type TParseProposalDetail = {
   detail: {
     accountType: number;
     name: string;
-    numberOfSteps: number;
+    numberOfTransactions: number;
     numberOfApprovals: number;
     description: string;
     imageUrl: string;

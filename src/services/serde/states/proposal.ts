@@ -6,7 +6,7 @@ export type TProposal = {
   accountType: number;
   index: BN;
   name: Uint8Array;
-  numberOfSteps: BN;
+  numberOfTransactions: BN;
   numberOfApprovals: BN;
   numberOfExecutions: BN;
   description: Uint8Array;
@@ -30,7 +30,7 @@ export class Proposal {
 
   name;
 
-  numberOfSteps;
+  numberOfTransactions;
 
   numberOfApprovals;
 
@@ -67,7 +67,7 @@ export class Proposal {
     this.accountType = fields.accountType;
     this.index = fields.index;
     this.name = fields.name;
-    this.numberOfSteps = fields.numberOfSteps;
+    this.numberOfTransactions = fields.numberOfTransactions;
     this.numberOfApprovals = fields.numberOfApprovals;
     this.expireOrFinalizeAfter = fields.expireOrFinalizeAfter;
     this.creator = fields.creator;
@@ -96,7 +96,7 @@ export class Proposal {
       accountType,
       index,
       name,
-      numberOfSteps,
+      numberOfTransactions,
       numberOfApprovals,
       createdAt,
       expireOrFinalizeAfter,
@@ -117,7 +117,7 @@ export class Proposal {
       accountType,
       index: index.toNumber(),
       name: Buffer.from(name).toString(),
-      numberOfSteps: numberOfSteps.toNumber(),
+      numberOfTransactions: numberOfTransactions.toNumber(),
       numberOfApprovals: numberOfApprovals.toNumber(),
       numberOfExecutions: numberOfExecutions.toNumber(),
       createdAt: new Date(createdAt.toNumber() * 1000).toISOString(),
@@ -148,7 +148,7 @@ export const ProposalSchema = new Map([
         ["accountType", "u8"],
         ["index", "u64"],
         ["name", [16]],
-        ["numberOfSteps", "u64"],
+        ["numberOfTransactions", "u64"],
         ["numberOfApprovals", "u64"],
         ["numberOfExecutions", "u64"],
         ["description", [128]],

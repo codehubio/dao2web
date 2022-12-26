@@ -29,7 +29,7 @@ export default function ProposalCreateDialog({
       detail: {
         accountType: 100,
         name: "",
-        numberOfSteps: 0,
+        numberOfTransactions: 0,
         numberOfApprovals: 0,
         description: "",
         imageUrl: "",
@@ -54,10 +54,10 @@ export default function ProposalCreateDialog({
       detail: { name, description, expireOrFinalizeAfter, imageUrl },
     } = proposalDetail;
     handleClose();
-    setLoadingMessage("creating proposal");
+    setLoadingMessage("Creating proposal");
     let txid;
     try {
-      await dispatch(
+      const { payload } = await dispatch(
         createProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -73,13 +73,14 @@ export default function ProposalCreateDialog({
       if (reloadFn) {
         reloadFn(true);
       }
+      setLoadingMessage("");
+      setSuccess({
+        message: `Proposal ${name} created!  You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
     } catch (error: any) {
       setError(error);
     }
-    setLoadingMessage("");
-    setSuccess({
-      message: `Proposal ${name} created!  You may need to refresh the page to see the change!`,
-    });
     return txid;
   }
   return (
@@ -92,7 +93,7 @@ export default function ProposalCreateDialog({
         color="primary"
       >
         <DialogTitle textAlign="center" sx={{ mb: 1 }} id="alert-dialog-title">
-          create a new proposal
+          Create a new proposal
         </DialogTitle>
         <DialogContent>
           <ProposalCreate
@@ -102,10 +103,10 @@ export default function ProposalCreateDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={create} color="primary" variant="contained">
-            create
+            Create
           </Button>
           <Button variant="contained" onClick={handleClose} color="error">
-            close
+            Close
           </Button>
         </DialogActions>
       </Dialog>

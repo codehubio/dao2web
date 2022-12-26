@@ -40,13 +40,13 @@ export default function TransactionRejectDialog({
     setLoadingMessage("rejecting transaciton");
     let txid;
     try {
-      await dispatch(
+      const { payload } = await dispatch(
         rejectTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            stepIndex: index,
+            transactionIndex: index,
             proposalPda,
             reason,
           },
@@ -55,13 +55,14 @@ export default function TransactionRejectDialog({
       if (reloadFn) {
         reloadFn(true);
       }
+      setLoadingMessage("");
+      setSuccess({
+        message: `Transaaction ${name} rejected!  You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
     } catch (error: any) {
       setError(error);
     }
-    setLoadingMessage("");
-    setSuccess({
-      message: `Transaaction ${name} rejected!  You may need to refresh the page to see the change!`,
-    });
     return txid;
   }
   return (

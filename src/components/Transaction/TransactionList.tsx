@@ -12,7 +12,7 @@ import {
 import { useConnection } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useContext, useEffect, useState } from "react";
-import { getSteps } from "../../services/state/step";
+import { getSteps } from "../../services/state/transaction";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import TransactionRow from "./TransactionRow";
@@ -49,7 +49,7 @@ export default function TransactionList({
           There is no transaction in this proposal
         </Typography>
       ) : (
-        <></>
+        <Typography variant="h4">Transactions list</Typography>
       )}
       <TableContainer component={Paper}>
         <Table>

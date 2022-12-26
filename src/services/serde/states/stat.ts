@@ -1,11 +1,10 @@
-import { PublicKey } from '@solana/web3.js';
-import BN from 'bn.js';
-import * as borsh from 'borsh';
+import BN from "bn.js";
+import * as borsh from "borsh";
 
 export type TStep = {
-  accountType: number,
-  numberOfProposals: BN,
-}
+  accountType: number;
+  numberOfProposals: BN;
+};
 export class Stat {
   accountType;
 
@@ -14,7 +13,6 @@ export class Stat {
   constructor(fields: TStep) {
     this.accountType = fields.accountType;
     this.numberOfProposals = fields.numberOfProposals;
-
   }
 
   serialize(): Uint8Array {
@@ -25,22 +23,23 @@ export class Stat {
     return borsh.deserialize(StatSchema, Stat, raw);
   }
   static deserializeToReadable(raw: Buffer): any {
-    const {
-      accountType,
-      numberOfProposals
-    } = Stat.deserialize(raw);
+    const { accountType, numberOfProposals } = Stat.deserialize(raw);
     return {
       accountType,
       numberOfProposals: numberOfProposals.toNumber(),
-    }
+    };
   }
 }
- 
-export const StatSchema = new Map([[Stat, {
-  kind: 'struct',
-  fields: [
-    ['accountType', 'u8'],
-    ['numberOfProposals', 'u64'],
+
+export const StatSchema = new Map([
+  [
+    Stat,
+    {
+      kind: "struct",
+      fields: [
+        ["accountType", "u8"],
+        ["numberOfProposals", "u64"],
+      ],
+    },
   ],
-}],
 ]);

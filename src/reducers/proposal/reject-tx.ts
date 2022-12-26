@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import rejectStepInstruction from "../../services/instructions/reject-step";
-import { getStepByPda } from "../../services/state/step";
+import rejectStepInstruction from "../../services/instructions/reject-transaction";
+import { getStepByPda } from "../../services/state/transaction";
 
 const approveTxThunk = createAsyncThunk(
   "rejectTx",
@@ -11,7 +11,7 @@ const approveTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, stepIndex, reason },
+    data: { proposalPda, transactionIndex, reason },
   }: {
     endpoint: string;
     address: string;
@@ -22,18 +22,18 @@ const approveTxThunk = createAsyncThunk(
       const provider = getProvider(providerName.toLowerCase());
       const connection = new Connection(endpoint);
       const wallet = new PublicKey(address);
-      const { rawTx, stepPda } = await rejectStepInstruction(
+      const { rawTx, transactionPda } = await rejectStepInstruction(
         connection,
         wallet,
         {
           proposalPda: new PublicKey(proposalPda),
-          stepIndex,
+          transactionIndex,
           reason,
         }
       );
       const txid = await sendTransaction(connection, provider, rawTx);
-      const { detail } = await getStepByPda(connection, stepPda, 10);
-      return { txid, proposalPda: proposalPda.toBase58(), detail };
+      const { detail } = await getStepByPda(connection, transactionPda, 10);
+      return { txid, proposalPda: proposalPda, detail };
     } catch (error) {
       throw error;
     }

@@ -34,7 +34,7 @@ const settleProposalThunk = createAsyncThunk(
       proposalPda,
       30
     );
-    return { txid, proposalPda: proposalPda.toBase58(), data: readableData };
+    return { txid, proposalPda: proposalPda, data: readableData };
   }
 );
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { getStepByPda } from "../../services/state/step";
+import { getStepByPda } from "../../services/state/transaction";
 
 const getStatByWalletThunk = createAsyncThunk(
   "getTransactionByPda",

@@ -69,7 +69,7 @@ export default function TransactionInfo({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            stepIndex: index,
+            transactionIndex: index,
             proposalPda,
           },
         } as any) as any
@@ -103,7 +103,7 @@ export default function TransactionInfo({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            stepIndex: index,
+            transactionIndex: index,
             proposalPda,
             numberOfApprovals,
           },

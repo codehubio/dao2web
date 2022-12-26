@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import addStepInstruction from "../../services/instructions/add-step";
-import { getStepByPda } from "../../services/state/step";
+import addStepInstruction from "../../services/instructions/add-transaction";
+import { getStepByPda } from "../../services/state/transaction";
 
 const addTxToProposalThunk = createAsyncThunk(
   "addTxToProposal",
@@ -48,7 +48,7 @@ const addTxToProposalThunk = createAsyncThunk(
     );
     const txid = await sendTransaction(connection, provider, rawTx);
     const { detail } = await getStepByPda(connection, transactionPda, 10);
-    return { txid, proposalPda: proposalPda.toBase58(), detail };
+    return { txid, proposalPda: proposalPda, detail };
   }
 );
 

@@ -46,7 +46,7 @@ export default function ProposalDetail() {
   }, [proposalPda, reload]);
   async function settle() {
     setLoadingMessage("Settling the proposal ...");
-    await dispatch(
+    const { payload } = await dispatch(
       settleProposalThunk({
         endpoint: connection.rpcEndpoint,
         address: wallet?.adapter.publicKey as any,
@@ -59,6 +59,7 @@ export default function ProposalDetail() {
     setLoadingMessage("");
     setSuccess({
       message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
+      txid: payload.txid,
     });
   }
   function isAbleToModify(): boolean {

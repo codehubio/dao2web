@@ -1,6 +1,6 @@
 import { Connection, PublicKey } from "@solana/web3.js";
 import { getProposalByPda } from "./proposal";
-import { Step } from "../serde/states/step";
+import { Transaction } from "../serde/states/transaction";
 import { Approval } from "../serde/states/approval";
 const { REACT_APP_SC_ADDRESS = "" } = process.env;
 export async function getStepByPda(
@@ -12,7 +12,7 @@ export async function getStepByPda(
   for (let i = 0; i < time; i += 1) {
     try {
       const transactionAccount = await connection.getAccountInfo(pda);
-      const data = Step.deserializeToReadble(
+      const data = Transaction.deserializeToReadble(
         transactionAccount?.data as Buffer
       );
       const approvalPdas: any = [];
@@ -52,18 +52,18 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
     connection,
     proposalPda
   );
-  let stepPdas: any[] = [];
+  let transactionPdas: any[] = [];
   let approvedPdas: any[][] = [];
-  for (let i = 0; i < readableProposalData.numberOfSteps; i += 1) {
+  for (let i = 0; i < readableProposalData.numberOfTransactions; i += 1) {
     const [pda] = PublicKey.findProgramAddressSync(
       [Buffer.from(i.toString()), proposalPda.toBuffer(), Buffer.from("step")],
       new PublicKey(REACT_APP_SC_ADDRESS)
     );
-    stepPdas.push(pda);
+    transactionPdas.push(pda);
   }
-  const stepInfos = await connection.getMultipleAccountsInfo(stepPdas);
+  const stepInfos = await connection.getMultipleAccountsInfo(transactionPdas);
   const stepData = stepInfos.map((s) =>
-    Step.deserializeToReadble(s?.data as Buffer)
+    Transaction.deserializeToReadble(s?.data as Buffer)
   );
   for (let i = 0; i < stepData.length; i += 1) {
     const step = stepData[i];
@@ -72,7 +72,7 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
       const [approvalPda] = PublicKey.findProgramAddressSync(
         [
           Buffer.from(j.toString()),
-          stepPdas[i].toBuffer(),
+          transactionPdas[i].toBuffer(),
           Buffer.from("approval"),
         ],
         new PublicKey(REACT_APP_SC_ADDRESS)
@@ -95,7 +95,7 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
           ...s,
           approvals: approvalData[index],
         },
-        pda: stepPdas[index],
+        pda: transactionPdas[index],
       };
     }),
   };

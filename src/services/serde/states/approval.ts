@@ -6,7 +6,7 @@ export type TApproval = {
   accountType: number;
   index: BN;
   proposalPda: Uint8Array;
-  stepPda: Uint8Array;
+  transactionPda: Uint8Array;
   approvedAmount: BN;
   sender: BN;
   isReverted: number;
@@ -22,7 +22,7 @@ export class Approval {
 
   proposalPda;
 
-  stepPda;
+  transactionPda;
 
   approvedAmount;
 
@@ -42,7 +42,7 @@ export class Approval {
     this.accountType = fields.accountType;
     this.index = fields.index;
     this.proposalPda = fields.proposalPda;
-    this.stepPda = fields.stepPda;
+    this.transactionPda = fields.transactionPda;
     this.approvedAmount = fields.approvedAmount;
     this.sender = fields.sender;
     this.isReverted = fields.isReverted;
@@ -64,7 +64,7 @@ export class Approval {
       accountType,
       index,
       proposalPda,
-      stepPda,
+      transactionPda,
       approvedAmount,
       sender,
       isReverted,
@@ -80,7 +80,7 @@ export class Approval {
       incentiveFee: incentiveFee.toNumber(),
       approvedAmount: approvedAmount.toNumber(),
       proposalPda: new PublicKey(proposalPda).toBase58(),
-      stepPda: new PublicKey(stepPda).toBase58(),
+      transactionPda: new PublicKey(transactionPda).toBase58(),
       sender: new PublicKey(sender).toBase58(),
       revertedAt: new Date(revertedAt.toNumber() * 1000).toISOString(),
       isReverted,
@@ -98,7 +98,7 @@ export const ApprovalSchema = new Map([
         ["accountType", "u8"],
         ["index", "u64"],
         ["proposalPda", [32]],
-        ["stepPda", [32]],
+        ["transactionPda", [32]],
         ["approvedAmount", "u64"],
         ["incentiveFee", "u64"],
         ["incentiveRate", "u64"],

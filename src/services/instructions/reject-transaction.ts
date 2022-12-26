@@ -14,26 +14,26 @@ export default async function rejectStep(
   creator: PublicKey,
   {
     proposalPda,
-    stepIndex,
+    transactionIndex,
     reason = "",
   }: {
     proposalPda: PublicKey;
-    stepIndex: number;
+    transactionIndex: number;
     reason: string;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
-  const [stepPda] = PublicKey.findProgramAddressSync(
+  const [transactionPda] = PublicKey.findProgramAddressSync(
     [
-      Buffer.from(stepIndex.toString()),
+      Buffer.from(transactionIndex.toString()),
       proposalPda.toBuffer(),
       Buffer.from("step"),
     ],
     new PublicKey(REACT_APP_SC_ADDRESS)
   );
   log(`Proposal PDA: ${proposalPda}`);
-  log(`Step PDA: ${stepPda}`);
+  log(`Step PDA: ${transactionPda}`);
   const rejectStepIx = new RejectStepIns({
     reason: pad(reason, 128),
   });
@@ -55,7 +55,7 @@ export default async function rejectStep(
       {
         isSigner: false,
         isWritable: true,
-        pubkey: stepPda,
+        pubkey: transactionPda,
       },
       {
         isSigner: false,
@@ -76,6 +76,6 @@ export default async function rejectStep(
   }).compileToV0Message();
   return {
     rawTx: tx.serialize(),
-    stepPda,
+    transactionPda,
   };
 }

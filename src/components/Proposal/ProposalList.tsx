@@ -6,7 +6,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
-import { Button, Stack, TableRow } from "@mui/material";
+import { Button, Stack, TableRow, Typography } from "@mui/material";
 import ProposalRow from "./ProposalRow";
 import ProposalCreateDialog from "../Dialog/CreateProposalDialog";
 import { useContext, useEffect, useState } from "react";
@@ -80,6 +80,8 @@ export default function ListProposalInfo() {
         >
           Create new proposal
         </Button>
+        <Typography variant="h4">Proposals list</Typography>
+
         <ProposalListFilters
           filters={proposalFilters}
           setFilters={setProposalFilters}
@@ -92,7 +94,7 @@ export default function ListProposalInfo() {
                 <TableCell />
                 <TableCell align="left">Name</TableCell>
                 <TableCell align="left">Description</TableCell>
-                <TableCell align="left"># of steps</TableCell>
+                <TableCell align="left"># of txs</TableCell>
                 <TableCell align="left"># of approvals</TableCell>
                 <TableCell align="left">Status</TableCell>
                 <TableCell />

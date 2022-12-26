@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 import BN from "bn.js";
 import * as borsh from "borsh";
 
-export type TStep = {
+export type TTransaction = {
   accountType: number;
   index: BN;
   proposalPda: Uint8Array;
@@ -30,7 +30,7 @@ export type TStep = {
   rejectedReason: Uint8Array;
   status: number;
 };
-export class Step {
+export class Transaction {
   accountType;
 
   index;
@@ -83,7 +83,7 @@ export class Step {
 
   status;
 
-  constructor(fields: TStep) {
+  constructor(fields: TTransaction) {
     this.accountType = fields.accountType;
     this.index = fields.index;
     this.proposalPda = fields.proposalPda;
@@ -113,11 +113,11 @@ export class Step {
   }
 
   serialize(): Uint8Array {
-    return borsh.serialize(StepSchema, this);
+    return borsh.serialize(TransactionSchema, this);
   }
 
-  static deserialize(raw: Buffer): Step {
-    return borsh.deserialize(StepSchema, Step, raw);
+  static deserialize(raw: Buffer): Transaction {
+    return borsh.deserialize(TransactionSchema, Transaction, raw);
   }
   static deserializeToReadble(raw: Buffer): any {
     const {
@@ -147,7 +147,7 @@ export class Step {
       revertedAmount,
       rejectedReason,
       status,
-    } = Step.deserialize(raw);
+    } = Transaction.deserialize(raw);
     return {
       accountType,
       index: index.toNumber(),
@@ -179,9 +179,9 @@ export class Step {
   }
 }
 
-export const StepSchema = new Map([
+export const TransactionSchema = new Map([
   [
-    Step,
+    Transaction,
     {
       kind: "struct",
       fields: [

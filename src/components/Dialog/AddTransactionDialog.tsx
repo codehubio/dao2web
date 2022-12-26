@@ -33,7 +33,7 @@ export default function TransactionAddDialog({
   ] = useState({
     detail: {
       accountType: 101,
-      index: proposal.detail.numberOfSteps,
+      index: proposal.detail.numberOfTransactions,
       proposalPda: proposal.pda,
       name: "",
       description: "",
@@ -80,7 +80,7 @@ export default function TransactionAddDialog({
     setLoadingMessage("Adding transaction");
     let txid;
     try {
-      await dispatch(
+      const { payload } = await dispatch(
         addTxToProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -101,13 +101,14 @@ export default function TransactionAddDialog({
       if (reloadFn) {
         reloadFn(true);
       }
+      setLoadingMessage("");
+      setSuccess({
+        message: `Transaction ${name} created! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
     } catch (error: any) {
       setError(error);
     }
-    setLoadingMessage("");
-    setSuccess({
-      message: `Transaction ${name} created! You may need to refresh the page to see the change!`,
-    });
     return txid;
   }
   return (

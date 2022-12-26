@@ -6,80 +6,73 @@ import {
   TransactionInstruction,
   TransactionMessage,
 } from "@solana/web3.js";
+import { ApproveStepIns } from "../serde/instructions/approve-step";
 import {
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
-import { Step } from "../serde/states/step";
-import { RevertStepIns } from "../serde/instructions/revert-step";
+import { Transaction } from "../serde/states/transaction";
 import BN from "bn.js";
-const log = debug("settle-proposal:info");
-export default async function revertStep(
+const log = debug("approve-step:info");
+export default async function approveStep(
   connection: Connection,
   creator: PublicKey,
   {
     proposalPda,
-    stepIndex,
-    approvalIndex = new BN(0),
+    transactionIndex,
+    approvedAmount,
   }: {
     proposalPda: PublicKey;
-    stepIndex: BN;
-    approvalIndex: BN;
+    transactionIndex: BN;
+    approvedAmount: BN;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
-  const [stepPda] = PublicKey.findProgramAddressSync(
+  const [transactionPda] = PublicKey.findProgramAddressSync(
     [
-      Buffer.from(stepIndex.toString()),
+      Buffer.from(transactionIndex.toString()),
       proposalPda.toBuffer(),
       Buffer.from("step"),
     ],
     new PublicKey(REACT_APP_SC_ADDRESS)
   );
-  log(`Getting step data from ${stepPda}`);
+  log(`Getting step data from ${transactionPda}`);
+  const stepAccountInfo = await connection.getAccountInfo(transactionPda);
+  const stepData = Transaction.deserialize(stepAccountInfo?.data as Buffer);
   const [approvalPda] = PublicKey.findProgramAddressSync(
     [
-      Buffer.from(approvalIndex.toString()),
-      stepPda.toBuffer(),
+      Buffer.from(stepData.numberOfApprovals.toString()),
+      transactionPda.toBuffer(),
       Buffer.from("approval"),
     ],
     new PublicKey(REACT_APP_SC_ADDRESS)
   );
-  const stepAccountInfo = await connection.getAccountInfo(stepPda);
-  const stepData = Step.deserialize(stepAccountInfo?.data as Buffer);
-  const { sender, amount, token } = stepData;
-  const senderPubKey = new PublicKey(sender);
+  const { receiver, amount, token } = stepData;
+  const receiverPubKey = new PublicKey(receiver);
   const tokenPubKey = new PublicKey(token);
   log(
-    `Reverting sending ${amount.toNumber()} of ${tokenPubKey.toBase58()} to ${senderPubKey.toBase58()}`
+    `Approving sending ${amount.toNumber()} of ${tokenPubKey.toBase58()} to ${receiverPubKey.toBase58()}`
   );
   const srcAta = await getAssociatedTokenAddress(
-    tokenPubKey,
-    proposalPda,
-    true,
-    TOKEN_PROGRAM_ID,
-    ASSOCIATED_TOKEN_PROGRAM_ID
-  );
-  const dstAta = await getAssociatedTokenAddress(
-    tokenPubKey,
-    senderPubKey,
-    true,
-    TOKEN_PROGRAM_ID,
-    ASSOCIATED_TOKEN_PROGRAM_ID
-  );
-  const dstFeeAta = await getAssociatedTokenAddress(
     tokenPubKey,
     creator,
     true,
     TOKEN_PROGRAM_ID,
     ASSOCIATED_TOKEN_PROGRAM_ID
   );
+  const dstAta = await getAssociatedTokenAddress(
+    tokenPubKey,
+    proposalPda,
+    true,
+    TOKEN_PROGRAM_ID,
+    ASSOCIATED_TOKEN_PROGRAM_ID
+  );
   log(`Proposal PDA: ${proposalPda}`);
-  log(`Step PDA: ${stepPda}`);
-  const revertStepIx = new RevertStepIns();
-  const serializedData = revertStepIx.serialize();
+  log(`Step PDA: ${transactionPda}`);
+  const initPoolIx = new ApproveStepIns({ approvedAmount });
+  const serializedData = initPoolIx.serialize();
   const dataBuffer = Buffer.from(serializedData);
   // console.log(testPub.toBuffer());
   const instruction = new TransactionInstruction({
@@ -90,11 +83,6 @@ export default async function revertStep(
         isWritable: true,
       },
       {
-        pubkey: senderPubKey,
-        isSigner: false,
-        isWritable: false,
-      },
-      {
         isSigner: false,
         isWritable: true,
         pubkey: proposalPda,
@@ -102,7 +90,7 @@ export default async function revertStep(
       {
         isSigner: false,
         isWritable: true,
-        pubkey: stepPda,
+        pubkey: transactionPda,
       },
       {
         isSigner: false,
@@ -123,11 +111,6 @@ export default async function revertStep(
         isSigner: false,
         isWritable: true,
         pubkey: dstAta,
-      },
-      {
-        isSigner: false,
-        isWritable: true,
-        pubkey: dstFeeAta,
       },
       {
         isSigner: false,
@@ -158,6 +141,6 @@ export default async function revertStep(
   }).compileToV0Message();
   return {
     rawTx: tx.serialize(),
-    approvalPda,
+    transactionPda,
   };
 }
