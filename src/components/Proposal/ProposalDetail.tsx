@@ -27,7 +27,7 @@ export default function ProposalDetail() {
   const { proposalPda = "" } = useParams();
   useEffect(() => {
     async function getDetail() {
-      setLoadingMessage("Loading steps ...");
+      setLoadingMessage("Loading transactions ...");
       try {
         const { pda, readableData } = await getProposalByPda(
           connection,

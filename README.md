@@ -1,6 +1,6 @@
 # TokenFlow - a simple yet flexible contract for token flow
 
-Demo: https://multisig.codehub.io/
+Demo: https://d1yqqvg04rco00.cloudfront.net/
 RPC: https://api.devnet.solana.com
 
 ## I. Problems
