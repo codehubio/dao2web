@@ -3,6 +3,8 @@
 Demo: https://d1yqqvg04rco00.cloudfront.net/
 RPC: https://api.devnet.solana.com
 
+Please connect to your wallet in devnet to start
+
 ## I. Problems
 
 **(P1)** User A creates an proposal among multiple parties where
