@@ -15,7 +15,7 @@ import { getProposalByPda } from "../../services/state/proposal";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
-  const { setLoadingMessage, setError, setSuccess } = useContext(
+  const { setLoadingMessage, setError, setSuccess, setBreads } = useContext(
     AppContext
   ) as any;
   // const [assets, setAssets] = useState([]);

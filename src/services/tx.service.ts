@@ -14,9 +14,3 @@ export async function sendTransaction(
   const txid = await adapter.sendTransaction(tx, connection);
   return txid;
 }
-export async function sendTransactionWithMainWallet(
-  connection: Connection,
-  serializedTransaction: Uint8Array
-): Promise<any> {
-  return 1;
-}
