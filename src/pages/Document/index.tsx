@@ -16,7 +16,7 @@ export default function DocumentationPage() {
     <div style={{ display: "flex" }}>
       <div style={{ margin: "auto", maxWidth: "60%" }}>
         <Typography variant="subtitle1" fontWeight="bold">
-          I. What is Token Flow
+          I. What is Token Flow?
         </Typography>
         <br />
         <Typography variant="subtitle2" fontWeight="light">
@@ -274,6 +274,7 @@ export default function DocumentationPage() {
             </li>
           </ul>
         </Typography>
+        <Typography variant="subtitle2">5. Inventive fee</Typography>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ import AppContext from "./share/context";
 import { store } from "./store";
 import { supportedWallets } from "./services/wallet.service";
 import ProposalDetail from "./pages/Proposal/ProposalDetail";
-import ListProposals from "./pages/Proposal/ListProposals";
+import ListMyProposals from "./pages/Proposal/ListMyProposals";
 import TransactionDetail from "./components/Transaction/TransactionDetail";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -28,11 +28,16 @@ import "@fontsource/roboto/700.css";
 import MyBreadcrumbs from "./components/MyBreadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
 import ViewListIcon from "@mui/icons-material/ViewList";
+import ArticleIcon from "@mui/icons-material/Article";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 import CreateProposal from "./pages/Proposal/CreatePropsal";
 import HomePage from "./pages/Home";
 import DocumentationPage from "./pages/Document";
 import Footer from "./components/Footer";
 import { Container } from "@mui/material";
+import ContactPage from "./pages/Contact";
+import ListInvolvedProposals from "./pages/Proposal/ListInvolvedProposals";
+import ListPublicProposals from "./pages/Proposal/ListPublicProposals";
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -62,7 +67,12 @@ export default function App() {
     {
       name: "Documentation",
       path: "/documentation",
-      icon: HomeIcon,
+      icon: ArticleIcon,
+    },
+    {
+      name: "Contact",
+      path: "/contact",
+      icon: ContactMailIcon,
     },
   ];
   const [breads, _setBreads] = useState([menu[0]] as any);
@@ -108,6 +118,7 @@ export default function App() {
                         maxWidth: "100%",
                         marginLeft: "auto",
                         marginRight: "auto",
+                        minHeight: "80vh",
                       }}
                     >
                       <MyBreadcrumbs aria-label="breadcrumb" breads={breads} />
@@ -122,9 +133,18 @@ export default function App() {
                             element={<DocumentationPage />}
                             path="/documentation"
                           />
+                          <Route element={<ContactPage />} path="/contact" />
                           <Route
-                            element={<ListProposals />}
-                            path="/list-proposals"
+                            element={<ListMyProposals />}
+                            path="/list-my-proposals"
+                          />
+                          <Route
+                            element={<ListInvolvedProposals />}
+                            path="/list-involved-proposals"
+                          />
+                          <Route
+                            element={<ListPublicProposals />}
+                            path="/list-public-proposals"
                           />
                           <Route
                             element={<CreateProposal />}
@@ -139,20 +159,20 @@ export default function App() {
                             path="/transaction/:transactionPda"
                           />
                         </Routes>
-                        <Footer
-                          sx={{
-                            position: "relative",
-                            mt: "10%",
-                            left: 0,
-                            bottom: 20,
-                            right: 0,
-                          }}
-                        />
                         <Success success={success}></Success>
                         <Error error={error}></Error>
                         <Loading message={loadingMessage} />
                       </div>
                     </div>
+                    <Footer
+                      sx={{
+                        position: "relative",
+                        mt: "10%",
+                        left: 0,
+                        bottom: 20,
+                        right: 0,
+                      }}
+                    />
                   </Container>
                 </WalletModalProvider>
               </WalletProvider>

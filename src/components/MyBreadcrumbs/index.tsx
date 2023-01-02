@@ -24,7 +24,6 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 }) as typeof Chip; // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
 
 export default function MyBreadcrumbs({ breads, ...props }: any) {
-  console.log(breads);
   return (
     <Breadcrumbs {...props} aria-label="breadcrumb">
       {breads.map((b: any, index: number) => {

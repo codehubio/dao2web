@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect } from "react";
-import ListMyProposal from "../../components/Proposal/ProposalList";
+import ListProposal from "../../components/Proposal/ProposalList";
 import AppContext from "../../share/context";
-export default function ListProposals() {
+export default function ListPublicProposals() {
   const { setBreads } = useContext(AppContext) as any;
   useEffect(() => {
     document.title = "Token Flow - Proposal List";
@@ -10,7 +10,7 @@ export default function ListProposals() {
   }, []);
   return (
     <>
-      <ListMyProposal />
+      <ListProposal isPublic={true} />
     </>
   );
 }

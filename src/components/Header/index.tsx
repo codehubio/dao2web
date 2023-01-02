@@ -14,7 +14,7 @@ const pages = [
     path: "/",
   },
   { name: "Documentation", path: "/documentation" },
-  { name: "About Us", path: "/" },
+  { name: "Contact", path: "/contact" },
 ];
 
 function ResponsiveAppBar() {
@@ -42,11 +42,12 @@ function ResponsiveAppBar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <Link style={{ textDecoration: "none" }} to={page.path}>
-                <Button
-                  key={index}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
+              <Link
+                key={index}
+                style={{ textDecoration: "none" }}
+                to={page.path}
+              >
+                <Button sx={{ my: 2, color: "white", display: "block" }}>
                   {page.name}
                 </Button>
               </Link>
@@ -56,23 +57,32 @@ function ResponsiveAppBar() {
             component={Stack}
             direction="row"
             spacing={2}
-            sx={{ flexGrow: 2 }}
+            sx={{ flexGrow: 0, mr: 2 }}
           >
-            <Link style={{ textDecoration: "none" }} to="/list-proposals">
-              <Button variant="text" color="info">
-                Go to proposal list
-              </Button>
-            </Link>
-            <Typography
-              // fontFamily="'Pacifico', cursive;"
-              variant="subtitle1"
-              sx={{ pt: 0.5 }}
-            >
-              or
-            </Typography>
             <Link style={{ textDecoration: "none" }} to="/create-proposal">
               <Button variant="contained" color="info">
                 Create your proposal
+              </Button>
+            </Link>
+            <Link style={{ textDecoration: "none" }} to="/list-my-proposals">
+              <Button variant="text" color="info">
+                Your proposals
+              </Button>
+            </Link>
+            <Link
+              style={{ textDecoration: "none" }}
+              to="/list-public-proposals"
+            >
+              <Button variant="text" color="info">
+                Public proposals
+              </Button>
+            </Link>
+            <Link
+              style={{ textDecoration: "none" }}
+              to="/list-involved-proposals"
+            >
+              <Button variant="text" color="info">
+                Involved proposals
               </Button>
             </Link>
           </Box>

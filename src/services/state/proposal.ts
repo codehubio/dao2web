@@ -73,10 +73,15 @@ export async function listProposalsByInvolve(
   options: TListProposalFilter = {}
 ): Promise<any> {
   try {
-    console.log(wallet);
     const programId = new PublicKey(REACT_APP_SC_ADDRESS);
     const rawData = await connection.getProgramAccounts(programId, {
       filters: [
+        {
+          memcmp: {
+            offset: 0,
+            bytes: base58.encode(Buffer.from([101])),
+          },
+        },
         {
           memcmp: {
             offset: 1 + 8 + 32 + 16 + 128 + 8 + 8 + 8,
@@ -115,6 +120,7 @@ export async function listProposals(
   connection: Connection,
   options: TListProposalFilter
 ): Promise<any> {
+  // account type
   const filters = [
     {
       memcmp: {

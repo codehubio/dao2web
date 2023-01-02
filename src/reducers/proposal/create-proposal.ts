@@ -31,12 +31,13 @@ const createProposalThunk = createAsyncThunk(
       }
     );
     const txid = await sendTransaction(connection, provider, rawTx);
+    console.log(txid);
     const { readableData } = await getProposalByPda(
       connection,
       proposalPda,
       30
     );
-    return { txid, proposalPda: proposalPda, data: readableData };
+    return { txid, proposalPda: proposalPda.toBase58(), data: readableData };
   }
 );
 export default createProposalThunk;

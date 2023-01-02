@@ -15,7 +15,16 @@ import { listProposalsThunk } from "../../reducers/proposal";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useParams } from "react-router-dom";
-export default function ListProposalInfo() {
+import { PublicKey, SystemProgram } from "@solana/web3.js";
+export default function ListProposalInfo({
+  isMyProposal,
+  isInvolved,
+  isPublic,
+}: {
+  isMyProposal?: boolean;
+  isInvolved?: boolean;
+  isPublic?: boolean;
+}) {
   const { setLoadingMessage, setError } = useContext(AppContext) as any;
   const { connection } = useConnection();
   const { wallet } = useWallet();
@@ -31,11 +40,10 @@ export default function ListProposalInfo() {
     async function getAssets() {
       setLoadingMessage("Loading assets ...");
       try {
-        proposalFilters.creator = proposalFilters.isMyProposal
-          ? addressPubkey
-          : "";
-        proposalFilters.involve = proposalFilters.isInvolved
-          ? addressPubkey
+        proposalFilters.creator = isMyProposal ? addressPubkey : "";
+        proposalFilters.involve = isInvolved ? addressPubkey : "";
+        proposalFilters.involve = isPublic
+          ? SystemProgram.programId.toBase58()
           : "";
         const { payload } = await dispatch(
           listProposalsThunk({

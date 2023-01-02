@@ -25,24 +25,6 @@ export default function ProposalListFilters({
       <FormControlLabel
         control={
           <Checkbox
-            checked={!!filters.isMyProposal}
-            onChange={updateFilters.bind(null, "isMyProposal")}
-          />
-        }
-        label="Owned"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={!!filters.isInvolved}
-            onChange={updateFilters.bind(null, "isInvolved")}
-          />
-        }
-        label="Involved"
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
             checked={!!filters.isSettled}
             onChange={updateFilters.bind(null, "isSettled")}
           />
