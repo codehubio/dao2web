@@ -6,7 +6,7 @@ import { useContext, useEffect } from "react";
 import AppContext from "../../share/context";
 import { Link } from "react-router-dom";
 
-export default function MultiActionAreaCard() {
+export default function HomePage() {
   const { setBreads } = useContext(AppContext) as any;
   useEffect(() => {
     document.title = "Token Flow - Proposal List";

@@ -13,7 +13,7 @@ const pages = [
     name: "Home",
     path: "/",
   },
-  { name: "Documentation", path: "/" },
+  { name: "Documentation", path: "/documentation" },
   { name: "About Us", path: "/" },
 ];
 

@@ -27,8 +27,12 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import MyBreadcrumbs from "./components/MyBreadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
+import ViewListIcon from "@mui/icons-material/ViewList";
 import CreateProposal from "./pages/Proposal/CreatePropsal";
-import Home from "./pages/Home";
+import HomePage from "./pages/Home";
+import DocumentationPage from "./pages/Document";
+import Footer from "./components/Footer";
+import { Container } from "@mui/material";
 
 window.Buffer = window.Buffer || Buffer;
 const darkTheme = createTheme({
@@ -48,11 +52,16 @@ export default function App() {
     {
       name: "List Proposals",
       path: "/list-proposals",
-      icon: HomeIcon,
+      icon: ViewListIcon,
     },
     {
       name: "Create Proposal",
       path: "/create-proposal",
+      icon: HomeIcon,
+    },
+    {
+      name: "Documentation",
+      path: "/documentation",
       icon: HomeIcon,
     },
   ];
@@ -92,44 +101,59 @@ export default function App() {
               <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
                   <Header />
-                  <div
-                    style={{
-                      marginTop: "20px",
-                      maxWidth: "80%",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }}
-                  >
-                    <MyBreadcrumbs aria-label="breadcrumb" breads={breads} />
+                  <Container>
                     <div
                       style={{
                         marginTop: "20px",
+                        maxWidth: "100%",
+                        marginLeft: "auto",
+                        marginRight: "auto",
                       }}
                     >
-                      <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route
-                          element={<ListProposals />}
-                          path="/list-proposals"
+                      <MyBreadcrumbs aria-label="breadcrumb" breads={breads} />
+                      <div
+                        style={{
+                          marginTop: "20px",
+                        }}
+                      >
+                        <Routes>
+                          <Route element={<HomePage />} path="/" />
+                          <Route
+                            element={<DocumentationPage />}
+                            path="/documentation"
+                          />
+                          <Route
+                            element={<ListProposals />}
+                            path="/list-proposals"
+                          />
+                          <Route
+                            element={<CreateProposal />}
+                            path="/create-proposal"
+                          />
+                          <Route
+                            element={<ProposalDetail />}
+                            path="/proposal/:proposalPda"
+                          />
+                          <Route
+                            element={<TransactionDetail />}
+                            path="/transaction/:transactionPda"
+                          />
+                        </Routes>
+                        <Footer
+                          sx={{
+                            position: "relative",
+                            mt: "10%",
+                            left: 0,
+                            bottom: 20,
+                            right: 0,
+                          }}
                         />
-                        <Route
-                          element={<CreateProposal />}
-                          path="/create-proposal"
-                        />
-                        <Route
-                          element={<ProposalDetail />}
-                          path="/proposal/:proposalPda"
-                        />
-                        <Route
-                          element={<TransactionDetail />}
-                          path="/transaction/:transactionPda"
-                        />
-                      </Routes>
-                      <Success success={success}></Success>
-                      <Error error={error}></Error>
-                      <Loading message={loadingMessage} />
+                        <Success success={success}></Success>
+                        <Error error={error}></Error>
+                        <Loading message={loadingMessage} />
+                      </div>
                     </div>
-                  </div>
+                  </Container>
                 </WalletModalProvider>
               </WalletProvider>
             </ConnectionProvider>
