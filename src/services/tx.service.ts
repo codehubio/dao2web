@@ -11,6 +11,8 @@ export async function sendTransaction(
   if (!adapter) {
     throw new Error("No wallet found!");
   }
-  const txid = await adapter.sendTransaction(tx, connection);
+  const txid = await adapter.sendTransaction(tx, connection, {
+    maxRetries: 5,
+  });
   return txid;
 }

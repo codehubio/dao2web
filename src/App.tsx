@@ -34,7 +34,7 @@ import CreateProposal from "./pages/Proposal/CreatePropsal";
 import HomePage from "./pages/Home";
 import DocumentationPage from "./pages/Document";
 import Footer from "./components/Footer";
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import ContactPage from "./pages/Contact";
 import ListInvolvedProposals from "./pages/Proposal/ListInvolvedProposals";
 import ListPublicProposals from "./pages/Proposal/ListPublicProposals";
@@ -51,27 +51,38 @@ export default function App() {
   const menu = [
     {
       name: "Home",
-      path: "/",
       icon: HomeIcon,
     },
     {
-      name: "List Proposals",
-      path: "/list-proposals",
+      name: "My Proposals",
+      icon: ViewListIcon,
+    },
+    {
+      name: "Involved Proposals",
+      icon: ViewListIcon,
+    },
+    {
+      name: "Public Proposals",
       icon: ViewListIcon,
     },
     {
       name: "Create Proposal",
-      path: "/create-proposal",
       icon: HomeIcon,
     },
     {
+      name: "Detail Proposal",
+      icon: ArticleIcon,
+    },
+    {
       name: "Documentation",
-      path: "/documentation",
       icon: ArticleIcon,
     },
     {
       name: "Contact",
-      path: "/contact",
+      icon: ContactMailIcon,
+    },
+    {
+      name: "Detail Transaction",
       icon: ContactMailIcon,
     },
   ];
@@ -85,7 +96,7 @@ export default function App() {
   }
   const [loadingMessage, setLoadingMessage] = useState("");
   useEffect(() => {
-    document.title = "Token Flow - Home";
+    document.title = "Proposol - Home";
   }, []);
   const wallets = useMemo(() => [supportedWallets.phantom], []);
 
@@ -115,7 +126,7 @@ export default function App() {
                     <div
                       style={{
                         marginTop: "20px",
-                        maxWidth: "100%",
+                        maxWidth: "80%",
                         marginLeft: "auto",
                         marginRight: "auto",
                         minHeight: "80vh",
@@ -152,7 +163,7 @@ export default function App() {
                           />
                           <Route
                             element={<ProposalDetail />}
-                            path="/proposal/:proposalPda"
+                            path="/get-proposal/:proposalPda"
                           />
                           <Route
                             element={<TransactionDetail />}

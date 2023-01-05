@@ -5,8 +5,9 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { Stack } from "@mui/material";
+import { Chip, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useWallet } from "@solana/wallet-adapter-react";
 
 const pages = [
   {
@@ -17,28 +18,16 @@ const pages = [
   { name: "Contact", path: "/contact" },
 ];
 
-function ResponsiveAppBar() {
+function Header() {
+  const { wallet } = useWallet();
+  function isConnected(): boolean {
+    return !!wallet?.adapter.connected;
+  }
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "'Pacifico', cursive;",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            TokenFlow
-          </Typography>
+          <img alt="beta" src="imgs/logo.png" width="10%" height="10%"></img>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
@@ -53,39 +42,43 @@ function ResponsiveAppBar() {
               </Link>
             ))}
           </Box>
-          <Box
-            component={Stack}
-            direction="row"
-            spacing={2}
-            sx={{ flexGrow: 0, mr: 2 }}
-          >
-            <Link style={{ textDecoration: "none" }} to="/create-proposal">
-              <Button variant="contained" color="info">
-                Create your proposal
-              </Button>
-            </Link>
-            <Link style={{ textDecoration: "none" }} to="/list-my-proposals">
-              <Button variant="text" color="info">
-                Your proposals
-              </Button>
-            </Link>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/list-public-proposals"
+          {isConnected() ? (
+            <Box
+              component={Stack}
+              direction="row"
+              spacing={2}
+              sx={{ flexGrow: 0, mr: 2 }}
             >
-              <Button variant="text" color="info">
-                Public proposals
-              </Button>
-            </Link>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/list-involved-proposals"
-            >
-              <Button variant="text" color="info">
-                Involved proposals
-              </Button>
-            </Link>
-          </Box>
+              <Link style={{ textDecoration: "none" }} to="/create-proposal">
+                <Button variant="contained" color="secondary">
+                  Create your proposal
+                </Button>
+              </Link>
+              <Link style={{ textDecoration: "none" }} to="/list-my-proposals">
+                <Button variant="text" color="info">
+                  My proposals
+                </Button>
+              </Link>
+              <Link
+                style={{ textDecoration: "none" }}
+                to="/list-public-proposals"
+              >
+                <Button variant="text" color="info">
+                  Public proposals
+                </Button>
+              </Link>
+              <Link
+                style={{ textDecoration: "none" }}
+                to="/list-involved-proposals"
+              >
+                <Button variant="text" color="info">
+                  Involved proposals
+                </Button>
+              </Link>
+            </Box>
+          ) : (
+            <Chip color="warning" label="Please connect to your wallet" />
+          )}
           <Box sx={{ flexGrow: 0 }}>
             <WalletMultiButton />
           </Box>
@@ -94,4 +87,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default Header;

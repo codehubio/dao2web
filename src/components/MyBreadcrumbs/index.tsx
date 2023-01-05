@@ -25,18 +25,17 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 export default function MyBreadcrumbs({ breads, ...props }: any) {
   return (
-    <Breadcrumbs {...props} aria-label="breadcrumb">
+    <>
       {breads.map((b: any, index: number) => {
         return (
-          <StyledBreadcrumb
+          <Chip
+            color="primary"
             key={index}
-            component="a"
-            href={b.path}
             label={b.name}
             icon={<b.icon></b.icon>}
           />
         );
       })}
-    </Breadcrumbs>
+    </>
   );
 }

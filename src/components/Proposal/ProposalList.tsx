@@ -15,7 +15,7 @@ import { listProposalsThunk } from "../../reducers/proposal";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useParams } from "react-router-dom";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
+import { SystemProgram } from "@solana/web3.js";
 export default function ListProposalInfo({
   isMyProposal,
   isInvolved,
@@ -38,13 +38,13 @@ export default function ListProposalInfo({
   const addressPubkey = address || wallet?.adapter.publicKey?.toBase58();
   useEffect(() => {
     async function getAssets() {
-      setLoadingMessage("Loading assets ...");
+      setLoadingMessage("Loading proposals ...");
       try {
         proposalFilters.creator = isMyProposal ? addressPubkey : "";
         proposalFilters.involve = isInvolved ? addressPubkey : "";
         proposalFilters.involve = isPublic
           ? SystemProgram.programId.toBase58()
-          : "";
+          : proposalFilters.involve;
         const { payload } = await dispatch(
           listProposalsThunk({
             endpoint: connection.rpcEndpoint,

@@ -1,30 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
 import { useContext, useEffect } from "react";
 import AppContext from "../../share/context";
-import { Link } from "react-router-dom";
 
 export default function DocumentationPage() {
   const { setBreads } = useContext(AppContext) as any;
   useEffect(() => {
-    document.title = "Token Flow - Proposal List";
-    setBreads(["Home", "Documentation"]);
+    document.title = "Proposol - Proposal List";
+    setBreads(["Documentation"]);
   }, []);
   return (
     <div style={{ display: "flex" }}>
       <div style={{ margin: "auto", maxWidth: "60%" }}>
         <Typography variant="subtitle1" fontWeight="bold">
-          I. What is Token Flow?
+          I. What is Proposol?
         </Typography>
         <br />
         <Typography variant="subtitle2" fontWeight="light">
-          Token Flow is multi-transaction flow management for SPL and native
-          tokens on Solana blockchain. By defining on-chain proposals which
-          involve all signers into the approval process, we provide secure,
-          simple yet flexible solutions to transfer SPL and native tokens among
-          parties.
+          Proposol is multi-transaction flow management plaform for SPL and
+          native tokens on Solana blockchain. By defining on-chain proposals
+          which involve all signers into the approval process, we provide
+          secure, simple yet flexible solutions to transfer SPL and native
+          tokens among parties.
         </Typography>
         <br />
         <Typography variant="subtitle1" fontWeight="bold">
@@ -54,11 +52,11 @@ export default function DocumentationPage() {
         </Typography>
         <br />
         <Typography variant="subtitle1" fontWeight="bold">
-          III. How TokenFlow solves them
+          III. How Proposol solves them
         </Typography>
         <br />
         <Typography variant="subtitle2" fontWeight="light">
-          a) TokenFlow defines a multi-on-demand-transaction proposal and
+          a) Proposol defines a multi-on-demand-transaction proposal and
           involves all the senders into the signing process. Funds from approved
           transactions are safely moved to a vault and locked. Only after all
           transactions are approved by their senders, the proposl is consider
@@ -73,7 +71,7 @@ export default function DocumentationPage() {
         </Typography>
         <br />
         <Typography variant="subtitle2" fontWeight="light">
-          b) TokenFlow defines a multi-on-demand-anonymous-transaction funding
+          b) Proposol defines a multi-on-demand-anonymous-transaction funding
           proposal. Anyone can involve into the funding process by sending a
           portion of (or full) the requested amount. Funds from approved
           transactions are safely moved to a vault and locked. Only after all
@@ -158,14 +156,14 @@ export default function DocumentationPage() {
               <i>
                 <b>rejected</b>
               </i>
-              : Proposal is automaticallyrejected if at least one of its
+              : Proposal is automatically rejected if at least one of its
               transactions is rejected.
             </li>
             <li>
               <i>
                 <b>expired</b>
               </i>
-              : If proposal reaches a certain deadline without being approved or
+              : After a certain deadline without the proposal being approved or
               rejected, it will be automatically expired. This phase is final
             </li>
             <li>
@@ -274,7 +272,27 @@ export default function DocumentationPage() {
             </li>
           </ul>
         </Typography>
-        <Typography variant="subtitle2">5. Inventive fee</Typography>
+        <Typography variant="subtitle2">
+          5. Inventive rate and incentive fee
+        </Typography>
+        <Typography variant="subtitle2" fontWeight="light">
+          <ul>
+            <li>
+              Incentive rate defaults to 0 and is transaction-based, set by
+              proposal creator
+            </li>
+            <li>
+              Incentive fee is used to calculate the incentive rate which is
+              paid by the <b>senders</b> who approve the transactions based on
+              the approved amounts.
+            </li>
+            <li>
+              Incentive fee is credited to the <b>caller</b> who
+              executes/reverts the transaction after the proposal it belongs to
+              is approved/rejected.
+            </li>
+          </ul>
+        </Typography>
       </div>
     </div>
   );

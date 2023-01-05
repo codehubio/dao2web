@@ -24,7 +24,7 @@ export default function ProposalInfo({
     return "Pending";
   }
   function redirect() {
-    navigate(`/proposal/${proposal?.pda}`);
+    navigate(`/get-proposal/${proposal?.pda}`);
   }
 
   return proposal && proposal.detail ? (

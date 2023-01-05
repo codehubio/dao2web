@@ -5,8 +5,8 @@ import AppContext from "../../share/context";
 export default function ListInvolvedProposals() {
   const { setBreads } = useContext(AppContext) as any;
   useEffect(() => {
-    document.title = "Token Flow - Proposal List";
-    setBreads(["Home", "List Proposals"]);
+    document.title = "Proposol - Proposal List";
+    setBreads(["Involved Proposals"]);
   }, []);
   return (
     <>

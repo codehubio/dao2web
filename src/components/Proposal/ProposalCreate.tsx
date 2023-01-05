@@ -6,8 +6,10 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { createProposalThunk } from "../../reducers/proposal";
+import { useNavigate } from "react-router-dom";
 export default function ProposalCreate() {
   const { wallet } = useWallet();
+  const navigate = useNavigate();
   const [proposalDetail, setProposalDetail]: [TParseProposalDetail, Function] =
     useState({
       detail: {
@@ -40,14 +42,11 @@ export default function ProposalCreate() {
       },
     });
   }
-  const { setLoadingMessage, setError, setSuccess, setBreads } = useContext(
+  const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
   const { connection } = useConnection();
   const dispatch = useDispatch();
-  useEffect(() => {
-    setBreads(["Home", "Create Proposal"]);
-  }, []);
   async function create() {
     const {
       detail: { name, description, expireOrFinalizeAfter, imageUrl },
@@ -70,10 +69,12 @@ export default function ProposalCreate() {
       );
       setLoadingMessage("");
       setSuccess({
-        message: `Proposal ${name} created!  You may need to refresh the page to see the change!`,
+        message: `Proposal ${name} created! You may need to refresh the page to see the change!`,
         txid: payload.txid,
       });
+      navigate(`/get-proposal/${payload.proposalPda}`);
     } catch (error: any) {
+      console.log(error);
       setError(error);
     }
     return txid;
@@ -87,7 +88,8 @@ export default function ProposalCreate() {
         direction="row"
         alignItems="center"
         justifyContent="center"
-        // alignContent="center"
+        alignContent="center"
+        textAlign="center"
         mb={1}
       >
         <Grid item xs={12}>

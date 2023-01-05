@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useContext, useEffect } from "react";
 import AppContext from "../../share/context";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default function HomePage() {
   const { setBreads } = useContext(AppContext) as any;
   useEffect(() => {
-    document.title = "Token Flow - Proposal List";
+    document.title = "Proposol - Proposal List";
     setBreads(["Home"]);
   }, []);
   return (
@@ -28,11 +28,18 @@ export default function HomePage() {
           ...&nbsp;to transfer SPL and native SOL tokens among parties.
         </Typography>
         <br />
-        <Link to="/create-proposal" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="info">
-            Create your proposal
-          </Button>
-        </Link>
+        <Stack direction="row" spacing={2}>
+          <Link to="/documentation" style={{ textDecoration: "none" }}>
+            <Button variant="contained" color="info">
+              Learn more
+            </Button>
+          </Link>
+          <Link to="/create-proposal" style={{ textDecoration: "none" }}>
+            <Button variant="contained" color="secondary">
+              Create a proposal
+            </Button>
+          </Link>
+        </Stack>
       </div>
       <div
         style={{
@@ -43,7 +50,7 @@ export default function HomePage() {
       >
         <img
           style={{ maxWidth: "100%" }}
-          src="https://www.circle.com/hubfs/sundaes/multichain-solana.png"
+          src="imgs/multichain-solana.png"
           alt="flow"
         ></img>
       </div>

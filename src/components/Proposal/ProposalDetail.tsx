@@ -26,6 +26,7 @@ export default function ProposalDetail() {
   const { wallet } = useWallet();
   const { proposalPda = "" } = useParams();
   useEffect(() => {
+    setBreads(["Home", "Proposal List"]);
     async function getDetail() {
       setLoadingMessage("Loading transactions ...");
       try {
@@ -73,7 +74,6 @@ export default function ProposalDetail() {
   function changeAddTxDialogState() {
     setOpenAddTx(!openAddTx);
   }
-
   return proposal && proposal.detail ? (
     <>
       <TransactionAddDialog

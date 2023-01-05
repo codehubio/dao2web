@@ -7,7 +7,6 @@ export const listProposalsByInvolveThunk = createAsyncThunk(
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
     const proposals = await listProposalsByInvolve(connection, wallet);
-    console.log(proposals);
     return proposals;
   }
 );
