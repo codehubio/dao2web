@@ -104,7 +104,7 @@ export default function TransactionAdd({
               onChange={setField.bind(null, "executeAfter")}
               placeholder="How long in seconds will this tx be executed after the proposal is approved"
               style={{ width: "100%" }}
-              label="Execute after"
+              label="Execute delay"
               variant="outlined"
               color="primary"
             />

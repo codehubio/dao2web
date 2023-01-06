@@ -44,13 +44,6 @@ export default function TransactionList({
   }, [proposal.pda, reload]);
   return (
     <>
-      {transactions.length === 0 ? (
-        <Typography variant="h6">
-          There is no transaction in this proposal
-        </Typography>
-      ) : (
-        <Typography variant="h4">Transactions list</Typography>
-      )}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -63,7 +56,7 @@ export default function TransactionList({
               <TableCell align="left">Token</TableCell>
               <TableCell align="left">Sender</TableCell>
               <TableCell align="left">Receiver</TableCell>
-              <TableCell align="left">Incentive rate</TableCell>
+              <TableCell align="left">Incentive fee</TableCell>
               <TableCell align="left">Execution delay</TableCell>
               <TableCell align="left" />
             </TableRow>

@@ -15,7 +15,7 @@ import { Transaction } from "../serde/states/transaction";
 import { RevertStepIns } from "../serde/instructions/revert-step";
 import BN from "bn.js";
 const log = debug("settle-proposal:info");
-export default async function revertStep(
+export default async function revertTransaction(
   connection: Connection,
   creator: PublicKey,
   {

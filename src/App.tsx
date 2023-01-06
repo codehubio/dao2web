@@ -126,7 +126,7 @@ export default function App() {
                     <div
                       style={{
                         marginTop: "20px",
-                        maxWidth: "80%",
+                        maxWidth: "100%",
                         marginLeft: "auto",
                         marginRight: "auto",
                         minHeight: "80vh",

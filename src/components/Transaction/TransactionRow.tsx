@@ -146,7 +146,7 @@ export default function TransactionInfo({
         <TableCell align="left">
           {txDetail.receiver.substring(0, 4)}...
         </TableCell>
-        <TableCell align="left">{txDetail.incentiveRate}</TableCell>
+        <TableCell align="left">{txDetail.incentiveFee}</TableCell>
         <TableCell align="left">{txDetail.executeAfter.toString()}</TableCell>
         <TableCell align="left">
           {isAbleToApproveOrReject() ? (

@@ -108,7 +108,7 @@ export async function listProposalsByInvolve(
         return (
           (!options.isApproved || d.detail.isApproved) &&
           (!options.isRejected || d.detail.isRejected) &&
-          (!options.isSettled || d.detail.isSettled) &&
+          d.detail.isSettled &&
           (!options.isExecuted || d.detail.isExecuted)
         );
       });

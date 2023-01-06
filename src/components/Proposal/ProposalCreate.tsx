@@ -1,12 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Button, Grid, TextField } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { createProposalThunk } from "../../reducers/proposal";
 import { useNavigate } from "react-router-dom";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
 export default function ProposalCreate() {
   const { wallet } = useWallet();
   const navigate = useNavigate();
@@ -42,6 +45,17 @@ export default function ProposalCreate() {
       },
     });
   }
+  const handleDateChange = (newValue: Dayjs | null) => {
+    setProposalDetail({
+      ...proposalDetail,
+      detail: {
+        ...proposalDetail.detail,
+        expireOrFinalizeAfter: newValue
+          ? Math.floor(newValue.toDate().valueOf() / 1000)
+          : 0,
+      },
+    });
+  };
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
@@ -120,7 +134,7 @@ export default function ProposalCreate() {
             color="primary"
           />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <TextField
             onChange={setField.bind(null, "expireOrFinalizeAfter")}
             style={{ width: "100%" }}
@@ -129,6 +143,21 @@ export default function ProposalCreate() {
             variant="outlined"
             color="primary"
           />
+        </Grid> */}
+        <Grid item xs={12}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              disablePast={true}
+              label="Expire after"
+              value={dayjs(
+                new Date(proposalDetail.detail.expireOrFinalizeAfter * 1000)
+              )}
+              onChange={handleDateChange}
+              renderInput={(params) => (
+                <TextField sx={{ width: "100%" }} {...params} />
+              )}
+            />
+          </LocalizationProvider>
         </Grid>
         <Grid item xs={12}>
           <Button onClick={create} color="primary" variant="contained">

@@ -28,6 +28,13 @@ const revertTxThunk = createAsyncThunk(
         transactionIndex,
         approvalIndex: new BN(i),
       });
+      // const msg = MessageV0.deserialize(rawTx);
+      // const txMessage = TransactionMessage.decompile(msg);
+
+      // const log = await connection.simulateTransaction(
+      //   txMessage.compileToLegacyMessage()
+      // );
+      // console.log(log);
       const txid = await sendTransaction(connection, provider, rawTx);
       txids.push(txid);
     }

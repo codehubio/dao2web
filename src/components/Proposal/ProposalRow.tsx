@@ -1,11 +1,12 @@
-import { Avatar, Button, TableCell, TableRow } from "@mui/material";
+import { Avatar, TableCell, TableRow } from "@mui/material";
 import { Fragment } from "react";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 export default function ProposalInfo({
   proposal,
 }: {
-  proposal: TParseProposalDetail | null;
+  proposal: TParseProposalDetail;
 }) {
   const navigate = useNavigate();
   function getStatus(): string {
@@ -26,11 +27,22 @@ export default function ProposalInfo({
   function redirect() {
     navigate(`/get-proposal/${proposal?.pda}`);
   }
+  function getExpiration() {
+    const expireAt = dayjs(proposal?.detail.expireOrFinalizeAfter);
+    if (expireAt.valueOf() === 0) {
+      return "None";
+    }
+    return expireAt.format("YYYY/MM/DD HH:mm:ss");
+  }
+  function getCreatedAt() {
+    const createdAt = dayjs(proposal?.detail.createdAt);
+    return createdAt.format("YYYY/MM/DD HH:mm:ss");
+  }
 
   return proposal && proposal.detail ? (
     <Fragment>
       <TableRow
-        // onClick={redirect.bind(null, proposal.pda)}
+        onClick={redirect}
         hover={true}
         sx={{ "& > *": { borderBottom: "unset" } }}
       >
@@ -44,11 +56,8 @@ export default function ProposalInfo({
         </TableCell>
         <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
         <TableCell align="left">{getStatus()}</TableCell>
-        <TableCell align="left">
-          <Button onClick={redirect} color="primary" variant="outlined">
-            View
-          </Button>
-        </TableCell>
+        <TableCell align="left">{getExpiration()}</TableCell>
+        <TableCell align="left">{getCreatedAt()}</TableCell>
       </TableRow>
     </Fragment>
   ) : (

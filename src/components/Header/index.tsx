@@ -77,7 +77,7 @@ function Header() {
               </Link>
             </Box>
           ) : (
-            <Chip color="warning" label="Please connect to your wallet" />
+            <Chip color="warning" label="Please connect your wallet" />
           )}
           <Box sx={{ flexGrow: 0 }}>
             <WalletMultiButton />

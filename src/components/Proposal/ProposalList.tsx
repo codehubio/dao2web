@@ -82,7 +82,8 @@ export default function ListProposalInfo({
                 <TableCell align="left"># of txs</TableCell>
                 <TableCell align="left"># of approvals</TableCell>
                 <TableCell align="left">Status</TableCell>
-                <TableCell />
+                <TableCell align="left">Expiration</TableCell>
+                <TableCell align="left">Created at</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
