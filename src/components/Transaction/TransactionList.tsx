@@ -44,37 +44,43 @@ export default function TransactionList({
   }, [proposal.pda, reload]);
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">#</TableCell>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="left">Description</TableCell>
-              <TableCell align="left">Amount</TableCell>
-              <TableCell align="left">Approved Amount</TableCell>
-              <TableCell align="left">Token</TableCell>
-              <TableCell align="left">Sender</TableCell>
-              <TableCell align="left">Receiver</TableCell>
-              <TableCell align="left">Incentive fee</TableCell>
-              <TableCell align="left">Execution delay</TableCell>
-              <TableCell align="left" />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {transactions.map((s: any, index: number) => {
-              return (
-                <TransactionRow
-                  reloadFn={setShouldReload}
-                  key={index}
-                  transaction={s}
-                  proposal={proposal}
-                />
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {transactions && transactions.length ? (
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">#</TableCell>
+                <TableCell align="left">Name</TableCell>
+                <TableCell align="left">Description</TableCell>
+                <TableCell align="left">Amount</TableCell>
+                <TableCell align="left">Approved Amount</TableCell>
+                <TableCell align="left">Token</TableCell>
+                <TableCell align="left">Sender</TableCell>
+                <TableCell align="left">Receiver</TableCell>
+                <TableCell align="left">Incentive fee</TableCell>
+                <TableCell align="left">Execution delay</TableCell>
+                <TableCell align="left" />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {transactions.map((s: any, index: number) => {
+                return (
+                  <TransactionRow
+                    reloadFn={setShouldReload}
+                    key={index}
+                    transaction={s}
+                    proposal={proposal}
+                  />
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Typography variant="h6" color="info">
+          There is no transaction in this proposal
+        </Typography>
+      )}
     </>
   );
 }

@@ -12,6 +12,7 @@ import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { settleProposalThunk } from "../../reducers/proposal";
 import TransactionList from "../Transaction/TransactionList";
 import { getProposalByPda } from "../../services/state/proposal";
+import ProposalCard from "./ProposalCard";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -85,10 +86,12 @@ export default function ProposalDetail() {
 
       <Stack
         direction="column"
-        justifyContent="center"
+        // justifyContent="center"
         alignItems="center"
         spacing={2}
       >
+        <ProposalCard proposal={proposal} />
+
         <Stack
           direction="row"
           justifyContent="center"
