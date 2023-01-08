@@ -48,21 +48,26 @@ export default function ProposalDetail() {
   }, [proposalPda, reload]);
   async function settle() {
     setLoadingMessage("Settling the proposal ...");
-    const { payload } = await dispatch(
-      settleProposalThunk({
-        endpoint: connection.rpcEndpoint,
-        address: wallet?.adapter.publicKey as any,
-        providerName: wallet?.adapter.name,
-        data: {
-          pda: proposal?.pda,
-        },
-      } as any) as any
-    );
-    setLoadingMessage("");
-    setSuccess({
-      message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
-      txid: payload.txid,
-    });
+    try {
+      const { payload } = await dispatch(
+        settleProposalThunk({
+          endpoint: connection.rpcEndpoint,
+          address: wallet?.adapter.publicKey as any,
+          providerName: wallet?.adapter.name,
+          data: {
+            pda: proposal?.pda,
+          },
+        } as any) as any
+      ).unwrap();
+      setLoadingMessage("");
+      setSuccess({
+        message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
+    } catch (error) {
+      setError(error);
+      setLoadingMessage("");
+    }
   }
   function isAbleToModify(): boolean {
     return (

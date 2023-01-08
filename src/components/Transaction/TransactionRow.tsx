@@ -95,9 +95,8 @@ export default function TransactionInfo({
       detail: { index, proposalPda, name, numberOfApprovals },
     } = transaction;
     setLoadingMessage("reverting transaciton");
-    let txid;
     try {
-      await dispatch(
+      const { payload } = await dispatch(
         revertTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -112,14 +111,15 @@ export default function TransactionInfo({
       if (reloadFn) {
         reloadFn(true);
       }
+      setLoadingMessage("");
+      setSuccess({
+        message: `Transaaction ${name} reverted! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
+      return payload.txid;
     } catch (error: any) {
       setError(error);
     }
-    setLoadingMessage("");
-    setSuccess({
-      message: `Transaaction ${name} reverted! You may need to refresh the page to see the change!`,
-    });
-    return txid;
   }
   return (
     <>

@@ -4,6 +4,7 @@ import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
 import rejectStepInstruction from "../../services/instructions/reject-transaction";
 import { getStepByPda } from "../../services/state/transaction";
+import { ERROR_NETWORK } from "../../services/error.service";
 
 const approveTxThunk = createAsyncThunk(
   "rejectTx",
@@ -19,7 +20,7 @@ const approveTxThunk = createAsyncThunk(
     data: any;
   }) => {
     try {
-      const provider = getProvider(providerName.toLowerCase());
+      const provider = getProvider(providerName);
       const connection = new Connection(endpoint);
       const wallet = new PublicKey(address);
       const { rawTx, transactionPda } = await rejectStepInstruction(
@@ -31,7 +32,12 @@ const approveTxThunk = createAsyncThunk(
           reason,
         }
       );
-      const txid = await sendTransaction(connection, provider, rawTx);
+      let txid;
+      try {
+        txid = await sendTransaction(connection, provider, rawTx);
+      } catch (error) {
+        throw ERROR_NETWORK;
+      }
       const { detail } = await getStepByPda(connection, transactionPda, 10);
       return { txid, proposalPda: proposalPda, detail };
     } catch (error) {

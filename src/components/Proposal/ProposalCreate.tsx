@@ -17,7 +17,7 @@ import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { createProposalThunk } from "../../reducers/proposal";
 import { useNavigate } from "react-router-dom";
 import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 export default function ProposalCreate() {
   const { wallet } = useWallet();
   const navigate = useNavigate();
@@ -64,7 +64,6 @@ export default function ProposalCreate() {
       detail: { name, description, expireOrFinalizeAfter, imageUrl },
     } = proposalDetail;
     setLoadingMessage("Creating proposal");
-    let txid;
     try {
       const { payload } = await dispatch(
         createProposalThunk({
@@ -78,18 +77,18 @@ export default function ProposalCreate() {
             imageUrl,
           },
         } as any) as any
-      );
+      ).unwrap();
       setLoadingMessage("");
       setSuccess({
         message: `Proposal ${name} created! You may need to refresh the page to see the change!`,
         txid: payload.txid,
       });
       navigate(`/get-proposal/${payload.proposalPda}`);
+      return payload.txid;
     } catch (error: any) {
-      console.log(error);
       setError(error);
+      setLoadingMessage("");
     }
-    return txid;
   }
   function changeDatePickerState(status: boolean) {
     setDatePickerEnabled(status);

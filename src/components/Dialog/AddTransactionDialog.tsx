@@ -78,7 +78,6 @@ export default function TransactionAddDialog({
     } = transactionDetail;
     handleClose();
     setLoadingMessage("Adding transaction");
-    let txid;
     try {
       const { payload } = await dispatch(
         addTxToProposalThunk({
@@ -97,7 +96,7 @@ export default function TransactionAddDialog({
             incentiveRate,
           },
         } as any) as any
-      );
+      ).unwrap();
       if (reloadFn) {
         reloadFn(true);
       }
@@ -106,14 +105,16 @@ export default function TransactionAddDialog({
         message: `Transaction ${name} created! You may need to refresh the page to see the change!`,
         txid: payload.txid,
       });
+      return payload.txid;
     } catch (error: any) {
       setError(error);
+      setLoadingMessage("");
     }
-    return txid;
   }
   return (
     <>
       <Dialog
+        maxWidth="md"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"

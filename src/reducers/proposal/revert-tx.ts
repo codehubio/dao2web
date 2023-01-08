@@ -4,6 +4,7 @@ import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
 import revertStepInstruction from "../../services/instructions/revert-transaction";
 import BN from "bn.js";
+import { ERROR_NETWORK } from "../../services/error.service";
 
 const revertTxThunk = createAsyncThunk(
   "revertTx",
@@ -16,16 +17,20 @@ const revertTxThunk = createAsyncThunk(
     endpoint: string;
     address: string;
     providerName: string;
-    data: any;
+    data: {
+      proposalPda: string;
+      transactionIndex: number;
+      numberOfApprovals: number;
+    };
   }) => {
-    const provider = getProvider(providerName.toLowerCase());
+    const provider = getProvider(providerName);
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
     const txids = [];
     for (let i = 0; i < numberOfApprovals; i += 1) {
       const { rawTx } = await revertStepInstruction(connection, wallet, {
         proposalPda: new PublicKey(proposalPda),
-        transactionIndex,
+        transactionIndex: new BN(transactionIndex),
         approvalIndex: new BN(i),
       });
       // const msg = MessageV0.deserialize(rawTx);
@@ -35,7 +40,12 @@ const revertTxThunk = createAsyncThunk(
       //   txMessage.compileToLegacyMessage()
       // );
       // console.log(log);
-      const txid = await sendTransaction(connection, provider, rawTx);
+      let txid;
+      try {
+        txid = await sendTransaction(connection, provider, rawTx);
+      } catch (error) {
+        throw ERROR_NETWORK;
+      }
       txids.push(txid);
     }
     return { txids, proposalPda: proposalPda };

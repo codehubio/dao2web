@@ -4,6 +4,10 @@ import { getProposalByPda } from "../../services/state/proposal";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
 import createProposalInstruction from "../../services/instructions/create-proposal";
+import {
+  ERROR_NETWORK,
+  ERROR_TX_SUBMIT_NO_RESULT,
+} from "../../services/error.service";
 const createProposalThunk = createAsyncThunk(
   "createProposal",
   async ({
@@ -17,7 +21,7 @@ const createProposalThunk = createAsyncThunk(
     providerName: string;
     data: any;
   }) => {
-    const provider = getProvider(providerName.toLowerCase());
+    const provider = getProvider(providerName);
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
     const { rawTx, proposalPda } = await createProposalInstruction(
@@ -30,13 +34,19 @@ const createProposalThunk = createAsyncThunk(
         imageUrl,
       }
     );
-    const txid = await sendTransaction(connection, provider, rawTx);
-    console.log(txid);
-    const { readableData } = await getProposalByPda(
-      connection,
-      proposalPda,
-      30
-    );
+    let txid;
+    let readableData;
+    try {
+      txid = await sendTransaction(connection, provider, rawTx);
+    } catch (error) {
+      throw ERROR_NETWORK;
+    }
+    try {
+      const res = await getProposalByPda(connection, proposalPda, 30);
+      readableData = res.readableData;
+    } catch (error) {
+      throw ERROR_TX_SUBMIT_NO_RESULT;
+    }
     return { txid, proposalPda: proposalPda.toBase58(), data: readableData };
   }
 );

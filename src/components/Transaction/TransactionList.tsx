@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,

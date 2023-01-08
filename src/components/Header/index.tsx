@@ -2,7 +2,6 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { Chip, Stack } from "@mui/material";
@@ -27,7 +26,7 @@ function Header() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img alt="beta" src="imgs/logo.png" width="10%" height="10%"></img>
+          <img alt="beta" src="/imgs/logo.png" width="10%" height="10%"></img>
 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (

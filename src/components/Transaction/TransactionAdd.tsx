@@ -1,4 +1,12 @@
-import { Grid, Stack, TextField } from "@mui/material";
+import {
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 export default function TransactionAdd({
   setDetail,
@@ -10,6 +18,38 @@ export default function TransactionAdd({
   function setField(fieldName: string, e: any) {
     (transaction.detail as any)[fieldName] = e.target.value;
     setDetail(transaction);
+  }
+  const [senderEnabled, setSenderEnabled] = useState(true);
+  const [senderAddress, _setSenderAddress] = useState("");
+  function setSenderAddress(e: any) {
+    _setSenderAddress(e.target.value);
+  }
+  const [tokenEnabled, setTokenEnabled] = useState(true);
+  const [tokenAddress, _setTokenAddress] = useState("");
+  function setTokenAddress(e: any) {
+    _setTokenAddress(e.target.value);
+  }
+  function setSenderTransaction(status: boolean) {
+    setSenderEnabled(status);
+    const value = status ? senderAddress : "11111111111111111111111111111111";
+    setDetail({
+      ...transaction,
+      detail: {
+        ...transaction.detail,
+        sender: value,
+      },
+    });
+  }
+  function setTokenTransaction(status: boolean) {
+    setTokenEnabled(status);
+    const value = status ? tokenAddress : "11111111111111111111111111111111";
+    setDetail({
+      ...transaction,
+      detail: {
+        ...transaction.detail,
+        token: value,
+      },
+    });
   }
   return (
     <>
@@ -59,25 +99,74 @@ export default function TransactionAdd({
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              // value="988Hp2QxjbcZu3vgy78CRsNhxnS46YG4nubbYeePgoxa"
-              onChange={setField.bind(null, "token")}
-              placeholder="11111111111111111111111111111111 for native token"
-              style={{ width: "100%" }}
-              label="Token address"
-              variant="outlined"
-              color="primary"
-            />
+            <Stack direction="row">
+              <RadioGroup
+                sx={{ width: "50%" }}
+                row
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="spl_token"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  control={<Radio />}
+                  onChange={setTokenTransaction.bind(null, false)}
+                  value="native_token"
+                  name="radio-buttons"
+                  label="Native token"
+                />
+                <FormControlLabel
+                  control={<Radio />}
+                  onChange={setTokenTransaction.bind(null, true)}
+                  value="spl_token"
+                  name="radio-buttons"
+                  label="SPL token"
+                />
+              </RadioGroup>
+              <TextField
+                disabled={!tokenEnabled}
+                onChange={setTokenAddress}
+                placeholder="SPL token address"
+                style={{ width: "100%" }}
+                label="Token address"
+                variant="outlined"
+                color="primary"
+              />
+            </Stack>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              onChange={setField.bind(null, "sender")}
-              style={{ width: "100%" }}
-              placeholder="Set 11111111111111111111111111111111 for public transaction"
-              label="Sender"
-              variant="outlined"
-              color="primary"
-            />
+            <Stack direction="row">
+              <RadioGroup
+                sx={{ width: "50%" }}
+                row
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="private_tx"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  control={<Radio />}
+                  onChange={setSenderTransaction.bind(null, false)}
+                  value="pubic_tx"
+                  name="radio-buttons"
+                  label="Public tx"
+                />
+                <FormControlLabel
+                  control={<Radio />}
+                  onChange={setSenderTransaction.bind(null, true)}
+                  value="private_tx"
+                  name="radio-buttons"
+                  label="Private tx"
+                />
+              </RadioGroup>
+              <TextField
+                disabled={!senderEnabled}
+                onChange={setSenderAddress}
+                style={{ width: "100%" }}
+                placeholder="Sender address"
+                label="Sender"
+                variant="outlined"
+                color="primary"
+              />
+            </Stack>
           </Grid>
           <Grid item xs={12}>
             <TextField

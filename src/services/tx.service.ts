@@ -11,8 +11,12 @@ export async function sendTransaction(
   if (!adapter) {
     throw new Error("No wallet found!");
   }
-  const txid = await adapter.sendTransaction(tx, connection, {
-    maxRetries: 5,
-  });
-  return txid;
+  try {
+    const txid = await adapter.sendTransaction(tx, connection, {
+      maxRetries: 5,
+    });
+    return txid;
+  } catch (error: any) {
+    throw new Error(`Transaction error: ${error.message}`);
+  }
 }

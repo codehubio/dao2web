@@ -4,6 +4,7 @@ import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
 import executeStepInstruction from "../../services/instructions/execute-transaction";
 import { getStepByPda } from "../../services/state/transaction";
+import { ERROR_NETWORK } from "../../services/error.service";
 
 const executeTxThunk = createAsyncThunk(
   "executeTx",
@@ -21,7 +22,7 @@ const executeTxThunk = createAsyncThunk(
       transactionIndex: number;
     };
   }) => {
-    const provider = getProvider(providerName.toLowerCase());
+    const provider = getProvider(providerName);
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
     const { rawTx, transactionPda } = await executeStepInstruction(
@@ -32,9 +33,13 @@ const executeTxThunk = createAsyncThunk(
         transactionIndex,
       }
     );
-    const txid = await sendTransaction(connection, provider, rawTx);
+    let txid;
+    try {
+      txid = await sendTransaction(connection, provider, rawTx);
+    } catch (error) {
+      throw ERROR_NETWORK;
+    }
     const { detail } = await getStepByPda(connection, transactionPda, 10);
-    console.log(txid);
     return { txid, proposalPda: proposalPda, detail };
   }
 );

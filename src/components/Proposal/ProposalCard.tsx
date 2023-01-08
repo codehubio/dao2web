@@ -18,6 +18,7 @@ export default function ProposalCard({
       description,
       numberOfApprovals,
       numberOfTransactions,
+      creator,
     },
   } = proposal;
   function getStatus(): string {
@@ -47,7 +48,7 @@ export default function ProposalCard({
     return createdAt.format("YYYY/MM/DD HH:mm:ss");
   }
   return (
-    <Card sx={{ width: "50%" }}>
+    <Card sx={{ width: "100%" }}>
       <CardActionArea>
         <CardHeader
           avatar={<Avatar alt="Remy Sharp" src={imageUrl} />}
@@ -55,8 +56,8 @@ export default function ProposalCard({
           titleTypographyProps={{ variant: "h6" }}
         />
         <CardContent>
-          <Grid container>
-            <Grid item xs={6}>
+          <Grid spacing={2} container>
+            <Grid item xs={12}>
               <Typography
                 component="div"
                 variant="subtitle1"
@@ -70,6 +71,23 @@ export default function ProposalCard({
                   color="primary"
                 >
                   {description}
+                </Typography>
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography
+                component="div"
+                variant="subtitle1"
+                fontWeight="bold"
+                color="text.secondary"
+              >
+                Creator:{" "}
+                <Typography
+                  variant="subtitle1"
+                  display="inline"
+                  color="primary"
+                >
+                  {creator}
                 </Typography>
               </Typography>
             </Grid>
