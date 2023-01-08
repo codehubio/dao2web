@@ -58,6 +58,7 @@ export default function ProposalCard({
           <Grid container>
             <Grid item xs={6}>
               <Typography
+                component="div"
                 variant="subtitle1"
                 fontWeight="bold"
                 color="text.secondary"
@@ -91,6 +92,7 @@ export default function ProposalCard({
             </Grid>
             <Grid item xs={6}>
               <Typography
+                component="div"
                 fontWeight="bold"
                 variant="subtitle1"
                 color="text.secondary"
@@ -107,6 +109,7 @@ export default function ProposalCard({
             </Grid>
             <Grid item xs={6}>
               <Typography
+                component="div"
                 fontWeight="bold"
                 variant="subtitle1"
                 color="text.secondary"
@@ -119,6 +122,7 @@ export default function ProposalCard({
             </Grid>
             <Grid item xs={6}>
               <Typography
+                component="div"
                 variant="subtitle1"
                 fontWeight="bold"
                 color="text.secondary"
@@ -135,6 +139,7 @@ export default function ProposalCard({
             </Grid>
             <Grid item xs={6}>
               <Typography
+                component="div"
                 variant="subtitle1"
                 fontWeight="bold"
                 color="text.secondary"

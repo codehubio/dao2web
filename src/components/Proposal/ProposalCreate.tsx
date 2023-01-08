@@ -2,7 +2,15 @@
 import { useContext, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { Button, Grid, TextField } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
@@ -23,7 +31,7 @@ export default function ProposalCreate() {
         description: "",
         imageUrl: "",
         createdAt: 0,
-        expireOrFinalizeAfter: 0,
+        expireOrFinalizeAfter: Math.floor(Date.now() / 1000),
         creator: "",
         isApproved: 0,
         approvedAt: 0,
@@ -45,17 +53,7 @@ export default function ProposalCreate() {
       },
     });
   }
-  const handleDateChange = (newValue: Dayjs | null) => {
-    setProposalDetail({
-      ...proposalDetail,
-      detail: {
-        ...proposalDetail.detail,
-        expireOrFinalizeAfter: newValue
-          ? Math.floor(newValue.toDate().valueOf() / 1000)
-          : 0,
-      },
-    });
-  };
+  const [datePickerValue, setDatePickerValue] = useState(dayjs());
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
@@ -93,6 +91,19 @@ export default function ProposalCreate() {
     }
     return txid;
   }
+  function changeDatePickerState(status: boolean) {
+    setDatePickerEnabled(status);
+    const value = status ? Math.floor(datePickerValue.toDate().valueOf()) : 0;
+    setProposalDetail({
+      ...proposalDetail,
+      detail: {
+        ...proposalDetail.detail,
+        expireOrFinalizeAfter: value,
+      },
+    });
+  }
+  const [datePickerEnabled, setDatePickerEnabled] = useState(false);
+
   return (
     <>
       <Grid
@@ -134,30 +145,43 @@ export default function ProposalCreate() {
             color="primary"
           />
         </Grid>
-        {/* <Grid item xs={12}>
-          <TextField
-            onChange={setField.bind(null, "expireOrFinalizeAfter")}
-            style={{ width: "100%" }}
-            label="Expiration after"
-            placeholder="Expiration time of the proposal if it is unfinalized. Leave blank to ignore"
-            variant="outlined"
-            color="primary"
-          />
-        </Grid> */}
         <Grid item xs={12}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateTimePicker
-              disablePast={true}
-              label="Expire after"
-              value={dayjs(
-                new Date(proposalDetail.detail.expireOrFinalizeAfter * 1000)
-              )}
-              onChange={handleDateChange}
-              renderInput={(params) => (
-                <TextField sx={{ width: "100%" }} {...params} />
-              )}
-            />
-          </LocalizationProvider>
+          <Stack direction="row">
+            <RadioGroup
+              sx={{ width: "50%" }}
+              row
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="no_expiration"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel
+                control={<Radio />}
+                onChange={changeDatePickerState.bind(null, false)}
+                value="no_expiration"
+                name="radio-buttons"
+                label="No expiration"
+              />
+              <FormControlLabel
+                control={<Radio />}
+                onChange={changeDatePickerState.bind(null, true)}
+                value="expire_after"
+                name="radio-buttons"
+                label="Expire after"
+              />
+            </RadioGroup>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                disablePast={true}
+                disabled={!datePickerEnabled}
+                label="Expire after"
+                value={dayjs()}
+                onChange={setDatePickerValue as any}
+                renderInput={(params) => (
+                  <TextField sx={{ width: "100%" }} {...params} />
+                )}
+              />
+            </LocalizationProvider>
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <Button onClick={create} color="primary" variant="contained">
