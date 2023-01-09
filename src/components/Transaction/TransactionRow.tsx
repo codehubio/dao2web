@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow } from "@mui/material";
+import { Button, TableCell, TableRow, Tooltip, Zoom } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext, useState } from "react";
 import { executeTxThunk, revertTxThunk } from "../../reducers/proposal";
@@ -141,11 +141,23 @@ export default function TransactionInfo({
         <TableCell align="left">{txDetail.description}</TableCell>
         <TableCell align="left">{txDetail.amount}</TableCell>
         <TableCell align="left">{txDetail.receivedAmount}</TableCell>
-        <TableCell align="left">{txDetail.token.substring(0, 4)}...</TableCell>
-        <TableCell align="left">{txDetail.sender.substring(0, 4)}...</TableCell>
-        <TableCell align="left">
-          {txDetail.receiver.substring(0, 4)}...
-        </TableCell>
+        <Tooltip TransitionComponent={Zoom} title={txDetail.token}>
+          <TableCell align="left">
+            {txDetail.token === "11111111111111111111111111111111"
+              ? "Native"
+              : `${txDetail.token.substring(0, 6)}...`}
+          </TableCell>
+        </Tooltip>
+        <Tooltip TransitionComponent={Zoom} title={txDetail.sender}>
+          <TableCell align="left">
+            {txDetail.sender.substring(0, 6)}...
+          </TableCell>
+        </Tooltip>
+        <Tooltip TransitionComponent={Zoom} title={txDetail.receiver}>
+          <TableCell align="left">
+            {txDetail.receiver.substring(0, 6)}...
+          </TableCell>
+        </Tooltip>
         <TableCell align="left">{txDetail.incentiveFee}</TableCell>
         <TableCell align="left">{txDetail.executeAfter.toString()}</TableCell>
         <TableCell align="left">

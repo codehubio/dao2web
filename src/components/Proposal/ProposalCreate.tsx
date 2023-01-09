@@ -11,6 +11,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
+import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
@@ -183,7 +184,12 @@ export default function ProposalCreate() {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <Button onClick={create} color="primary" variant="contained">
+          <Button
+            startIcon={<AddCircleOutlineOutlined />}
+            onClick={create}
+            color="primary"
+            variant="text"
+          >
             Create
           </Button>
         </Grid>
