@@ -16,7 +16,7 @@ export default function ApprovalInfo({
   proposal: TParseProposalDetail;
   approval: TParsedApprovalDetail;
   transaction: TParsedTransactionDetail;
-  reloadFn: Function;
+  reloadFn?: Function;
 }) {
   const { wallet } = useWallet();
   const { connection } = useConnection();

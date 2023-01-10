@@ -1,4 +1,12 @@
-import { Button, TableCell, TableRow, Tooltip, Zoom } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  IconButton,
+  TableCell,
+  TableRow,
+  Tooltip,
+  Zoom,
+} from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext, useState } from "react";
 import { executeTxThunk, revertTxThunk } from "../../reducers/proposal";
@@ -8,7 +16,10 @@ import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
 import { useDispatch } from "react-redux";
 import AppContext from "../../share/context";
-import { useNavigate } from "react-router-dom";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ApprovalList from "../Approval/ApprovalList";
+
 export default function TransactionInfo({
   proposal,
   transaction,
@@ -86,10 +97,6 @@ export default function TransactionInfo({
     });
     return txid;
   }
-  const navigate = useNavigate();
-  function redirect() {
-    navigate(`/transaction/${transaction?.pda}`);
-  }
   async function revertTx() {
     const {
       detail: { index, proposalPda, name, numberOfApprovals },
@@ -121,6 +128,7 @@ export default function TransactionInfo({
       setError(error);
     }
   }
+  const [open, setOpen] = useState(false);
   return (
     <>
       <TransactionApproveDialog
@@ -136,7 +144,15 @@ export default function TransactionInfo({
         handleClose={changeRejectTxDialogState}
       />
       <TableRow>
-        <TableCell align="left">{txDetail.index}</TableCell>
+        <TableCell align="left">
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
         <TableCell align="left">{txDetail.name}</TableCell>
         <TableCell align="left">{txDetail.description}</TableCell>
         <TableCell align="left">{txDetail.amount}</TableCell>
@@ -198,9 +214,13 @@ export default function TransactionInfo({
           ) : (
             <></>
           )}
-          <Button onClick={redirect} color="primary" variant="outlined">
-            View
-          </Button>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+          <Collapse in={open} unmountOnExit timeout="auto">
+            <ApprovalList transaction={transaction} proposal={proposal} />
+          </Collapse>
         </TableCell>
       </TableRow>
     </>

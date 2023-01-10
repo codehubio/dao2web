@@ -90,10 +90,15 @@ export async function listProposalsByInvolve(
         },
       ],
     });
-    const proposalPdas = rawData.map((r) => {
+    let proposalPdas = rawData.map((r) => {
       const transation = Transaction.deserializeToReadble(r?.account.data);
       return new PublicKey(transation.proposalPda);
     });
+    const based58Pdas = proposalPdas.map((pda) => pda.toBase58());
+    proposalPdas = proposalPdas.filter(
+      (pda, index) => based58Pdas.indexOf(pda.toBase58()) === index
+    );
+    console.log(proposalPdas);
     const data = await connection.getMultipleAccountsInfo(proposalPdas);
     return data
       .map((d, index) => {

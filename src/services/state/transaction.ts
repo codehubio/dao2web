@@ -83,7 +83,12 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
   const approvalData = await Promise.all(
     approvedPdas.map(async (pdas) => {
       const data = await connection.getMultipleAccountsInfo(pdas);
-      return data.map((s) => Approval.deserializeToReadble(s?.data as Buffer));
+      return data.map((s, index) => {
+        return {
+          detail: Approval.deserializeToReadble(s?.data as Buffer),
+          pda: pdas[index],
+        };
+      });
     })
   );
   return {

@@ -48,7 +48,7 @@ export default function TransactionList({
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align="left">#</TableCell>
+                <TableCell align="left" />
                 <TableCell align="left">Name</TableCell>
                 <TableCell align="left">Description</TableCell>
                 <TableCell align="left">Amount</TableCell>

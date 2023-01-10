@@ -19,19 +19,16 @@ export default function ApprovalList({
 }: {
   proposal: TParseProposalDetail;
   transaction: TParsedTransactionDetail;
-  reloadFn: Function;
+  reloadFn?: Function;
 }) {
   return (
     <>
       {transaction.detail.approvals.length === 0 ? (
-        <Typography variant="h6">
+        <Typography variant="subtitle1" textAlign="center" sx={{ m: 1 }}>
           There is no approval in this transaction
         </Typography>
       ) : (
-        <></>
-      )}
-      {proposal && proposal.detail && transaction && transaction.detail ? (
-        <TableContainer component={Paper}>
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -57,8 +54,6 @@ export default function ApprovalList({
             </TableBody>
           </Table>
         </TableContainer>
-      ) : (
-        <></>
       )}
     </>
   );
