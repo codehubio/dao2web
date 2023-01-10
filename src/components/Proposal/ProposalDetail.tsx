@@ -13,6 +13,7 @@ import { settleProposalThunk } from "../../reducers/proposal";
 import TransactionList from "../Transaction/TransactionList";
 import { getProposalByPda } from "../../services/state/proposal";
 import ProposalCard from "./ProposalCard";
+import EditProposalDialog from "../Dialog/ProposalEditDialog";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -22,6 +23,7 @@ export default function ProposalDetail() {
   // const [assets, setAssets] = useState([]);
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openAddTx, setOpenAddTx] = useState(false);
+  const [openUpdateProposal, setOpenUpdateProposal] = useState(false);
   const [reload, setShouldReload] = useState(false);
   const dispatch = useDispatch();
   const { wallet } = useWallet();
@@ -80,6 +82,9 @@ export default function ProposalDetail() {
   function changeAddTxDialogState() {
     setOpenAddTx(!openAddTx);
   }
+  function changeUpdateProposalDialogState() {
+    setOpenUpdateProposal(!openUpdateProposal);
+  }
   return proposal && proposal.detail ? (
     <>
       <TransactionAddDialog
@@ -87,6 +92,12 @@ export default function ProposalDetail() {
         proposal={proposal}
         open={openAddTx}
         handleClose={changeAddTxDialogState}
+      />
+      <EditProposalDialog
+        reloadFn={setShouldReload}
+        proposal={proposal}
+        open={openUpdateProposal}
+        handleClose={changeUpdateProposalDialogState}
       />
 
       <Stack
@@ -120,6 +131,14 @@ export default function ProposalDetail() {
                 startIcon={<BoltOutlined />}
               >
                 Settle
+              </Button>
+              <Button
+                onClick={changeUpdateProposalDialogState}
+                color="primary"
+                variant="text"
+                startIcon={<BoltOutlined />}
+              >
+                Edit detail
               </Button>
             </>
           ) : (

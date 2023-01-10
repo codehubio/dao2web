@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import createProposalThunk from "./create-proposal";
+import editProposalThunk from "./edit-proposal";
 import listProposalsByWalletThunk from "./list-proposals-by-creator";
 import addTxToProposalThunk from "./add-tx-to-proposal";
 import settleProposalThunk from "./settle-proposal";
@@ -14,6 +15,7 @@ import getTransactionByPda from "./get-transaction-by-pda";
 import getProposalByPda from "./get-proposal-by-pda";
 
 export { createProposalThunk };
+export { editProposalThunk };
 export { listProposalsByWalletThunk };
 export { addTxToProposalThunk };
 export { settleProposalThunk };
