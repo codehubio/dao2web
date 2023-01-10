@@ -186,8 +186,8 @@ export default function DocumentationPage() {
               </i>
               Transaction can be fully approved - requested funds are fully sent
               - or partly approved - only a portion of requested funds are sent.
-              A transaction can be partly approved many times until it is
-              approved.
+              A transaction can be partly approved many times until it is fully
+              approved. Pre-conditions:
               <ul>
                 <li>
                   The proposal which the transaction belongs to is{" "}
@@ -208,13 +208,14 @@ export default function DocumentationPage() {
                 </li>
               </ul>
               <i>
-                After approved, the fund will be transfer from sender's wallet
-                to the vault
+                The approved fund will be transfer from sender's wallet to the
+                vault.
               </i>
               <li>
                 <i>
                   <b>rejected: </b>
                 </i>
+                Pre-conditions:
                 <ul>
                   <li>
                     Only <b>T1</b> transaction can be rejected by its sender.
@@ -227,8 +228,10 @@ export default function DocumentationPage() {
               </li>
               <li>
                 <i>
-                  <b>executed:</b>
+                  <b>executed: </b>
                 </i>
+                After execution, the locked fund will be released from the vault
+                to the receiver. Pre-conditions:
                 <ul>
                   <li>
                     The proposal which the transaction belongs to is{" "}
@@ -242,15 +245,13 @@ export default function DocumentationPage() {
                     rewarded with <b>incentive fee</b>
                   </li>
                 </ul>
-                <i>
-                  After execution, the locked fund will be released from the
-                  vault to the receiver
-                </i>
               </li>
               <li>
                 <i>
-                  <b>reverted:</b>
+                  <b>reverted: </b>
                 </i>
+                After revert, the locked fund will be sent back from the vault
+                to the sender. Pre-conditions:
                 <ul>
                   <li>
                     The proposal which the transaction belongs to is{" "}
@@ -264,10 +265,6 @@ export default function DocumentationPage() {
                     rewarded with <b>incentive fee</b>
                   </li>
                 </ul>
-                <i>
-                  After revert, the locked fund will be sent back from the vault
-                  to the sender
-                </i>
               </li>
             </li>
           </ul>
