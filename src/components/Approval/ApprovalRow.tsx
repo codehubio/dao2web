@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow } from "@mui/material";
+import { Button, TableCell, TableRow, Tooltip, Zoom } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext } from "react";
 import { revertTxThunk } from "../../reducers/proposal";
@@ -62,11 +62,36 @@ export default function ApprovalInfo({
   return (
     <>
       <TableRow>
-        <TableCell align="left">{aDetail.index}</TableCell>
-        <TableCell align="left">{aDetail.approvedAmount}</TableCell>
-        <TableCell align="left">{aDetail.sender.substring(0, 4)}...</TableCell>
-        <TableCell align="left">{aDetail.incentiveFee}</TableCell>
-        <TableCell align="left">
+        <TableCell
+          style={{ borderTop: "none", borderBottom: "none" }}
+          align="left"
+        >
+          {aDetail.index}
+        </TableCell>
+        <TableCell
+          style={{ borderTop: "none", borderBottom: "none" }}
+          align="left"
+        >
+          {aDetail.approvedAmount}
+        </TableCell>
+        <Tooltip TransitionComponent={Zoom} title={aDetail.sender}>
+          <TableCell
+            style={{ borderTop: "none", borderBottom: "none" }}
+            align="left"
+          >
+            {aDetail.sender}
+          </TableCell>
+        </Tooltip>
+        <TableCell
+          style={{ borderTop: "none", borderBottom: "none" }}
+          align="left"
+        >
+          {aDetail.incentiveFee}
+        </TableCell>
+        <TableCell
+          style={{ borderTop: "none", borderBottom: "none" }}
+          align="left"
+        >
           <Button
             onClick={revertApproval}
             color="primary"

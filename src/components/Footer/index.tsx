@@ -1,4 +1,4 @@
-import { Grid, Typography, Container, Link } from "@mui/material";
+import { Typography, Link } from "@mui/material";
 
 export default function Footer({ sx }: any) {
   return (

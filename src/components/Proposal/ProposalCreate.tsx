@@ -11,7 +11,7 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";

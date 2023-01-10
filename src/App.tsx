@@ -34,7 +34,7 @@ import CreateProposal from "./pages/Proposal/CreatePropsal";
 import HomePage from "./pages/Home";
 import DocumentationPage from "./pages/Document";
 import Footer from "./components/Footer";
-import { Container, Stack } from "@mui/material";
+import { Container } from "@mui/material";
 import ContactPage from "./pages/Contact";
 import ListInvolvedProposals from "./pages/Proposal/ListInvolvedProposals";
 import ListPublicProposals from "./pages/Proposal/ListPublicProposals";
