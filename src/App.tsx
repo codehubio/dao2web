@@ -20,7 +20,6 @@ import { store } from "./store";
 import { supportedWallets } from "./services/wallet.service";
 import ProposalDetail from "./pages/Proposal/ProposalDetail";
 import ListMyProposals from "./pages/Proposal/ListMyProposals";
-import TransactionDetail from "./components/Transaction/TransactionDetail";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -164,10 +163,6 @@ export default function App() {
                           <Route
                             element={<ProposalDetail />}
                             path="/get-proposal/:proposalPda"
-                          />
-                          <Route
-                            element={<TransactionDetail />}
-                            path="/transaction/:transactionPda"
                           />
                         </Routes>
                         <Success success={success}></Success>

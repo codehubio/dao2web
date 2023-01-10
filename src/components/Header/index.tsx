@@ -25,9 +25,15 @@ function Header() {
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <img alt="beta" src="/imgs/logo.png" width="10%" height="10%"></img>
-
+        <Toolbar variant="regular" disableGutters>
+          <a style={{ width: "10%" }} href="/">
+            <img
+              alt="beta"
+              src="/imgs/logo.png"
+              width="100%"
+              height="100%"
+            ></img>
+          </a>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
               <Link
@@ -54,7 +60,7 @@ function Header() {
                 </Button>
               </Link>
               <Link style={{ textDecoration: "none" }} to="/list-my-proposals">
-                <Button variant="text" color="info">
+                <Button variant="text" color="secondary">
                   My proposals
                 </Button>
               </Link>
@@ -62,7 +68,7 @@ function Header() {
                 style={{ textDecoration: "none" }}
                 to="/list-public-proposals"
               >
-                <Button variant="text" color="info">
+                <Button variant="text" color="secondary">
                   Public proposals
                 </Button>
               </Link>
@@ -70,7 +76,7 @@ function Header() {
                 style={{ textDecoration: "none" }}
                 to="/list-involved-proposals"
               >
-                <Button variant="text" color="info">
+                <Button variant="text" color="secondary">
                   Involved proposals
                 </Button>
               </Link>

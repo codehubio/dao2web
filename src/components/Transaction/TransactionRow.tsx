@@ -16,8 +16,12 @@ import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
 import { useDispatch } from "react-redux";
 import AppContext from "../../share/context";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import {
+  KeyboardArrowDown,
+  CheckCircleOutlined,
+  KeyboardArrowUp,
+  DoNotDisturbOnOutlined,
+} from "@mui/icons-material";
 import ApprovalList from "../Approval/ApprovalList";
 
 export default function TransactionInfo({
@@ -162,7 +166,7 @@ export default function TransactionInfo({
             size="small"
             onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </TableCell>
         <TableCell align="left">{txDetail.name}</TableCell>
@@ -191,9 +195,10 @@ export default function TransactionInfo({
         <TableCell align="left">
           {isAbleToApprove() ? (
             <Button
-              color="primary"
-              variant="outlined"
+              color="secondary"
+              variant="text"
               onClick={changeApproveTxDialogState}
+              startIcon={<CheckCircleOutlined />}
             >
               Approve
             </Button>
@@ -202,10 +207,11 @@ export default function TransactionInfo({
           )}
           {isAbleToApproveOrReject() ? (
             <Button
-              color="primary"
-              variant="outlined"
+              color="secondary"
+              variant="text"
               disabled={!isAbleToApproveOrReject()}
               onClick={changeRejectTxDialogState}
+              startIcon={<DoNotDisturbOnOutlined />}
             >
               Reject
             </Button>
@@ -213,14 +219,14 @@ export default function TransactionInfo({
             <></>
           )}
           {isAbleToExecute() ? (
-            <Button onClick={executeTx} color="primary" variant="outlined">
+            <Button onClick={executeTx} color="secondary" variant="text">
               Execute
             </Button>
           ) : (
             <></>
           )}
           {isAbleToRevert() ? (
-            <Button onClick={revertTx} color="primary" variant="outlined">
+            <Button onClick={revertTx} color="secondary" variant="text">
               Revert
             </Button>
           ) : (

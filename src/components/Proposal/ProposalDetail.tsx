@@ -6,7 +6,11 @@ import { Button, Stack } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { PublicKey } from "@solana/web3.js";
-import { BoltOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+import {
+  BoltOutlined,
+  AddCircleOutlineOutlined,
+  EditOutlined,
+} from "@mui/icons-material";
 import TransactionAddDialog from "../../components/Dialog/AddTransactionDialog";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { settleProposalThunk } from "../../reducers/proposal";
@@ -118,7 +122,7 @@ export default function ProposalDetail() {
             <>
               <Button
                 onClick={changeAddTxDialogState}
-                color="primary"
+                color="secondary"
                 variant="text"
                 startIcon={<AddCircleOutlineOutlined />}
               >
@@ -126,7 +130,7 @@ export default function ProposalDetail() {
               </Button>
               <Button
                 onClick={settle}
-                color="primary"
+                color="secondary"
                 variant="text"
                 startIcon={<BoltOutlined />}
               >
@@ -134,9 +138,9 @@ export default function ProposalDetail() {
               </Button>
               <Button
                 onClick={changeUpdateProposalDialogState}
-                color="primary"
+                color="secondary"
                 variant="text"
-                startIcon={<BoltOutlined />}
+                startIcon={<EditOutlined />}
               >
                 Edit detail
               </Button>

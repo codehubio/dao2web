@@ -31,23 +31,14 @@ export default async function createProposal(
   const newName = pad(name, 16);
   const newUrl = pad(imageUrl, 128);
   const newDescription = pad(description, 128);
-  console.log(newName);
-  console.log(newUrl);
-  console.log(newDescription);
-  console.log(expireOrFinalizeAfter);
-  let editDaoIx: any;
-  try {
-    editDaoIx = new EditProposalIns({
-      name: Buffer.from(newName),
-      description: Buffer.from(newDescription),
-      imageUrl: Buffer.from(newUrl),
-      expireOrFinalizedAfter: new BN(expireOrFinalizeAfter).divRound(
-        new BN(1000)
-      ),
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const editDaoIx = new EditProposalIns({
+    name: Buffer.from(newName),
+    description: Buffer.from(newDescription),
+    imageUrl: Buffer.from(newUrl),
+    expireOrFinalizedAfter: new BN(expireOrFinalizeAfter).divRound(
+      new BN(1000)
+    ),
+  });
   console.log(proposalPda);
 
   const serializedData = editDaoIx.serialize();

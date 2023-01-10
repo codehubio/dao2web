@@ -92,7 +92,7 @@ export default function CreateProposal() {
         <Button
           startIcon={<AddCircleOutlineOutlined />}
           onClick={createProposal}
-          color="primary"
+          color="secondary"
           variant="text"
         >
           Create

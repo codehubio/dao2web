@@ -10,6 +10,11 @@ import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { approveTxThunk } from "../../reducers/proposal";
 import { Grid, TextField } from "@mui/material";
+import {
+  CheckCircleOutlined,
+  CancelOutlined,
+  EditOutlined,
+} from "@mui/icons-material";
 
 export default function TransactionApproveDialog({
   reloadFn,
@@ -93,7 +98,7 @@ export default function TransactionApproveDialog({
               <TextField
                 onChange={setAmount}
                 style={{ width: "100%" }}
-                label="Amount (16-char max)"
+                label="Amount to be approved"
                 variant="outlined"
                 color="primary"
               />
@@ -101,10 +106,21 @@ export default function TransactionApproveDialog({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={approve} color="primary" variant="contained">
+          <Button
+            startIcon={<CheckCircleOutlined />}
+            onClick={approve}
+            color="secondary"
+            variant="text"
+          >
             Approve
           </Button>
-          <Button variant="contained" onClick={handleClose} color="error">
+
+          <Button
+            startIcon={<CancelOutlined />}
+            variant="text"
+            onClick={handleClose}
+            color="error"
+          >
             Close
           </Button>
         </DialogActions>
