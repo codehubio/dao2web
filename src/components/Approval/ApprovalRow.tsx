@@ -1,4 +1,11 @@
-import { Button, TableCell, TableRow, Tooltip, Zoom } from "@mui/material";
+import {
+  Button,
+  TableCell,
+  TableRow,
+  Tooltip,
+  useTheme,
+  Zoom,
+} from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext } from "react";
 import { revertTxThunk } from "../../reducers/proposal";
@@ -30,6 +37,7 @@ export default function ApprovalInfo({
   function isAbleToRevert() {
     return pDetail.isRejected && !aDetail.isReverted;
   }
+  const theme = useTheme();
   async function revertApproval() {
     const {
       detail: { index, proposalPda, name, numberOfApprovals },
@@ -61,7 +69,7 @@ export default function ApprovalInfo({
   }
   return (
     <>
-      <TableRow>
+      <TableRow sx={{ backgroundColor: theme.palette.grey[900] }}>
         <TableCell
           style={{ borderTop: "none", borderBottom: "none" }}
           align="left"

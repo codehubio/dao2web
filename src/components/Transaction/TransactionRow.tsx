@@ -51,6 +51,18 @@ export default function TransactionInfo({
     );
   }
 
+  function isAbleToApprove() {
+    return (
+      pDetail.isSettled &&
+      !pDetail.isRejected &&
+      !pDetail.isApproved &&
+      !txDetail.isRejected &&
+      !txDetail.isApproved &&
+      (txDetail.sender === wallet?.adapter.publicKey?.toBase58() ||
+        txDetail.sender === "11111111111111111111111111111111")
+    );
+  }
+
   function isAbleToExecute() {
     return pDetail.isApproved && !txDetail.isExecuted;
   }
@@ -177,7 +189,7 @@ export default function TransactionInfo({
         <TableCell align="left">{txDetail.incentiveFee}</TableCell>
         <TableCell align="left">{txDetail.executeAfter.toString()}</TableCell>
         <TableCell align="left">
-          {isAbleToApproveOrReject() ? (
+          {isAbleToApprove() ? (
             <Button
               color="primary"
               variant="outlined"
