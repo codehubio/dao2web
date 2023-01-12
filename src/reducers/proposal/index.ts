@@ -13,6 +13,7 @@ import revertTxThunk from "./revert-tx";
 import listProposalsThunk from "./list-proposals";
 import getTransactionByPda from "./get-transaction-by-pda";
 import getProposalByPda from "./get-proposal-by-pda";
+import editTx from "./edit-tx";
 
 export { createProposalThunk };
 export { editProposalThunk };
@@ -28,6 +29,7 @@ export { revertTxThunk };
 export { listProposalsThunk };
 export { getTransactionByPda };
 export { getProposalByPda };
+export { editTx };
 
 export const proposalsSlice = createSlice({
   name: "proposals",

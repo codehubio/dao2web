@@ -8,7 +8,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { addTxToProposalThunk } from "../../reducers/proposal";
-import TransactionAdd from "../Transaction/TransactionAdd";
+import TransactionAdd from "../Transaction/TransactionAddOrEdit";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";

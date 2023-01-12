@@ -14,6 +14,8 @@ import { useContext, useEffect, useState } from "react";
 import { getSteps } from "../../services/state/transaction";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
+import { TParsedTransactionDetail } from "../../types/TransactionDetail";
+import TransactionEditDialog from "../Dialog/EditTransactionDialog";
 import TransactionRow from "./TransactionRow";
 export default function TransactionList({
   proposal,
@@ -24,6 +26,8 @@ export default function TransactionList({
   const { setLoadingMessage, setError } = useContext(AppContext) as any;
   const { connection } = useConnection();
   const [transactions, setTransactions] = useState([] as any);
+  const [currentTransaction, setCurrentTransaction] = useState(null as any);
+  const [openEdit, setOpenEdit] = useState(false);
   const [reload, setShouldReload] = useState(false);
   useEffect(() => {
     async function getDetail() {
@@ -41,8 +45,26 @@ export default function TransactionList({
     }
     getDetail();
   }, [proposal.pda, reload]);
+  function setOpenEditCurrentDialog(tx: TParsedTransactionDetail) {
+    setCurrentTransaction(tx);
+    setOpenEdit(true);
+  }
+  function changeEditTxDialogState() {
+    setOpenEdit(!openEdit);
+  }
+
   return (
     <>
+      {currentTransaction ? (
+        <TransactionEditDialog
+          transaction={currentTransaction}
+          open={openEdit}
+          reloadFn={setShouldReload}
+          handleClose={changeEditTxDialogState}
+        ></TransactionEditDialog>
+      ) : (
+        <></>
+      )}
       {transactions && transactions.length ? (
         <TableContainer>
           <Table>
@@ -69,6 +91,7 @@ export default function TransactionList({
                     key={index}
                     transaction={s}
                     proposal={proposal}
+                    openEditDialogFn={setOpenEditCurrentDialog}
                   />
                 );
               })}

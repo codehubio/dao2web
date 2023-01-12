@@ -28,10 +28,12 @@ export default function TransactionInfo({
   proposal,
   transaction,
   reloadFn,
+  openEditDialogFn,
 }: {
   proposal: TParseProposalDetail;
   transaction: TParsedTransactionDetail;
   reloadFn: Function;
+  openEditDialogFn: Function;
 }) {
   const { wallet } = useWallet();
   const { connection } = useConnection();
@@ -52,6 +54,12 @@ export default function TransactionInfo({
       !txDetail.isRejected &&
       !txDetail.isApproved &&
       txDetail.sender === wallet?.adapter.publicKey?.toBase58()
+    );
+  }
+  function isAbleToModify() {
+    return (
+      !pDetail.isSettled &&
+      pDetail.creator === wallet?.adapter.publicKey?.toBase58()
     );
   }
 
@@ -221,6 +229,17 @@ export default function TransactionInfo({
           {isAbleToExecute() ? (
             <Button onClick={executeTx} color="secondary" variant="text">
               Execute
+            </Button>
+          ) : (
+            <></>
+          )}
+          {isAbleToModify() ? (
+            <Button
+              onClick={openEditDialogFn.bind(null, transaction)}
+              color="secondary"
+              variant="text"
+            >
+              Edit
             </Button>
           ) : (
             <></>
