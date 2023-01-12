@@ -58,7 +58,7 @@ const addTxToProposalThunk = createAsyncThunk(
       throw ERROR_NETWORK;
     }
     try {
-      const result = await getStepByPda(connection, transactionPda, 10);
+      const result = await getStepByPda(connection, transactionPda, 20);
       detail = result.detail;
     } catch (error) {
       throw ERROR_TX_SUBMIT_NO_RESULT;

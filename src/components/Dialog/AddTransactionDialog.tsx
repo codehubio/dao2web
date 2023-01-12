@@ -80,7 +80,7 @@ export default function TransactionAddDialog({
     handleClose();
     setLoadingMessage("Adding transaction");
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         addTxToProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,

@@ -33,7 +33,6 @@ export default async function executeStep(
     ],
     new PublicKey(REACT_APP_SC_ADDRESS)
   );
-  console.log(proposalPda.toBase58());
   console.log(`Getting step data from ${transactionPda}`);
   const stepAccountInfo = await connection.getAccountInfo(transactionPda);
   const stepData = Transaction.deserialize(stepAccountInfo?.data as Buffer);
@@ -64,8 +63,6 @@ export default async function executeStep(
     TOKEN_PROGRAM_ID,
     ASSOCIATED_TOKEN_PROGRAM_ID
   );
-  console.log(`Proposal PDA: ${proposalPda}`);
-  console.log(`Step PDA: ${transactionPda}`);
   const executeStepIx = new ExecuteStepIns();
   const serializedData = executeStepIx.serialize();
   const dataBuffer = Buffer.from(serializedData);

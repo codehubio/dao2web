@@ -48,7 +48,7 @@ export default function EditProposalDialog({
     } = proposalDetail;
     setLoadingMessage("Updating proposal");
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         editProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,

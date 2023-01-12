@@ -55,7 +55,7 @@ export default function ProposalDetail() {
   async function settle() {
     setLoadingMessage("Settling the proposal ...");
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         settleProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,

@@ -119,7 +119,7 @@ export default function TransactionInfo({
     } = transaction;
     setLoadingMessage("reverting transaciton");
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         revertTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -130,7 +130,7 @@ export default function TransactionInfo({
             numberOfApprovals,
           },
         } as any) as any
-      );
+      ).unwrap();
       if (reloadFn) {
         reloadFn(true);
       }

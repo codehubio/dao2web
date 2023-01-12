@@ -57,12 +57,12 @@ export default function ListProposalInfo({
         proposalFilters.involve = isPublic
           ? SystemProgram.programId.toBase58()
           : proposalFilters.involve;
-        const { payload } = await dispatch(
+        const payload = await dispatch(
           listProposalsThunk({
             endpoint: connection.rpcEndpoint,
             options: proposalFilters,
           } as any) as any
-        );
+        ).unwrap();
         setProposalList(payload);
       } catch (error) {
         setError(error as any);

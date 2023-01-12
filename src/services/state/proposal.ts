@@ -98,7 +98,6 @@ export async function listProposalsByInvolve(
     proposalPdas = proposalPdas.filter(
       (pda, index) => based58Pdas.indexOf(pda.toBase58()) === index
     );
-    console.log(proposalPdas);
     const data = await connection.getMultipleAccountsInfo(proposalPdas);
     return data
       .map((d, index) => {
@@ -215,7 +214,6 @@ export async function listProposals(
       };
     });
   } catch (error) {
-    console.log(error);
     return [];
   }
 }

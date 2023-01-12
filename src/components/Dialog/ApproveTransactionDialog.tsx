@@ -45,7 +45,7 @@ export default function TransactionApproveDialog({
     setLoadingMessage("Approving transaciton");
     let txid;
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         approveTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -56,12 +56,11 @@ export default function TransactionApproveDialog({
             approvedAmount,
           },
         } as any) as any
-      );
+      ).unwrap();
       if (reloadFn) {
         reloadFn(true);
       }
       setLoadingMessage("");
-      console.log(payload);
       setSuccess({
         message: `Transaction ${name} approved! You may need to refresh the page to see the change!`,
         txid: payload.txid,

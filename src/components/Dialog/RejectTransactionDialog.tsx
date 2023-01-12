@@ -40,7 +40,7 @@ export default function TransactionRejectDialog({
     setLoadingMessage("rejecting transaciton");
     let txid;
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         rejectTxThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
@@ -51,7 +51,7 @@ export default function TransactionRejectDialog({
             reason,
           },
         } as any) as any
-      );
+      ).unwrap();
       if (reloadFn) {
         reloadFn(true);
       }

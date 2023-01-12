@@ -52,7 +52,7 @@ export default function CreateProposal() {
     } = proposalDetail;
     setLoadingMessage("Creating proposal");
     try {
-      const { payload } = await dispatch(
+      const payload = await dispatch(
         createProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,

@@ -15,7 +15,6 @@ export const listProposalsThunk = createAsyncThunk(
   }) => {
     const connection = new Connection(endpoint);
     const proposals = await listProposals(connection, options);
-    console.log(proposals);
     return proposals;
   }
 );
