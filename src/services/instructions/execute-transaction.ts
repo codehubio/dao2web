@@ -17,22 +17,14 @@ export default async function executeStep(
   creator: PublicKey,
   {
     proposalPda,
-    transactionIndex,
+    transactionPda,
   }: {
     proposalPda: PublicKey;
-    transactionIndex: number;
+    transactionPda: PublicKey;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
-  const [transactionPda] = PublicKey.findProgramAddressSync(
-    [
-      Buffer.from(transactionIndex.toString()),
-      proposalPda.toBuffer(),
-      Buffer.from("step"),
-    ],
-    new PublicKey(REACT_APP_SC_ADDRESS)
-  );
   console.log(`Getting step data from ${transactionPda}`);
   const stepAccountInfo = await connection.getAccountInfo(transactionPda);
   const stepData = Transaction.deserialize(stepAccountInfo?.data as Buffer);

@@ -28,7 +28,7 @@ export default function CreateProposal() {
         description: "",
         imageUrl: "",
         createdAt: 0,
-        expireOrFinalizeAfter: Math.floor(Date.now() / 1000),
+        expireOrFinalizeAfter: 0,
         creator: "",
         isApproved: 0,
         approvedAt: 0,
@@ -51,6 +51,7 @@ export default function CreateProposal() {
       detail: { name, description, expireOrFinalizeAfter, imageUrl },
     } = proposalDetail;
     setLoadingMessage("Creating proposal");
+    console.log(proposalDetail);
     try {
       const payload = await dispatch(
         createProposalThunk({

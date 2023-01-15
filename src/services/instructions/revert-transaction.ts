@@ -20,24 +20,16 @@ export default async function revertTransaction(
   creator: PublicKey,
   {
     proposalPda,
-    transactionIndex,
+    transactionPda,
     approvalIndex = new BN(0),
   }: {
     proposalPda: PublicKey;
-    transactionIndex: BN;
+    transactionPda: PublicKey;
     approvalIndex: BN;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
-  const [transactionPda] = PublicKey.findProgramAddressSync(
-    [
-      Buffer.from(transactionIndex.toString()),
-      proposalPda.toBuffer(),
-      Buffer.from("step"),
-    ],
-    new PublicKey(REACT_APP_SC_ADDRESS)
-  );
   log(`Getting step data from ${transactionPda}`);
   const [approvalPda] = PublicKey.findProgramAddressSync(
     [

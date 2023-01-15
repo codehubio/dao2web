@@ -62,9 +62,11 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
     transactionPdas.push(pda);
   }
   const stepInfos = await connection.getMultipleAccountsInfo(transactionPdas);
-  const stepData = stepInfos.map((s) =>
-    Transaction.deserializeToReadble(s?.data as Buffer)
+  let stepData = stepInfos.map((s) =>
+    s && s.data ? Transaction.deserializeToReadble(s?.data as Buffer) : null
   );
+  transactionPdas = transactionPdas.filter((_s, index) => stepData[index]);
+  stepData = stepData.filter((s) => !!s);
   for (let i = 0; i < stepData.length; i += 1) {
     const step = stepData[i];
     approvedPdas[i] = [];
@@ -100,7 +102,7 @@ export async function getSteps(connection: Connection, proposalPda: PublicKey) {
           ...s,
           approvals: approvalData[index],
         },
-        pda: transactionPdas[index],
+        pda: transactionPdas[index].toBase58(),
       };
     }),
   };

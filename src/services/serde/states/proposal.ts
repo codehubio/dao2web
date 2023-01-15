@@ -8,6 +8,7 @@ export type TProposal = {
   name: Uint8Array;
   numberOfTransactions: BN;
   numberOfApprovals: BN;
+  numberOfEnabledTransactions: BN;
   numberOfExecutions: BN;
   description: Uint8Array;
   imageUrl: Uint8Array;
@@ -22,6 +23,8 @@ export type TProposal = {
   rejectedAt: BN;
   isExecuted: number;
   executedAt: BN;
+  isArchived: number;
+  archivedAt: BN;
 };
 export class Proposal {
   accountType;
@@ -31,6 +34,8 @@ export class Proposal {
   name;
 
   numberOfTransactions;
+
+  numberOfEnabledTransactions;
 
   numberOfApprovals;
 
@@ -62,7 +67,12 @@ export class Proposal {
 
   executedAt;
 
+  isArchived;
+
+  archivedAt;
+
   constructor(fields: TProposal) {
+    this.numberOfEnabledTransactions = fields.numberOfEnabledTransactions;
     this.numberOfExecutions = fields.numberOfExecutions;
     this.accountType = fields.accountType;
     this.index = fields.index;
@@ -82,6 +92,8 @@ export class Proposal {
     this.rejectedAt = fields.rejectedAt;
     this.executedAt = fields.executedAt;
     this.isExecuted = fields.isExecuted;
+    this.isArchived = fields.isArchived;
+    this.archivedAt = fields.archivedAt;
   }
 
   serialize(): Uint8Array {
@@ -112,11 +124,15 @@ export class Proposal {
       description,
       imageUrl,
       numberOfExecutions,
+      numberOfEnabledTransactions,
+      archivedAt,
+      isArchived,
     } = Proposal.deserialize(raw);
     return {
       accountType,
       index: index.toNumber(),
       name: Buffer.from(name).toString(),
+      numberOfEnabledTransactions: numberOfEnabledTransactions.toNumber(),
       numberOfTransactions: numberOfTransactions.toNumber(),
       numberOfApprovals: numberOfApprovals.toNumber(),
       numberOfExecutions: numberOfExecutions.toNumber(),
@@ -132,6 +148,8 @@ export class Proposal {
       rejectedAt: new Date(rejectedAt.toNumber() * 1000).toISOString(),
       isExecuted,
       executedAt: new Date(executedAt.toNumber() * 1000).toISOString(),
+      isArchived,
+      archivedAt: new Date(archivedAt.toNumber() * 1000).toISOString(),
       creator: new PublicKey(creator).toBase58(),
       description: Buffer.from(description).toString(),
       imageUrl: Buffer.from(imageUrl).toString(),
@@ -149,6 +167,7 @@ export const ProposalSchema = new Map([
         ["index", "u64"],
         ["name", [16]],
         ["numberOfTransactions", "u64"],
+        ["numberOfEnabledTransactions", "u64"],
         ["numberOfApprovals", "u64"],
         ["numberOfExecutions", "u64"],
         ["description", [128]],
@@ -164,6 +183,8 @@ export const ProposalSchema = new Map([
         ["rejectedAt", "u64"],
         ["isExecuted", "u8"],
         ["executedAt", "u64"],
+        ["isArchived", "u8"],
+        ["archivedAt", "u64"],
       ],
     },
   ],

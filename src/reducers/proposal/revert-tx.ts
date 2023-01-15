@@ -12,14 +12,14 @@ const revertTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, transactionIndex, numberOfApprovals },
+    data: { proposalPda, pda, numberOfApprovals },
   }: {
     endpoint: string;
     address: string;
     providerName: string;
     data: {
       proposalPda: string;
-      transactionIndex: number;
+      pda: string;
       numberOfApprovals: number;
     };
   }) => {
@@ -30,7 +30,7 @@ const revertTxThunk = createAsyncThunk(
     for (let i = 0; i < numberOfApprovals; i += 1) {
       const { rawTx } = await revertStepInstruction(connection, wallet, {
         proposalPda: new PublicKey(proposalPda),
-        transactionIndex: new BN(transactionIndex),
+        transactionPda: new PublicKey(pda),
         approvalIndex: new BN(i),
       });
       // const msg = MessageV0.deserialize(rawTx);

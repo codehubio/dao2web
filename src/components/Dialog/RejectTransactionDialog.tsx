@@ -34,7 +34,8 @@ export default function TransactionRejectDialog({
   const { connection } = useConnection();
   async function approve() {
     const {
-      detail: { index, proposalPda, name },
+      pda,
+      detail: { proposalPda, name },
     } = transaction;
     handleClose();
     setLoadingMessage("rejecting transaciton");
@@ -46,7 +47,7 @@ export default function TransactionRejectDialog({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            transactionIndex: index,
+            pda,
             proposalPda,
             reason,
           },

@@ -12,33 +12,39 @@ const approveTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, transactionIndex, approvedAmount },
+    data: { proposalPda, pda, approvedAmount },
   }: {
     endpoint: string;
     address: string;
     providerName: string;
     data: any;
   }) => {
-    const provider = getProvider(providerName);
-    const connection = new Connection(endpoint);
-    const wallet = new PublicKey(address);
-    const { rawTx, transactionPda } = await approveStepInstruction(
-      connection,
-      wallet,
-      {
-        proposalPda: new PublicKey(proposalPda),
-        transactionIndex,
-        approvedAmount,
-      }
-    );
-    let txid;
     try {
-      txid = await sendTransaction(connection, provider, rawTx);
+      console.log({ proposalPda, pda, approvedAmount });
+      const provider = getProvider(providerName);
+      const connection = new Connection(endpoint);
+      const wallet = new PublicKey(address);
+      const { rawTx, transactionPda } = await approveStepInstruction(
+        connection,
+        wallet,
+        {
+          proposalPda: new PublicKey(proposalPda),
+          transactionPda: new PublicKey(pda),
+          approvedAmount,
+        }
+      );
+      let txid;
+      try {
+        txid = await sendTransaction(connection, provider, rawTx);
+      } catch (error) {
+        console.log(error);
+        throw ERROR_NETWORK;
+      }
+      const { detail } = await getStepByPda(connection, transactionPda, 10);
+      return { txid, proposalPda: proposalPda, detail };
     } catch (error) {
-      throw ERROR_NETWORK;
+      console.log(error);
     }
-    const { detail } = await getStepByPda(connection, transactionPda, 10);
-    return { txid, proposalPda: proposalPda, detail };
   }
 );
 

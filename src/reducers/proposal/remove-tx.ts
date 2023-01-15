@@ -2,12 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { sendTransaction } from "../../services/tx.service";
 import { getProvider } from "../../services/wallet.service";
-import executeStepInstruction from "../../services/instructions/execute-transaction";
+import deleteStepInstruction from "../../services/instructions/remove-transaction";
 import { getStepByPda } from "../../services/state/transaction";
 import { ERROR_NETWORK } from "../../services/error.service";
 
-const executeTxThunk = createAsyncThunk(
-  "executeTx",
+const removeTxThunk = createAsyncThunk(
+  "removeTx",
   async ({
     endpoint,
     address,
@@ -25,7 +25,7 @@ const executeTxThunk = createAsyncThunk(
     const provider = getProvider(providerName);
     const connection = new Connection(endpoint);
     const wallet = new PublicKey(address);
-    const { rawTx, transactionPda } = await executeStepInstruction(
+    const { rawTx, transactionPda } = await deleteStepInstruction(
       connection,
       wallet,
       {
@@ -44,4 +44,4 @@ const executeTxThunk = createAsyncThunk(
   }
 );
 
-export default executeTxThunk;
+export default removeTxThunk;

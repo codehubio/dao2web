@@ -143,7 +143,7 @@ export async function listProposals(
   if (options.creator) {
     filters.push({
       memcmp: {
-        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8,
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 8 + 128 + 128 + 8 + 8,
         bytes: options.creator,
       },
     });
@@ -151,7 +151,7 @@ export async function listProposals(
   if (options.isApproved) {
     filters.push({
       memcmp: {
-        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32,
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32,
         bytes: base58.encode(Buffer.from([1])),
       },
     });
@@ -159,7 +159,7 @@ export async function listProposals(
   if (options.isSettled) {
     filters.push({
       memcmp: {
-        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8,
+        offset: 1 + 8 + 16 + 8 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8,
         bytes: base58.encode(Buffer.from([1])),
       },
     });
@@ -167,7 +167,8 @@ export async function listProposals(
   if (options.isRejected) {
     filters.push({
       memcmp: {
-        offset: 1 + 8 + 16 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8 + 1 + 8,
+        offset:
+          1 + 8 + 16 + 8 + 8 + 8 + 8 + 128 + 128 + 8 + 8 + 32 + 1 + 8 + 1 + 8,
         bytes: base58.encode(Buffer.from([1])),
       },
     });
@@ -180,6 +181,7 @@ export async function listProposals(
           1 +
           8 +
           16 +
+          8 +
           8 +
           8 +
           8 +

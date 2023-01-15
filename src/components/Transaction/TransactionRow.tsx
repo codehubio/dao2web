@@ -23,6 +23,7 @@ import {
   DoNotDisturbOnOutlined,
 } from "@mui/icons-material";
 import ApprovalList from "../Approval/ApprovalList";
+import removeTxThunk from "../../reducers/proposal/remove-tx";
 
 export default function TransactionInfo({
   proposal,
@@ -93,9 +94,10 @@ export default function TransactionInfo({
   }
   async function executeTx() {
     const {
-      detail: { index, proposalPda, name },
+      pda,
+      detail: { proposalPda, name },
     } = transaction;
-    setLoadingMessage("approving transaciton");
+    setLoadingMessage("approving transaction");
     let txid;
     try {
       await dispatch(
@@ -104,7 +106,7 @@ export default function TransactionInfo({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            transactionIndex: index,
+            pda,
             proposalPda,
           },
         } as any) as any
@@ -121,11 +123,43 @@ export default function TransactionInfo({
     });
     return txid;
   }
+  async function removeTx() {
+    const {
+      pda,
+      detail: { proposalPda, name },
+    } = transaction;
+    setLoadingMessage("Removing transaction");
+    try {
+      const payload = await dispatch(
+        removeTxThunk({
+          endpoint: connection.rpcEndpoint,
+          address: wallet?.adapter.publicKey as any,
+          providerName: wallet?.adapter.name,
+          data: {
+            pda,
+            proposalPda,
+          },
+        } as any) as any
+      ).unwrap();
+      if (reloadFn) {
+        reloadFn(true);
+      }
+      setLoadingMessage("");
+      setSuccess({
+        message: `Transaaction ${name} reverted! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
+      return payload.txid;
+    } catch (error: any) {
+      setError(error);
+    }
+  }
   async function revertTx() {
     const {
-      detail: { index, proposalPda, name, numberOfApprovals },
+      pda,
+      detail: { proposalPda, name, numberOfApprovals },
     } = transaction;
-    setLoadingMessage("reverting transaciton");
+    setLoadingMessage("Reverting transaciton");
     try {
       const payload = await dispatch(
         revertTxThunk({
@@ -133,7 +167,7 @@ export default function TransactionInfo({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            transactionIndex: index,
+            pda,
             proposalPda,
             numberOfApprovals,
           },
@@ -234,13 +268,18 @@ export default function TransactionInfo({
             <></>
           )}
           {isAbleToModify() ? (
-            <Button
-              onClick={openEditDialogFn.bind(null, transaction)}
-              color="secondary"
-              variant="text"
-            >
-              Edit
-            </Button>
+            <>
+              <Button
+                onClick={openEditDialogFn.bind(null, transaction)}
+                color="secondary"
+                variant="text"
+              >
+                Edit
+              </Button>
+              <Button onClick={removeTx} color="error" variant="text">
+                Remove
+              </Button>
+            </>
           ) : (
             <></>
           )}

@@ -35,7 +35,8 @@ export default function TransactionApproveDialog({
   const { connection } = useConnection();
   async function approve() {
     const {
-      detail: { index, proposalPda, name },
+      pda,
+      detail: { proposalPda, name },
     } = transaction;
     handleClose();
     setLoadingMessage("Approving transaciton");
@@ -47,7 +48,7 @@ export default function TransactionApproveDialog({
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
           data: {
-            transactionIndex: index,
+            pda,
             proposalPda,
             approvedAmount,
           },

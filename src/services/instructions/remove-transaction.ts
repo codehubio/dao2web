@@ -2,34 +2,28 @@ import debug from "debug";
 import {
   Connection,
   PublicKey,
-  SystemProgram,
   TransactionInstruction,
   TransactionMessage,
 } from "@solana/web3.js";
-import { RejectStepIns } from "../serde/instructions/reject-step";
-import { pad } from "../util.service";
+import { RemoveStepIns } from "../serde/instructions/remove-step";
 const log = debug("settle-proposal:info");
-export default async function rejectStep(
+export default async function removeTransaction(
   connection: Connection,
   creator: PublicKey,
   {
     proposalPda,
     transactionPda,
-    reason = "",
   }: {
     proposalPda: PublicKey;
     transactionPda: PublicKey;
-    reason: string;
   }
 ) {
   const { REACT_APP_SC_ADDRESS = "" } = process.env;
 
   log(`Proposal PDA: ${proposalPda}`);
   log(`Step PDA: ${transactionPda}`);
-  const rejectStepIx = new RejectStepIns({
-    reason: pad(reason, 128),
-  });
-  const serializedData = rejectStepIx.serialize();
+  const removeStepIx = new RemoveStepIns();
+  const serializedData = removeStepIx.serialize();
   const dataBuffer = Buffer.from(serializedData);
   // console.log(testPub.toBuffer());
   const instruction = new TransactionInstruction({
@@ -48,11 +42,6 @@ export default async function rejectStep(
         isSigner: false,
         isWritable: true,
         pubkey: transactionPda,
-      },
-      {
-        isSigner: false,
-        isWritable: false,
-        pubkey: SystemProgram.programId,
       },
     ],
     programId: new PublicKey(REACT_APP_SC_ADDRESS),

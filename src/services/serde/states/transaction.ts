@@ -28,7 +28,7 @@ export type TTransaction = {
   revertedAt: BN;
   revertedAmount: BN;
   rejectedReason: Uint8Array;
-  status: number;
+  isEnabled: number;
 };
 export class Transaction {
   accountType;
@@ -81,7 +81,7 @@ export class Transaction {
 
   rejectedReason;
 
-  status;
+  isEnabled;
 
   constructor(fields: TTransaction) {
     this.accountType = fields.accountType;
@@ -109,7 +109,7 @@ export class Transaction {
     this.revertedAmount = fields.revertedAmount;
     this.numberOfApprovals = fields.numberOfApprovals;
     this.rejectedReason = fields.rejectedReason;
-    this.status = fields.status;
+    this.isEnabled = fields.isEnabled;
   }
 
   serialize(): Uint8Array {
@@ -146,7 +146,7 @@ export class Transaction {
       revertedAt,
       revertedAmount,
       rejectedReason,
-      status,
+      isEnabled,
     } = Transaction.deserialize(raw);
     return {
       accountType,
@@ -174,7 +174,7 @@ export class Transaction {
       incentiveFee: incentiveFee.toNumber(),
       isReverted,
       revertedAt: new Date(revertedAt.toNumber() * 1000).toISOString(),
-      status,
+      isEnabled,
     };
   }
 }
@@ -210,7 +210,7 @@ export const TransactionSchema = new Map([
         ["isReverted", "u8"],
         ["revertedAt", "u64"],
         ["revertedAmount", "u64"],
-        ["status", "u8"],
+        ["isEnabled", "u8"],
       ],
     },
   ],

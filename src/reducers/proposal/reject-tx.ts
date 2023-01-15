@@ -12,7 +12,7 @@ const approveTxThunk = createAsyncThunk(
     endpoint,
     address,
     providerName,
-    data: { proposalPda, transactionIndex, reason },
+    data: { proposalPda, pda, reason },
   }: {
     endpoint: string;
     address: string;
@@ -28,7 +28,7 @@ const approveTxThunk = createAsyncThunk(
         wallet,
         {
           proposalPda: new PublicKey(proposalPda),
-          transactionIndex,
+          transactionPda: new PublicKey(pda),
           reason,
         }
       );
