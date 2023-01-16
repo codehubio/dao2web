@@ -10,6 +10,7 @@ import {
   BoltOutlined,
   AddCircleOutlineOutlined,
   EditOutlined,
+  RemoveCircleOutline,
 } from "@mui/icons-material";
 import TransactionAddDialog from "../../components/Dialog/AddTransactionDialog";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
@@ -18,6 +19,7 @@ import TransactionList from "../Transaction/TransactionList";
 import { getProposalByPda } from "../../services/state/proposal";
 import ProposalCard from "./ProposalCard";
 import EditProposalDialog from "../Dialog/ProposalEditDialog";
+import removeProposalThunk from "../../reducers/proposal/remove-proposal";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -57,6 +59,29 @@ export default function ProposalDetail() {
     try {
       const payload = await dispatch(
         settleProposalThunk({
+          endpoint: connection.rpcEndpoint,
+          address: wallet?.adapter.publicKey as any,
+          providerName: wallet?.adapter.name,
+          data: {
+            pda: proposal?.pda,
+          },
+        } as any) as any
+      ).unwrap();
+      setLoadingMessage("");
+      setSuccess({
+        message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
+        txid: payload.txid,
+      });
+    } catch (error) {
+      setError(error);
+      setLoadingMessage("");
+    }
+  }
+  async function remove() {
+    setLoadingMessage("Settling the proposal ...");
+    try {
+      const payload = await dispatch(
+        removeProposalThunk({
           endpoint: connection.rpcEndpoint,
           address: wallet?.adapter.publicKey as any,
           providerName: wallet?.adapter.name,
@@ -142,7 +167,15 @@ export default function ProposalDetail() {
                 variant="text"
                 startIcon={<EditOutlined />}
               >
-                Edit detail
+                Edit
+              </Button>
+              <Button
+                onClick={remove}
+                color="error"
+                variant="text"
+                startIcon={<RemoveCircleOutline />}
+              >
+                Remove
               </Button>
             </>
           ) : (

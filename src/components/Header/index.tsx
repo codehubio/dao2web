@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
-import { Alert, Chip, Stack, Typography } from "@mui/material";
+import { Alert, Chip, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useWallet } from "@solana/wallet-adapter-react";
 

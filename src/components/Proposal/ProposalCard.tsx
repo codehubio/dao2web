@@ -17,7 +17,7 @@ export default function ProposalCard({
       imageUrl,
       description,
       numberOfApprovals,
-      numberOfTransactions,
+      numberOfEnabledTransactions,
       creator,
     },
   } = proposal;
@@ -104,7 +104,7 @@ export default function ProposalCard({
                   display="inline"
                   color="primary"
                 >
-                  {numberOfTransactions}
+                  {numberOfEnabledTransactions}
                 </Typography>
               </Typography>
             </Grid>

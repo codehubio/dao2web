@@ -4,6 +4,7 @@ export type TProposalDetail = {
   accountType: number;
   name: string;
   numberOfTransactions: BN;
+  numberOfEnabledTransactions: BN;
   numberOfApprovals: BN;
   description: string;
   imageUrl: string;
@@ -26,6 +27,7 @@ export type TParseProposalDetail = {
     accountType: number;
     name: string;
     numberOfTransactions: number;
+    numberOfEnabledTransactions: number;
     numberOfApprovals: number;
     description: string;
     imageUrl: string;

@@ -24,6 +24,7 @@ export default function CreateProposal() {
         accountType: 100,
         name: "",
         numberOfTransactions: 0,
+        numberOfEnabledTransactions: 0,
         numberOfApprovals: 0,
         description: "",
         imageUrl: "",

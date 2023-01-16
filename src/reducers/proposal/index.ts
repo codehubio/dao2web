@@ -14,6 +14,8 @@ import listProposalsThunk from "./list-proposals";
 import getTransactionByPda from "./get-transaction-by-pda";
 import getProposalByPda from "./get-proposal-by-pda";
 import editTx from "./edit-tx";
+import removeTx from "./remove-tx";
+import removeProposal from "./remove-proposal";
 
 export { createProposalThunk };
 export { editProposalThunk };
@@ -30,6 +32,8 @@ export { listProposalsThunk };
 export { getTransactionByPda };
 export { getProposalByPda };
 export { editTx };
+export { removeTx };
+export { removeProposal };
 
 export const proposalsSlice = createSlice({
   name: "proposals",
