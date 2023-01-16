@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Stack,
 } from "@mui/material";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useContext, useEffect, useState } from "react";
@@ -13,8 +14,9 @@ import { useDispatch } from "react-redux";
 import { editProposalThunk } from "../../reducers/proposal";
 import AppContext from "../../share/context";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
-import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
 import ProposalCreateOrEdit from "../Proposal/ProposalCreateOrEdit";
+import CancelButton from "../CancelButton";
 
 export default function EditProposalDialog({
   proposal,
@@ -99,22 +101,17 @@ export default function EditProposalDialog({
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            startIcon={<AddCircleOutlineOutlined />}
-            onClick={createProposal}
-            color="primary"
-            variant="text"
-          >
-            Ok
-          </Button>
-          <Button
-            startIcon={<CancelOutlined />}
-            variant="text"
-            onClick={handleClose}
-            color="error"
-          >
-            Cancel
-          </Button>
+          <Stack width="100%" direction="row" justifyContent="center">
+            <Button
+              startIcon={<AddCircleOutlineOutlined />}
+              onClick={createProposal}
+              color="primary"
+              variant="text"
+            >
+              UPDATE
+            </Button>
+            <CancelButton handleClose={handleClose} />
+          </Stack>
         </DialogActions>
       </Dialog>
     </>

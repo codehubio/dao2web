@@ -9,8 +9,9 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { approveTxThunk } from "../../reducers/proposal";
-import { Grid, TextField } from "@mui/material";
-import { CheckCircleOutlined, CancelOutlined } from "@mui/icons-material";
+import { Grid, Stack, TextField } from "@mui/material";
+import { CheckCircleOutlined } from "@mui/icons-material";
+import CancelButton from "../CancelButton";
 
 export default function TransactionApproveDialog({
   reloadFn,
@@ -102,23 +103,18 @@ export default function TransactionApproveDialog({
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button
-            startIcon={<CheckCircleOutlined />}
-            onClick={approve}
-            color="secondary"
-            variant="text"
-          >
-            Approve
-          </Button>
+          <Stack width="100%" direction="row" justifyContent="center">
+            <Button
+              startIcon={<CheckCircleOutlined />}
+              onClick={approve}
+              color="secondary"
+              variant="text"
+            >
+              APPROVE
+            </Button>
 
-          <Button
-            startIcon={<CancelOutlined />}
-            variant="text"
-            onClick={handleClose}
-            color="error"
-          >
-            Close
-          </Button>
+            <CancelButton handleClose={handleClose} />
+          </Stack>
         </DialogActions>
       </Dialog>
     </>

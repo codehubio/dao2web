@@ -20,6 +20,7 @@ import { getProposalByPda } from "../../services/state/proposal";
 import ProposalCard from "./ProposalCard";
 import EditProposalDialog from "../Dialog/ProposalEditDialog";
 import removeProposalThunk from "../../reducers/proposal/remove-proposal";
+import SettleConfirmationDialog from "../Dialog/SettleConfirmationDialog";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -30,6 +31,7 @@ export default function ProposalDetail() {
   const [proposal, setProposal] = useState({} as TParseProposalDetail);
   const [openAddTx, setOpenAddTx] = useState(false);
   const [openUpdateProposal, setOpenUpdateProposal] = useState(false);
+  const [openSettleProposal, setOpenSettleProposal] = useState(false);
   const [reload, setShouldReload] = useState(false);
   const dispatch = useDispatch();
   const { wallet } = useWallet();
@@ -114,6 +116,9 @@ export default function ProposalDetail() {
   function changeUpdateProposalDialogState() {
     setOpenUpdateProposal(!openUpdateProposal);
   }
+  function changeSettleProposalDialogState() {
+    setOpenSettleProposal(!openSettleProposal);
+  }
   return proposal && proposal.detail ? (
     <>
       <TransactionAddDialog
@@ -127,6 +132,12 @@ export default function ProposalDetail() {
         proposal={proposal}
         open={openUpdateProposal}
         handleClose={changeUpdateProposalDialogState}
+      />
+      <SettleConfirmationDialog
+        reloadFn={setShouldReload}
+        open={openSettleProposal}
+        executeFn={settle}
+        handleClose={changeSettleProposalDialogState}
       />
 
       <Stack
@@ -154,7 +165,7 @@ export default function ProposalDetail() {
                 Add transaction
               </Button>
               <Button
-                onClick={settle}
+                onClick={changeSettleProposalDialogState}
                 color="secondary"
                 variant="text"
                 startIcon={<BoltOutlined />}

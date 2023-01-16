@@ -10,6 +10,7 @@ import AppContext from "../../share/context";
 import { useDispatch } from "react-redux";
 import { rejectTxThunk } from "../../reducers/proposal";
 import { Grid, TextField } from "@mui/material";
+import CancelButton from "../CancelButton";
 
 export default function TransactionRejectDialog({
   reloadFn,
@@ -102,11 +103,9 @@ export default function TransactionRejectDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={approve} color="primary" variant="contained">
-            Reject
+            REJECT
           </Button>
-          <Button variant="contained" onClick={handleClose} color="error">
-            Close
-          </Button>
+          <CancelButton handleClose={handleClose} />
         </DialogActions>
       </Dialog>
     </>

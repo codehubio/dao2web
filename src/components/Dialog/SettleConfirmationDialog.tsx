@@ -5,10 +5,12 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Stack,
 } from "@mui/material";
-import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
+import CancelButton from "../CancelButton";
 
-export default function ConfirmationDialog({
+export default function SettleConfirmationDialog({
   executeFn,
   reloadFn,
   open,
@@ -36,26 +38,24 @@ export default function ConfirmationDialog({
         color="primary"
       >
         <DialogTitle textAlign="center" sx={{ mb: 1 }} id="alert-dialog-title">
-          Are you sure
+          Are you sure?
         </DialogTitle>
-        <DialogContent>This action cannot be undone</DialogContent>
+        <DialogContent>
+          After settled, proposal is ready to get approvals from involved
+          parties. You cannot change or delete it anymore
+        </DialogContent>
         <DialogActions>
-          <Button
-            startIcon={<AddCircleOutlineOutlined />}
-            onClick={execute}
-            color="primary"
-            variant="text"
-          >
-            Ok
-          </Button>
-          <Button
-            startIcon={<CancelOutlined />}
-            variant="text"
-            onClick={handleClose}
-            color="error"
-          >
-            Cancel
-          </Button>
+          <Stack width="100%" direction="row" justifyContent="center">
+            <Button
+              startIcon={<AddCircleOutlineOutlined />}
+              onClick={execute}
+              color="primary"
+              variant="text"
+            >
+              SETTLE
+            </Button>
+            <CancelButton handleClose={handleClose} />
+          </Stack>
         </DialogActions>
       </Dialog>
     </>

@@ -11,7 +11,9 @@ import { addTxToProposalThunk } from "../../reducers/proposal";
 import TransactionAdd from "../Transaction/TransactionAddOrEdit";
 import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
-import { AddCircleOutlineOutlined, CancelOutlined } from "@mui/icons-material";
+import { AddCircleOutlineOutlined } from "@mui/icons-material";
+import { Stack } from "@mui/material";
+import CancelButton from "../CancelButton";
 
 export default function TransactionAddDialog({
   reloadFn,
@@ -132,22 +134,17 @@ export default function TransactionAddDialog({
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            startIcon={<AddCircleOutlineOutlined />}
-            onClick={addTx}
-            color="primary"
-            variant="text"
-          >
-            Add
-          </Button>
-          <Button
-            startIcon={<CancelOutlined />}
-            variant="text"
-            onClick={handleClose}
-            color="error"
-          >
-            Cancel
-          </Button>
+          <Stack width="100%" direction="row" justifyContent="center">
+            <Button
+              startIcon={<AddCircleOutlineOutlined />}
+              onClick={addTx}
+              color="primary"
+              variant="text"
+            >
+              OK
+            </Button>
+            <CancelButton handleClose={handleClose} />
+          </Stack>
         </DialogActions>
       </Dialog>
     </>
