@@ -131,7 +131,7 @@ export default function App() {
                         minHeight: "80vh",
                       }}
                     >
-                      <MyBreadcrumbs aria-label="breadcrumb" breads={breads} />
+                      {/* <MyBreadcrumbs aria-label="breadcrumb" breads={breads} /> */}
                       <div
                         style={{
                           marginTop: "20px",

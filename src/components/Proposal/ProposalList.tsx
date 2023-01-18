@@ -4,7 +4,13 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import Paper from "@mui/material/Paper";
-import { Stack, TablePagination, TableRow, TableCell } from "@mui/material";
+import {
+  Stack,
+  TablePagination,
+  TableRow,
+  TableCell,
+  Typography,
+} from "@mui/material";
 import ProposalRow from "./ProposalRow";
 import { useContext, useEffect, useState } from "react";
 import ProposalListFilters from "../ProposalFilters";
@@ -73,59 +79,65 @@ export default function ListProposalInfo({
   }, [addressPubkey, proposalFilters]);
   return (
     <>
-      <Stack
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <ProposalListFilters
-          filters={proposalFilters}
-          setFilters={setProposalFilters}
-        />
-        <Paper>
-          <TableContainer>
-            <Table aria-label="collapsible table">
-              <TableHead>
-                <TableRow>
-                  <TableCell />
-                  <TableCell align="left">Name</TableCell>
-                  <TableCell align="left">Description</TableCell>
-                  <TableCell align="left"># of txs</TableCell>
-                  <TableCell align="left"># of approvals</TableCell>
-                  <TableCell align="left">Status</TableCell>
-                  <TableCell align="left">Expiration</TableCell>
-                  <TableCell align="left">Created at</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {proposals
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((proposal: any, index: number) => {
-                    return <ProposalRow key={index} proposal={proposal} />;
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-        <TablePagination
-          component="div"
-          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-          count={proposals.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          labelRowsPerPage="Rows per page"
-          SelectProps={{
-            inputProps: {
-              "aria-label": "rows per page",
-            },
-            native: true,
-          }}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          ActionsComponent={TablePaginationActions}
-        />
-      </Stack>
+      {proposals.length ? (
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+        >
+          <ProposalListFilters
+            filters={proposalFilters}
+            setFilters={setProposalFilters}
+          />
+          <Paper>
+            <TableContainer>
+              <Table aria-label="collapsible table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell align="left">Name</TableCell>
+                    <TableCell align="left">Description</TableCell>
+                    <TableCell align="left"># of txs</TableCell>
+                    <TableCell align="left"># of approvals</TableCell>
+                    <TableCell align="left">Status</TableCell>
+                    <TableCell align="left">Expiration</TableCell>
+                    <TableCell align="left">Created at</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {proposals
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((proposal: any, index: number) => {
+                      return <ProposalRow key={index} proposal={proposal} />;
+                    })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+          <TablePagination
+            component="div"
+            rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
+            count={proposals.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            labelRowsPerPage="Rows per page"
+            SelectProps={{
+              inputProps: {
+                "aria-label": "rows per page",
+              },
+              native: true,
+            }}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+          />
+        </Stack>
+      ) : (
+        <Typography textAlign="center" variant="h6" color="info">
+          There is no proposal
+        </Typography>
+      )}
     </>
   );
 }

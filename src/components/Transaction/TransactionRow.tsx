@@ -14,6 +14,7 @@ import { TParseProposalDetail } from "../../types/ProposalDetail";
 import { TParsedTransactionDetail } from "../../types/TransactionDetail";
 import TransactionApproveDialog from "../Dialog/ApproveTransactionDialog";
 import TransactionRejectDialog from "../Dialog/RejectTransactionDialog";
+import TransactionRemovalConfirmationDialog from "../Dialog/ConfirmationDialog";
 import { useDispatch } from "react-redux";
 import AppContext from "../../share/context";
 import {
@@ -43,6 +44,7 @@ export default function TransactionInfo({
   const { detail: pDetail } = proposal;
   const [openApproveTx, setOpenApproveTx] = useState(false);
   const [openRejectTx, setOpenRejectTx] = useState(false);
+  const [openRemoveTx, setOpenRemoveTx] = useState(false);
   const { setLoadingMessage, setError, setSuccess } = useContext(
     AppContext
   ) as any;
@@ -91,6 +93,9 @@ export default function TransactionInfo({
   }
   function changeRejectTxDialogState() {
     setOpenRejectTx(!openRejectTx);
+  }
+  function changeOpenRemoveTxState() {
+    setOpenRemoveTx(!openRemoveTx);
   }
   async function executeTx() {
     const {
@@ -200,6 +205,16 @@ export default function TransactionInfo({
         transaction={transaction}
         open={openRejectTx}
         handleClose={changeRejectTxDialogState}
+      />
+      <TransactionRemovalConfirmationDialog
+        reloadFn={reloadFn}
+        open={openRemoveTx}
+        executeFn={removeTx}
+        handleClose={changeOpenRemoveTxState}
+        dialogContent="After settled, proposal is ready to get approvals from involved
+        parties. You cannot change or delete it anymore"
+        dialogTitle="Are you sure?"
+        actionText="Settle"
       />
       <TableRow>
         <TableCell align="left">

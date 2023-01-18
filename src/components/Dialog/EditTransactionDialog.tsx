@@ -117,7 +117,7 @@ export default function TransactionEditDialog({
               color="primary"
               variant="text"
             >
-              UPDATE
+              Update
             </Button>
             <CancelButton handleClose={handleClose} />
           </Stack>

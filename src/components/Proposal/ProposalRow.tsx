@@ -61,7 +61,7 @@ export default function ProposalInfo({
           </TableCell>
         </Tooltip>
         <TableCell align="left">
-          {proposal.detail.numberOfTransactions}
+          {proposal.detail.numberOfEnabledTransactions}
         </TableCell>
         <TableCell align="left">{proposal.detail.numberOfApprovals}</TableCell>
         <TableCell align="left">{getStatus()}</TableCell>

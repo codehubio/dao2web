@@ -110,7 +110,7 @@ export default function TransactionApproveDialog({
               color="secondary"
               variant="text"
             >
-              APPROVE
+              Approve
             </Button>
 
             <CancelButton handleClose={handleClose} />

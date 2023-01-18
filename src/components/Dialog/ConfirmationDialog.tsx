@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Stack,
+  Typography,
 } from "@mui/material";
 import { AddCircleOutlineOutlined } from "@mui/icons-material";
 import CancelButton from "../CancelButton";
@@ -15,17 +16,25 @@ export default function SettleConfirmationDialog({
   reloadFn,
   open,
   handleClose,
+  dialogContent = "",
+  dialogTitle = "",
+  warningText,
+  actionText,
 }: {
   reloadFn?: Function;
   executeFn: any;
   open: boolean;
   handleClose: any;
+  dialogContent: string;
+  dialogTitle: string;
+  actionText: string;
+  warningText?: string;
 }) {
   async function execute() {
-    await executeFn();
     if (reloadFn) {
       await reloadFn();
     }
+    await executeFn();
   }
   return (
     <>
@@ -38,11 +47,17 @@ export default function SettleConfirmationDialog({
         color="primary"
       >
         <DialogTitle textAlign="center" sx={{ mb: 1 }} id="alert-dialog-title">
-          Are you sure?
+          {dialogTitle}
         </DialogTitle>
         <DialogContent>
-          After settled, proposal is ready to get approvals from involved
-          parties. You cannot change or delete it anymore
+          {dialogContent}
+          {warningText ? (
+            <Typography textAlign="center" color="secondary">
+              {warningText}
+            </Typography>
+          ) : (
+            <></>
+          )}
         </DialogContent>
         <DialogActions>
           <Stack width="100%" direction="row" justifyContent="center">
@@ -52,7 +67,7 @@ export default function SettleConfirmationDialog({
               color="primary"
               variant="text"
             >
-              SETTLE
+              {actionText}
             </Button>
             <CancelButton handleClose={handleClose} />
           </Stack>

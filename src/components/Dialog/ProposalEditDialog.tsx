@@ -108,7 +108,7 @@ export default function EditProposalDialog({
               color="primary"
               variant="text"
             >
-              UPDATE
+              Update
             </Button>
             <CancelButton handleClose={handleClose} />
           </Stack>

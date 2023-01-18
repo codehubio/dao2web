@@ -20,7 +20,8 @@ import { getProposalByPda } from "../../services/state/proposal";
 import ProposalCard from "./ProposalCard";
 import EditProposalDialog from "../Dialog/ProposalEditDialog";
 import removeProposalThunk from "../../reducers/proposal/remove-proposal";
-import SettleConfirmationDialog from "../Dialog/SettleConfirmationDialog";
+import SettleConfirmationDialog from "../Dialog/ConfirmationDialog";
+import RemoveProposalConfirmationDialog from "../Dialog/ConfirmationDialog";
 
 export default function ProposalDetail() {
   const { connection } = useConnection();
@@ -32,6 +33,7 @@ export default function ProposalDetail() {
   const [openAddTx, setOpenAddTx] = useState(false);
   const [openUpdateProposal, setOpenUpdateProposal] = useState(false);
   const [openSettleProposal, setOpenSettleProposal] = useState(false);
+  const [openRemoveProposal, setOpenRemoveProposal] = useState(false);
   const [reload, setShouldReload] = useState(false);
   const dispatch = useDispatch();
   const { wallet } = useWallet();
@@ -94,7 +96,7 @@ export default function ProposalDetail() {
       ).unwrap();
       setLoadingMessage("");
       setSuccess({
-        message: `Proposal ${proposal.detail.name} settled! You may need to refresh the page to see the change!`,
+        message: `Proposal ${proposal.detail.name} removed! You may need to refresh the page to see the change!`,
         txid: payload.txid,
       });
     } catch (error) {
@@ -119,6 +121,9 @@ export default function ProposalDetail() {
   function changeSettleProposalDialogState() {
     setOpenSettleProposal(!openSettleProposal);
   }
+  function changeRemoveProposalDialogState() {
+    setOpenRemoveProposal(!openRemoveProposal);
+  }
   return proposal && proposal.detail ? (
     <>
       <TransactionAddDialog
@@ -138,6 +143,20 @@ export default function ProposalDetail() {
         open={openSettleProposal}
         executeFn={settle}
         handleClose={changeSettleProposalDialogState}
+        dialogContent="After settled, proposal is ready to get approvals from involved
+        parties. You cannot change or delete it anymore"
+        dialogTitle="Are you sure?"
+        actionText="Settle"
+      />
+      <RemoveProposalConfirmationDialog
+        reloadFn={setShouldReload}
+        open={openRemoveProposal}
+        executeFn={remove}
+        handleClose={changeRemoveProposalDialogState}
+        dialogContent="After removed, proposal cannot be viewed or modified anymore. Fee is return to your wallet"
+        dialogTitle="Are you sure?"
+        actionText="Remove"
+        warningText="Proposal must be empty to be removed"
       />
 
       <Stack
@@ -181,7 +200,7 @@ export default function ProposalDetail() {
                 Edit
               </Button>
               <Button
-                onClick={remove}
+                onClick={changeRemoveProposalDialogState}
                 color="error"
                 variant="text"
                 startIcon={<RemoveCircleOutline />}

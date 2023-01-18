@@ -141,7 +141,7 @@ export default function TransactionAddDialog({
               color="primary"
               variant="text"
             >
-              OK
+              Add
             </Button>
             <CancelButton handleClose={handleClose} />
           </Stack>

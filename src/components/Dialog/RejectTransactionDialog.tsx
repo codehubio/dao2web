@@ -103,7 +103,7 @@ export default function TransactionRejectDialog({
         </DialogContent>
         <DialogActions>
           <Button onClick={approve} color="primary" variant="contained">
-            REJECT
+            Reject
           </Button>
           <CancelButton handleClose={handleClose} />
         </DialogActions>

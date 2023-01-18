@@ -10,7 +10,7 @@ function CancelButton({ handleClose }: any) {
         onClick={handleClose}
         color="error"
       >
-        CANCEL
+        Cancel
       </Button>
     </>
   );

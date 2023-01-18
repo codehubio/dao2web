@@ -18,7 +18,7 @@ export default function DocumentationPage() {
         </Typography>
         <br />
         <Typography variant="subtitle2" fontWeight="light">
-          Proposol is multi-transaction flow management plaform for SPL and
+          Proposol is multi-transaction flow management platform for SPL and
           native tokens on Solana blockchain. By defining on-chain proposals
           which involve all signers into the approval process, we provide
           secure, simple yet flexible solutions to transfer SPL and native
